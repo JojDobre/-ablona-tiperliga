@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Porovnanie: Ty vs Peter Kováč</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .cmp-head { padding:28px 0 8px; }
+  .crumb { font-size:var(--fs-sm); color:var(--text-4); margin-bottom:10px; }
+  .crumb a { color:var(--text-3); } .crumb a:hover { color:var(--brand-bright); }
+
+  /* versus banner */
+  .vs-banner { display:grid; grid-template-columns:1fr auto 1fr; gap:16px; align-items:center; padding:28px 24px; margin-top:8px;
+    border-radius:var(--r-2xl); position:relative; overflow:hidden;
+    background:linear-gradient(120deg, color-mix(in srgb,var(--brand) 12%,var(--surface-1)), var(--surface-1) 50%, color-mix(in srgb,#3a7bd5 14%,var(--surface-1))); border:1px solid var(--line-strong); }
+  .vs-side { display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center; position:relative; z-index:1; }
+  .vs-side .avatar { width:84px; height:84px; font-size:30px; box-shadow:0 0 0 4px var(--bg); }
+  .vs-name { font-family:var(--font-display); font-weight:700; font-size:var(--fs-h4); color:var(--text-1); }
+  .vs-handle { font-size:var(--fs-xs); color:var(--text-3); }
+  .vs-rank { font-family:var(--num); font-weight:700; font-size:1.4rem; }
+  .vs-mid { display:flex; flex-direction:column; align-items:center; gap:6px; position:relative; z-index:1; }
+  .vs-badge { font-family:var(--font-display); font-weight:800; font-size:1.6rem; color:var(--text-4); letter-spacing:.04em; }
+  .vs-lead { font-size:var(--fs-xs); font-weight:700; text-transform:uppercase; letter-spacing:.08em; padding:4px 10px; border-radius:var(--r-pill); }
+
+  /* comparison rows */
+  .cmp-table { margin-top:24px; }
+  .cmp-row { display:grid; grid-template-columns:1fr 150px 1fr; gap:14px; align-items:center; padding:16px 14px; border-bottom:1px solid var(--line); }
+  .cmp-row:last-child { border-bottom:none; }
+  .cmp-label { text-align:center; font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.08em; color:var(--text-4); font-weight:700; }
+  .cmp-val { font-family:var(--num); font-weight:700; font-size:1.5rem; font-variant-numeric:tabular-nums; line-height:1; }
+  .cmp-l { text-align:right; }
+  .cmp-r { text-align:left; }
+  .cmp-val.win { color:var(--success); }
+  .cmp-val.lose { color:var(--text-3); }
+  .cmp-bar { height:8px; border-radius:99px; background:var(--surface-3); overflow:hidden; display:flex; margin-top:8px; }
+  .cmp-bar .l { background:linear-gradient(90deg,var(--brand-bright),var(--brand)); height:100%; }
+  .cmp-bar .r { background:linear-gradient(90deg,#1b3f72,#3a7bd5); height:100%; margin-left:auto; }
+  .cmp-side-wrap { display:flex; flex-direction:column; }
+
+  .h2h { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:24px; }
+  .meet-row { display:grid; grid-template-columns:1fr auto 1fr; gap:10px; align-items:center; padding:11px 0; border-bottom:1px solid var(--line); font-size:var(--fs-sm); }
+  .meet-row:last-child { border-bottom:none; }
+  .meet-row .who { font-family:var(--num); font-weight:700; }
+
+  @media (max-width:640px){
+    .vs-banner { padding:20px 14px; gap:8px; }
+    .vs-side .avatar { width:62px; height:62px; font-size:22px; }
+    .cmp-row { grid-template-columns:1fr 88px 1fr; gap:8px; }
+    .cmp-val { font-size:1.15rem; }
+    .h2h { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body data-page="leaderboards">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+
+<div class="wrap cmp-head">
+  <div class="crumb"><a href="leaderboards.html">Rebríčky</a> › <a href="player.html">Peter Kováč</a> › Porovnanie</div>
+  <div class="eyebrow">Hlava na hlavu</div>
+  <h1 style="font-size:clamp(1.8rem,3vw,2.4rem)">Ty vs Peter Kováč</h1>
+  <p class="muted" style="margin-top:6px">Porovnanie vašich výsledkov naprieč 3 spoločnými súťažami.</p>
+</div>
+
+<div class="wrap" style="padding-bottom:64px">
+  <!-- VERSUS -->
+  <div class="vs-banner">
+    <div class="vs-side">
+      <span class="avatar avatar-xl avatar-ring" style="background:linear-gradient(135deg,#7c5cff,#5b3fd6);color:#fff">MN</span>
+      <div><div class="vs-name">Martin Novák</div><div class="vs-handle">@martinn · Ty</div></div>
+      <div class="vs-rank brand">#5</div>
+    </div>
+    <div class="vs-mid">
+      <span class="vs-badge">VS</span>
+      <span class="vs-lead" style="background:var(--success-soft);color:var(--success)">Vedieš 2 : 1</span>
+    </div>
+    <div class="vs-side">
+      <span class="avatar avatar-xl" style="background:linear-gradient(135deg,#3a7bd5,#1b3f72);color:#fff">PK</span>
+      <div><div class="vs-name">Peter Kováč</div><div class="vs-handle">@peterk · Košice</div></div>
+      <div class="vs-rank" style="color:#6cabdd">#2</div>
+    </div>
+  </div>
+
+  <!-- STAT COMPARISON -->
+  <div class="card card-pad cmp-table">
+    <div class="cmp-row">
+      <div class="cmp-side-wrap" style="align-items:flex-end">
+        <span class="cmp-val win cmp-l">1098</span>
+        <div class="cmp-bar"><span class="l" style="width:46%"></span></div>
+      </div>
+      <div class="cmp-label">Celkové body</div>
+      <div class="cmp-side-wrap" style="align-items:flex-start">
+        <span class="cmp-val lose cmp-r">1284</span>
+        <div class="cmp-bar"><span class="r" style="width:54%"></span></div>
+      </div>
+    </div>
+
+    <div class="cmp-row">
+      <div class="cmp-side-wrap" style="align-items:flex-end">
+        <span class="cmp-val lose cmp-l">59 %</span>
+        <div class="cmp-bar"><span class="l" style="width:47%"></span></div>
+      </div>
+      <div class="cmp-label">Presnosť tipov</div>
+      <div class="cmp-side-wrap" style="align-items:flex-start">
+        <span class="cmp-val win cmp-r">68 %</span>
+        <div class="cmp-bar"><span class="r" style="width:53%"></span></div>
+      </div>
+    </div>
+
+    <div class="cmp-row">
+      <div class="cmp-side-wrap" style="align-items:flex-end">
+        <span class="cmp-val lose cmp-l">5</span>
+        <div class="cmp-bar"><span class="l" style="width:42%"></span></div>
+      </div>
+      <div class="cmp-label">Najdlhšia séria</div>
+      <div class="cmp-side-wrap" style="align-items:flex-start">
+        <span class="cmp-val win cmp-r">7</span>
+        <div class="cmp-bar"><span class="r" style="width:58%"></span></div>
+      </div>
+    </div>
+
+    <div class="cmp-row">
+      <div class="cmp-side-wrap" style="align-items:flex-end">
+        <span class="cmp-val win cmp-l">31</span>
+        <div class="cmp-bar"><span class="l" style="width:55%"></span></div>
+      </div>
+      <div class="cmp-label">Presné výsledky</div>
+      <div class="cmp-side-wrap" style="align-items:flex-start">
+        <span class="cmp-val lose cmp-r">25</span>
+        <div class="cmp-bar"><span class="r" style="width:45%"></span></div>
+      </div>
+    </div>
+
+    <div class="cmp-row">
+      <div class="cmp-side-wrap" style="align-items:flex-end">
+        <span class="cmp-val win cmp-l">14</span>
+        <div class="cmp-bar"><span class="l" style="width:52%"></span></div>
+      </div>
+      <div class="cmp-label">Odznaky</div>
+      <div class="cmp-side-wrap" style="align-items:flex-start">
+        <span class="cmp-val lose cmp-r">14</span>
+        <div class="cmp-bar"><span class="r" style="width:48%"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHARED COMPETITIONS H2H -->
+  <div class="h2h">
+    <div class="card card-pad">
+      <div class="stat-label" style="margin-bottom:12px">Postavenie v spoločných súťažiach</div>
+      <div class="meet-row">
+        <span class="who brand">#5 · Ty</span>
+        <span class="tag tag-muted">MS 2026</span>
+        <span class="who" style="text-align:right;color:var(--success)">#2 · Peter</span>
+      </div>
+      <div class="meet-row">
+        <span class="who" style="color:var(--success)">#2 · Ty</span>
+        <span class="tag tag-muted">Kolegovia</span>
+        <span class="who" style="text-align:right;color:var(--gold)">#1 · Peter</span>
+      </div>
+      <div class="meet-row">
+        <span class="who" style="color:var(--gold)">#1 · Ty</span>
+        <span class="tag tag-muted">Fortuna</span>
+        <span class="who" style="text-align:right;color:var(--text-3)">#14 · Peter</span>
+      </div>
+    </div>
+
+    <div class="card card-pad">
+      <div class="stat-label" style="margin-bottom:12px">Kolá, kde ste sa stretli</div>
+      <div class="meet-row"><span class="who win" style="color:var(--success)">+24</span><span class="muted">Kolo 13 · Fortuna</span><span class="who" style="text-align:right;color:var(--text-3)">+12</span></div>
+      <div class="meet-row"><span class="who" style="color:var(--text-3)">+8</span><span class="muted">Kolo 12 · MS 2026</span><span class="who win" style="text-align:right;color:var(--success)">+31</span></div>
+      <div class="meet-row"><span class="who win" style="color:var(--success)">+18</span><span class="muted">Kolo 11 · Kolegovia</span><span class="who" style="text-align:right;color:var(--text-3)">+10</span></div>
+      <p class="muted" style="font-size:var(--fs-xs);margin-top:12px">Za posledných 10 spoločných kôl si vyhral <b class="hi">6</b>, Peter <b class="hi">4</b>.</p>
+    </div>
+  </div>
+
+  <div class="row g-2 center wrap-gap" style="margin-top:26px">
+    <a href="player.html" class="btn btn-secondary">Späť na profil Petra</a>
+    <a href="leaderboards.html" class="btn btn-ghost">Celý rebríček</a>
+  </div>
+</div>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

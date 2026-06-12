@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Stránka nenájdená</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .err-wrap { min-height:calc(100vh - 64px); display:flex; align-items:center; justify-content:center; padding:40px 24px; position:relative; }
+  .err-card { max-width:560px; text-align:center; position:relative; z-index:2; }
+  .err-code { font-family:var(--font-display); font-weight:800; font-size:clamp(6rem,18vw,11rem); line-height:.9; letter-spacing:-.04em;
+    background:linear-gradient(135deg,var(--brand-bright),var(--gold)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+  .err-ball { display:inline-flex; vertical-align:middle; margin:0 .04em; animation:bob 2.4s var(--ease-in-out) infinite; }
+  @keyframes bob { 0%,100%{transform:translateY(0) rotate(-6deg)} 50%{transform:translateY(-14px) rotate(8deg)} }
+  .err-title { font-size:var(--fs-h2); margin:8px 0 10px; }
+  .err-links { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:26px; }
+  .err-quick { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:30px; }
+  .err-quick a { font-size:var(--fs-sm); color:var(--text-3); padding:7px 14px; border-radius:var(--r-pill); background:var(--surface-2); border:1px solid var(--line); transition:all .14s; }
+  .err-quick a:hover { color:var(--text-1); border-color:var(--brand-line); }
+</style>
+</head>
+<body data-page="">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+
+<div class="err-wrap">
+  <div class="err-card reveal">
+    <div class="err-code">4<span class="err-ball">
+      <svg viewBox="0 0 48 48" style="width:.82em;height:.82em" fill="none">
+        <circle cx="24" cy="24" r="21" fill="#1a1340" stroke="#7c5cff" stroke-width="2"/>
+        <path d="M24 7 L30 12 L28 20 L20 20 L18 12 Z" fill="#7c5cff"/>
+        <path d="M30 12 L40 16 L38 26 L28 20 Z" fill="#5b3fd6"/>
+        <path d="M18 12 L8 16 L10 26 L20 20 Z" fill="#5b3fd6"/>
+        <path d="M28 20 L33 32 L24 38 L15 32 L20 20 Z" fill="#facc15"/>
+      </svg></span>4</div>
+    <div class="eyebrow" style="justify-content:center;display:flex">Chyba 404</div>
+    <h1 class="err-title">Táto stránka odpískala koniec</h1>
+    <p class="muted" style="max-width:44ch;margin:0 auto;font-size:var(--fs-lg)">Stránku, ktorú hľadáš, sme nenašli. Možno bola presunutá, premenovaná, alebo súťaž už skončila.</p>
+    <div class="err-links">
+      <a href="index.html" class="btn btn-primary btn-lg">Domov</a>
+      <a href="my.html" class="btn btn-secondary btn-lg">Moje súťaže</a>
+    </div>
+    <div class="err-quick">
+      <a href="seasons.html">Sezóny</a>
+      <a href="leaderboards.html">Rebríčky</a>
+      <a href="discover.html">Objaviť súťaže</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">O nás</a>
+    </div>
+  </div>
+</div>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

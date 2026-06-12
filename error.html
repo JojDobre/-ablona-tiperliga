@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Niečo sa pokazilo</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .err-wrap { min-height:calc(100vh - 64px); display:flex; align-items:center; justify-content:center; padding:40px 24px; }
+  .err-card { max-width:520px; text-align:center; }
+  .err-ico { width:96px; height:96px; margin:0 auto 22px; border-radius:var(--r-2xl); display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(circle at 50% 35%, var(--danger-soft), var(--surface-2)); border:1px solid rgba(240,71,106,.3); color:var(--danger); }
+  .err-title { font-size:var(--fs-h2); margin:0 0 10px; }
+  .err-code-chip { font-family:var(--num); font-size:var(--fs-xs); color:var(--text-4); background:var(--surface-2); border:1px solid var(--line); padding:5px 12px; border-radius:var(--r-pill); display:inline-block; margin-top:20px; letter-spacing:.05em; }
+  .err-links { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:24px; }
+</style>
+</head>
+<body data-page="">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+
+<div class="err-wrap">
+  <div class="err-card reveal">
+    <div class="err-ico">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:46px;height:46px"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4.5M12 17.5h.01" stroke-linecap="round"/></svg>
+    </div>
+    <div class="eyebrow" style="justify-content:center;display:flex">Chyba 500</div>
+    <h1 class="err-title">Niečo sa pokazilo</h1>
+    <p class="muted" style="max-width:46ch;margin:0 auto;font-size:var(--fs-lg)">Na našej strane nastala neočakávaná chyba. Skús to prosím o chvíľu znova — ak problém pretrváva, daj nám vedieť.</p>
+    <div class="err-links">
+      <button class="btn btn-primary btn-lg" onclick="location.reload()">Skúsiť znova</button>
+      <a href="index.html" class="btn btn-secondary btn-lg">Domov</a>
+    </div>
+    <div class="err-code-chip">Kód chyby: TL-500-9F3A · 12. jún 2026, 21:14</div>
+    <p class="muted" style="font-size:var(--fs-sm);margin-top:18px">Pretrváva problém? <a href="about.html" class="brand" style="font-weight:700">Kontaktuj podporu</a></p>
+  </div>
+</div>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

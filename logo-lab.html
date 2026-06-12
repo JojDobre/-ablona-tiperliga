@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Logo lab</title>
+<link rel="stylesheet" href="css/tokens.css">
+<style>
+  body { padding: 48px; }
+  .grid { display:grid; grid-template-columns: repeat(4, 1fr); gap: 24px; max-width: 1100px; }
+  .cell { background: var(--surface-1); border:1px solid var(--line); border-radius: 18px; padding: 28px; display:flex; flex-direction:column; align-items:center; gap:18px; }
+  .cell.light { background:#fff; }
+  .cap { font-size:12px; color: var(--text-3); }
+  .lock { display:flex; align-items:center; gap:12px; }
+  .wm { font-family: var(--font-display); font-weight:700; font-size: 26px; letter-spacing:-0.02em; color: var(--text-1); }
+  .wm b { color: var(--gold); }
+  h1 { margin-bottom: 28px; }
+</style>
+</head>
+<body>
+<div class="bg-field"></div>
+<h1>Logo lab</h1>
+<div class="grid">
+
+  <!-- A: shield + upward chevron negative space -->
+  <div class="cell">
+    <svg width="72" height="72" viewBox="0 0 48 48" fill="none">
+      <defs>
+        <linearGradient id="gA" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#9d83ff"/><stop offset="1" stop-color="#5b3fd6"/>
+        </linearGradient>
+      </defs>
+      <path d="M24 4 L40 9 V23 C40 33 33 40 24 44 C15 40 8 33 8 23 V9 Z" fill="url(#gA)" stroke="#9d83ff" stroke-width="1.2"/>
+      <path d="M15 28 L24 17 L33 28" fill="none" stroke="#0a0d16" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M19 33 L24 27 L29 33" fill="none" stroke="#facc15" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="cap">A · crest + ascend</div>
+  </div>
+
+  <!-- B: shield + target crosshair -->
+  <div class="cell">
+    <svg width="72" height="72" viewBox="0 0 48 48" fill="none">
+      <path d="M24 4 L40 9 V23 C40 33 33 40 24 44 C15 40 8 33 8 23 V9 Z" fill="#141a2c" stroke="#7c5cff" stroke-width="1.4"/>
+      <circle cx="24" cy="23" r="9" fill="none" stroke="#9d83ff" stroke-width="2"/>
+      <circle cx="24" cy="23" r="3.4" fill="#facc15"/>
+      <path d="M24 9 V14 M24 32 V37 M10 23 H15 M33 23 H38" stroke="#7c5cff" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <div class="cap">B · crest + target</div>
+  </div>
+
+  <!-- C: hex badge + T monogram -->
+  <div class="cell">
+    <svg width="72" height="72" viewBox="0 0 48 48" fill="none">
+      <defs>
+        <linearGradient id="gC" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#5b3fd6"/>
+        </linearGradient>
+      </defs>
+      <path d="M24 3 L42 13 V35 L24 45 L6 35 V13 Z" fill="url(#gC)"/>
+      <path d="M24 3 L42 13 V35 L24 45 L6 35 V13 Z" fill="none" stroke="#9d83ff" stroke-width="1" opacity=".6"/>
+      <path d="M15 17 H33 M24 17 V33" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/>
+      <circle cx="24" cy="33" r="2.4" fill="#facc15"/>
+    </svg>
+    <div class="cap">C · hex + T</div>
+  </div>
+
+  <!-- D: target + chevron, no shield -->
+  <div class="cell">
+    <svg width="72" height="72" viewBox="0 0 48 48" fill="none">
+      <circle cx="24" cy="24" r="19" fill="none" stroke="#2c3858" stroke-width="2"/>
+      <circle cx="24" cy="24" r="19" fill="none" stroke="#7c5cff" stroke-width="2" stroke-dasharray="40 120" stroke-linecap="round" transform="rotate(-90 24 24)"/>
+      <path d="M15 27 L24 16 L33 27" fill="none" stroke="#9d83ff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="24" cy="30" r="2.6" fill="#facc15"/>
+    </svg>
+    <div class="cap">D · ring + ascend</div>
+  </div>
+</div>
+
+<h1 style="margin-top:48px">Lockups (A)</h1>
+<div class="grid" style="grid-template-columns: repeat(2,1fr)">
+  <div class="cell" style="align-items:flex-start">
+    <div class="lock">
+      <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+        <defs><linearGradient id="gL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9d83ff"/><stop offset="1" stop-color="#5b3fd6"/></linearGradient></defs>
+        <path d="M24 4 L40 9 V23 C40 33 33 40 24 44 C15 40 8 33 8 23 V9 Z" fill="url(#gL)" stroke="#9d83ff" stroke-width="1.2"/>
+        <path d="M15 28 L24 17 L33 28" fill="none" stroke="#0a0d16" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M19 33 L24 27 L29 33" fill="none" stroke="#facc15" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="wm">Tiper<b>liga</b></div>
+    </div>
+  </div>
+  <div class="cell light" style="align-items:flex-start">
+    <div class="lock">
+      <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+        <path d="M24 4 L40 9 V23 C40 33 33 40 24 44 C15 40 8 33 8 23 V9 Z" fill="url(#gL)" stroke="#5b3fd6" stroke-width="1.2"/>
+        <path d="M15 28 L24 17 L33 28" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M19 33 L24 27 L29 33" fill="none" stroke="#d4a90a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="wm" style="color:#111729">Tiper<b style="color:#d4a90a">liga</b></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

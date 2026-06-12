@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — 5 chýb pri tipovaní</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .art-hero { min-height:340px; position:relative; display:flex; align-items:flex-end; overflow:hidden; background:linear-gradient(135deg,#2b0a4a,#5b3fd6 60%,#0b4ea2); }
+  .art-hero::after { content:"🏒"; position:absolute; right:6%; top:50%; transform:translateY(-50%); font-size:160px; opacity:.18; z-index:0; }
+  .art-hero::before { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(9,12,22,.12) 0%, transparent 32%, rgba(9,12,22,.92) 100%); z-index:1; }
+  .art-hero-inner { position:relative; z-index:2; padding-block:36px 32px; }
+  .art-layout { display:grid; grid-template-columns: 1fr 240px; gap:40px; align-items:start; padding-block:36px 64px; }
+  .article { max-width:680px; }
+  .article p { color:var(--text-2); font-size:1.075rem; line-height:1.75; margin-bottom:22px; }
+  .article h2 { font-size:var(--fs-h3); margin:38px 0 14px; }
+  .article h3 { font-size:var(--fs-h4); margin:28px 0 10px; color:var(--text-1); }
+  .article ul { margin:0 0 22px; padding-left:4px; list-style:none; }
+  .article li { color:var(--text-2); font-size:1.075rem; line-height:1.7; padding-left:28px; position:relative; margin-bottom:10px; }
+  .article li::before { content:"›"; position:absolute; left:8px; color:var(--brand-bright); font-weight:700; }
+  .pull { border-left:3px solid var(--brand); padding:6px 0 6px 22px; margin:28px 0; font-family:var(--font-display); font-size:1.35rem; color:var(--text-1); line-height:1.4; }
+  .art-side { position:sticky; top:92px; }
+  .toc a { display:block; padding:7px 0; font-size:var(--fs-sm); color:var(--text-3); border-left:2px solid var(--line); padding-left:14px; transition:all .15s; }
+  .toc a:hover, .toc a.active { color:var(--brand-bright); border-left-color:var(--brand); }
+  .share-btn { width:40px; height:40px; border-radius:var(--r-sm); display:flex; align-items:center; justify-content:center; background:var(--surface-2); border:1px solid var(--line); color:var(--text-3); }
+  .share-btn:hover { color:var(--text-1); border-color:var(--brand-line); }
+  @media (max-width:900px){ .art-layout { grid-template-columns:1fr; } .art-side { position:static; } }
+  @media (max-width:720px){
+    .art-hero { min-height:0; }
+    .art-hero-inner { padding-block:24px 26px; }
+    /* push the emoji to the top corner so it never collides with the headline */
+    .art-hero::after { font-size:118px; right:-18px; top:-6px; transform:none; opacity:.13; }
+    .art-hero::before { background:linear-gradient(180deg, rgba(9,12,22,.30) 0%, rgba(9,12,22,.55) 55%, rgba(9,12,22,.95) 100%); }
+    .article h2 { margin:30px 0 12px; }
+    /* TOC is redundant at the bottom of a phone scroll — hide it */
+    .toc-block { display:none; }
+    /* center the share buttons */
+    .share-block { text-align:center; }
+    .share-row { justify-content:center; }
+    /* related articles: one per row */
+    .post-grid { grid-template-columns:1fr !important; }
+  }
+</style>
+</head>
+<body data-page="blog">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+
+<!-- HERO -->
+<header class="art-hero">
+  <div class="wrap art-hero-inner">
+    <a href="blog.html" class="muted" style="font-size:var(--fs-sm);display:inline-block;margin-bottom:14px">← Späť na blog</a>
+    <div class="row g-2 wrap-gap" style="margin-bottom:14px"><span class="tag tag-brand">Stratégia</span><span class="muted" style="font-size:var(--fs-sm)">6 min čítania</span></div>
+    <h1 style="font-size:clamp(1.9rem,3.6vw,3rem);max-width:18ch;color:#fff">5 chýb, ktoré robí 90 % tipérov pri presnom výsledku</h1>
+    <div class="row g-3" style="margin-top:20px"><span class="avatar avatar-md" style="background:linear-gradient(135deg,#7c5cff,#5b3fd6);color:#fff">PT</span><div><b style="color:#fff">Peter Tóth</b><div style="color:rgba(255,255,255,.65);font-size:var(--fs-sm)">Zakladateľ Tiperligy · 8. feb 2026</div></div></div>
+  </div>
+</header>
+
+<div class="wrap art-layout">
+  <!-- ARTICLE -->
+  <article class="article">
+    <p>Tipovať víťaza zápasu vie každý. Ale trafiť <b class="hi">presný výsledok</b> — to je disciplína, ktorá oddeľuje top hráčov rebríčka od zvyšku. Za posledný rok sme analyzovali viac než 2 milióny tipov a vyšli z toho fascinujúce vzorce.</p>
+    <p>Tu je päť najčastejších chýb, ktoré ťa stoja cenné body — a ako sa im vyhnúť už v najbližšom kole.</p>
+
+    <h2 id="s1">1. Tipuješ príliš veľa gólov</h2>
+    <p>Dáta sú jednoznačné: priemerný tipér nadhodnocuje počet gólov o takmer 0,8 gólu na zápas. Sníva sa nám o veľkolepých 4:3 perlách, ale realita je často nudná 1:0.</p>
+    <div class="pull">„Najčastejší správny presný výsledok vo futbale je 1:0. Tipuje ho však len 6 % hráčov.“</div>
+    <p>Skús sa pri ďalšom tipe spýtať: koľko gólov padlo v posledných piatich vzájomných zápasoch? Pravdepodobne menej, než si myslíš.</p>
+
+    <h2 id="s2">2. Ignoruješ defenzívu</h2>
+    <p>Útok predáva lístky, obrana vyhráva tituly — a tipovacie ligy. Tímy s najlepšou defenzívou produkujú najviac „tipovateľných“ výsledkov.</p>
+    <ul>
+      <li>Pozri si počet inkasovaných gólov, nie len strelených.</li>
+      <li>Domáce tímy s pevnou obranou = ideálni kandidáti na 1:0 alebo 2:0.</li>
+      <li>Pri dvoch ofenzívnych tímoch radšej staví na vyšší súčet.</li>
+    </ul>
+
+    <h2 id="s3">3. Necháš sa unášať emóciami</h2>
+    <p>Fandíš Slovensku? Skvelé. Ale tvoje srdce nie je dobrý analytik. Tipéri, ktorí systematicky nadhodnocujú svoj obľúbený tím, majú o 12 % nižšiu presnosť.</p>
+
+    <h2 id="s4">4. Tipuješ na poslednú chvíľu</h2>
+    <p>Tipy odoslané pár minút pred uzávierkou majú výrazne nižšiu úspešnosť. Prečo? Lebo nemáš čas zohľadniť zostavy, zranenia a formu. Tipni skoro, sleduj novinky a uprav tip, ak treba.</p>
+
+    <h2 id="s5">5. Zabúdaš na bodový systém</h2>
+    <p>Aj keď netrafíš presný výsledok, čiastočné body sa rátajú. Správny víťaz (+3), gólový rozdiel (+2) a počet gólov tímu (+1) vedia spraviť veľký rozdiel za celú sezónu.</p>
+    <div class="card card-pad" style="background:var(--surface-2);margin:24px 0">
+      <b class="hi" style="display:block;margin-bottom:10px">💡 Pravidlo, ktoré ti zmení hru</b>
+      <p class="muted" style="margin:0;font-size:var(--fs-base)">Radšej tipni výsledok, kde aspoň trafíš víťaza a gólový rozdiel, než riskantnú perlu za 10 bodov alebo nič. Stabilita poráža hazard na dlhej trati.</p>
+    </div>
+    <p>Vyskúšaj tieto princípy už v <a href="round.html" class="brand" style="font-weight:700">najbližšom kole</a> a sleduj, ako sa tvoja presnosť posúva nahor. Veľa šťastia — a nech ti to padá!</p>
+
+    <div class="hr" style="margin:34px 0"></div>
+    <div class="row g-3"><span class="avatar avatar-lg" style="background:linear-gradient(135deg,#7c5cff,#5b3fd6);color:#fff">PT</span><div><b class="hi">Peter Tóth</b><p class="muted" style="font-size:var(--fs-sm);margin:0">Zakladateľ Tiperligy. Hokejový nadšenec a štatistický maniak. Tipuje od roku 2024.</p></div></div>
+  </article>
+
+  <!-- SIDE -->
+  <aside class="art-side">
+    <div class="toc-block">
+      <div class="stat-label" style="margin-bottom:12px">Obsah článku</div>
+      <nav class="toc" style="margin-bottom:28px">
+        <a href="#s1">Príliš veľa gólov</a>
+        <a href="#s2">Ignorovanie defenzívy</a>
+        <a href="#s3">Emócie</a>
+        <a href="#s4">Tipovanie na chvíľu</a>
+        <a href="#s5">Bodový systém</a>
+      </nav>
+    </div>
+    <div class="share-block">
+      <div class="stat-label" style="margin-bottom:10px">Zdieľať</div>
+      <div class="row g-2 share-row" style="margin-bottom:28px"><a href="#" class="share-btn">𝕏</a><a href="#" class="share-btn">f</a><a href="#" class="share-btn">in</a><a href="#" class="share-btn">🔗</a></div>
+    </div>
+    <div class="card card-pad" style="background:linear-gradient(135deg,var(--surface-1),color-mix(in srgb,var(--brand) 9%,var(--surface-1)))">
+      <b class="hi" style="display:block;margin-bottom:6px">Otestuj to v praxi</b>
+      <p class="muted" style="font-size:var(--fs-sm);margin-bottom:12px">Kolo 14 je otvorené na tipovanie.</p>
+      <a href="round.html" class="btn btn-brand btn-block btn-sm">Tipovať teraz →</a>
+    </div>
+  </aside>
+</div>
+
+<!-- RELATED -->
+<div class="wrap" style="padding-bottom:64px">
+  <h3 style="font-size:var(--fs-h3);margin-bottom:18px">Ďalšie články</h3>
+  <div class="post-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+    <a href="blog-post.html" class="card card-hover" style="overflow:hidden"><div style="position:relative;height:140px;background:linear-gradient(135deg,#5b3fd6,#2b0a4a);display:flex;align-items:center;justify-content:center;font-size:40px">🏆<span class="tag tag-brand" style="position:absolute;top:12px;left:12px">Rozhovor</span></div><div style="padding:16px 18px 20px"><h4>Ako Lucia vyhrala 3 sezóny po sebe</h4></div></a>
+    <a href="blog-post.html" class="card card-hover" style="overflow:hidden"><div style="position:relative;height:140px;background:linear-gradient(135deg,#0369a1,#06354f);display:flex;align-items:center;justify-content:center;font-size:40px">🧊<span class="tag tag-brand" style="position:absolute;top:12px;left:12px">Stratégia</span></div><div style="padding:16px 18px 20px"><h4>Štatistika vs. srdce: ako tipovať deriby</h4></div></a>
+    <a href="blog-post.html" class="card card-hover" style="overflow:hidden"><div style="position:relative;height:140px;background:linear-gradient(135deg,#c2410c,#7a1f06);display:flex;align-items:center;justify-content:center;font-size:40px">📊<span class="tag tag-gold" style="position:absolute;top:12px;left:12px">Návod</span></div><div style="padding:16px 18px 20px"><h4>Ako si založiť ligu pre celú firmu</h4></div></a>
+  </div>
+</div>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

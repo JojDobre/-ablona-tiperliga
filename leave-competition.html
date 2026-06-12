@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Opustiť súťaž</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .lv-wrap { max-width:560px; margin:0 auto; padding:36px 0 72px; }
+  .lv-cover { height:90px; border-radius:var(--r-xl) var(--r-xl) 0 0; position:relative; display:flex; align-items:flex-start; justify-content:space-between; padding:14px 16px; }
+  .lv-cover .tag { position:relative; z-index:1; }
+  .lose-row { display:flex; align-items:center; gap:11px; padding:12px 0; border-bottom:1px solid var(--line); }
+  .lose-row:last-child { border-bottom:none; }
+  .lose-ic { width:34px; height:34px; border-radius:9px; flex:none; display:flex; align-items:center; justify-content:center; background:var(--danger-soft); color:var(--danger); }
+  .lose-ic.keep { background:var(--success-soft); color:var(--success); }
+  .ack { display:flex; align-items:flex-start; gap:10px; padding:13px 15px; border-radius:var(--r-sm); background:var(--surface-2); border:1px solid var(--line); margin-top:18px; cursor:pointer; }
+  .ack input { margin-top:2px; }
+</style>
+</head>
+<body data-page="moje">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+
+<div class="wrap lv-wrap">
+  <div class="crumb" style="font-size:var(--fs-sm);color:var(--text-4);margin-bottom:14px"><a href="my.html" style="color:var(--text-3)">Moje súťaže</a> › <a href="league.html" style="color:var(--text-3)">Tipovačka s kolegami</a> › Opustiť</div>
+
+  <!-- MAIN STATE -->
+  <div id="leaveMain">
+    <div class="card" style="overflow:hidden">
+      <div class="lv-cover" style="background:linear-gradient(135deg,#7c5cff,#3b1f8a)">
+        <span class="tag tag-gold">Custom liga</span>
+        <span class="tag tag-muted">🔒 Súkromná</span>
+      </div>
+      <div class="card-pad">
+        <h1 style="font-size:var(--fs-h3)">Opustiť „Tipovačka s kolegami"?</h1>
+        <p class="muted" style="margin-top:6px">Si na <b class="hi">2. mieste</b> z 18 hráčov so <b class="hi">186 bodmi</b>. Pred odchodom si prečítaj, čo sa stane.</p>
+
+        <div style="margin-top:18px">
+          <div class="lose-row">
+            <span class="lose-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M18 6 6 18M6 6l12 12" stroke-linecap="round"/></svg></span>
+            <div><b class="hi" style="font-size:var(--fs-sm)">Stratíš svoju pozíciu a body</b><div class="muted" style="font-size:var(--fs-xs)">186 bodov a 2. miesto v tejto lige zaniknú.</div></div>
+          </div>
+          <div class="lose-row">
+            <span class="lose-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M18 6 6 18M6 6l12 12" stroke-linecap="round"/></svg></span>
+            <div><b class="hi" style="font-size:var(--fs-sm)">Prestaneš dostávať notifikácie</b><div class="muted" style="font-size:var(--fs-xs)">O nových kolách a uzávierkach tejto ligy.</div></div>
+          </div>
+          <div class="lose-row">
+            <span class="lose-ic keep"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="width:17px;height:17px"><path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <div><b class="hi" style="font-size:var(--fs-sm)">Môžeš sa vrátiť cez ID</b><div class="muted" style="font-size:var(--fs-xs)">Liga je súkromná — na opätovné pripojenie budeš potrebovať ID a heslo od organizátora.</div></div>
+          </div>
+        </div>
+
+        <label class="ack">
+          <input type="checkbox" id="ackBox">
+          <span style="font-size:var(--fs-sm)">Rozumiem, že stratím svoju pozíciu a body v tejto lige a túto akciu nie je možné vrátiť.</span>
+        </label>
+
+        <div class="row g-2 wrap-gap" style="margin-top:20px">
+          <button class="btn btn-danger" id="leaveBtn" disabled>Opustiť súťaž</button>
+          <a href="league.html" class="btn btn-ghost">Zostať v lige</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DONE STATE -->
+  <div id="leaveDone" hidden>
+    <div class="card card-pad" style="text-align:center;border-color:var(--line)">
+      <div class="empty-icon" style="margin:6px auto 16px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:30px;height:30px;color:var(--text-3)"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2 style="font-size:var(--fs-h3)">Opustil si súťaž</h2>
+      <p class="muted" style="max-width:380px;margin:8px auto 18px">Už nie si členom ligy <b class="hi">Tipovačka s kolegami</b>. Kedykoľvek sa môžeš pripojiť späť cez ID.</p>
+      <div class="row g-2 center wrap-gap">
+        <a href="my.html" class="btn btn-primary">Späť na Moje súťaže</a>
+        <a href="discover.html" class="btn btn-secondary">Objaviť ďalšie</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM DIALOG -->
+<div class="scrim" id="scrim" hidden>
+  <div class="dialog" role="dialog" aria-modal="true">
+    <div class="row g-3" style="margin-bottom:14px">
+      <span style="width:44px;height:44px;border-radius:var(--r-md);flex:none;display:flex;align-items:center;justify-content:center;background:var(--danger-soft);color:var(--danger)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:22px;height:22px"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <div><div class="dialog-title">Posledné potvrdenie</div><p class="muted" style="font-size:var(--fs-sm)">Naozaj chceš opustiť „Tipovačka s kolegami"? Túto akciu nie je možné vrátiť.</p></div>
+    </div>
+    <div class="row g-2" style="justify-content:flex-end;margin-top:6px">
+      <button class="btn btn-ghost" id="dlgCancel">Zrušiť</button>
+      <button class="btn btn-danger" id="dlgOk">Áno, opustiť</button>
+    </div>
+  </div>
+</div>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script>
+(function(){
+  const ack=document.getElementById('ackBox'), leaveBtn=document.getElementById('leaveBtn');
+  const scrim=document.getElementById('scrim');
+  ack.addEventListener('change',()=>leaveBtn.disabled=!ack.checked);
+  leaveBtn.addEventListener('click',()=>{ if(!ack.checked) return; scrim.hidden=false; });
+  document.getElementById('dlgCancel').addEventListener('click',()=>scrim.hidden=true);
+  scrim.addEventListener('click',e=>{ if(e.target===scrim) scrim.hidden=true; });
+  document.getElementById('dlgOk').addEventListener('click',()=>{
+    scrim.hidden=true;
+    document.getElementById('leaveMain').hidden=true;
+    document.getElementById('leaveDone').hidden=false;
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') scrim.hidden=true; });
+})();
+</script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

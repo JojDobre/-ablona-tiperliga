@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Vytvoriť tím</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .form-head { padding:28px 0 8px; }
+  .crumb { font-size:var(--fs-sm); color:var(--text-4); margin-bottom:12px; }
+  .crumb a { color:var(--text-3); } .crumb a:hover { color:var(--brand-bright); }
+  .form-layout { display:grid; grid-template-columns:1fr 320px; gap:28px; align-items:start; padding:20px 0 64px; }
+  .form-card { padding:26px; }
+  .form-card + .form-card { margin-top:18px; }
+  .form-card h3 { font-size:var(--fs-h4); margin-bottom:4px; }
+  .form-card .sub { color:var(--text-3); font-size:var(--fs-sm); margin-bottom:20px; }
+  .field-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .color-swatches { display:flex; gap:10px; flex-wrap:wrap; }
+  .color-sw { width:40px; height:40px; border-radius:var(--r-sm); cursor:pointer; border:2px solid transparent; transition:transform .12s; }
+  .color-sw:hover { transform:scale(1.08); }
+  .color-sw.sel { border-color:#fff; box-shadow:0 0 0 2px var(--bg), 0 0 14px rgba(255,255,255,.3); }
+  .type-pick { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .type-opt { padding:18px; border-radius:var(--r-md); border:1.5px solid var(--line); background:var(--surface-2); cursor:pointer; transition:all .15s; }
+  .type-opt.sel { border-color:var(--brand); background:var(--brand-soft); }
+  .type-opt b { color:var(--text-1); display:block; margin-bottom:3px; }
+  .upload-logo { display:flex; gap:16px; align-items:center; }
+  .logo-drop { width:88px; height:88px; border-radius:var(--r-md); border:1.5px dashed var(--line-strong); display:flex; align-items:center; justify-content:center; background:var(--surface-2); cursor:pointer; flex:none; }
+  .sticky-side { position:sticky; top:92px; }
+  @media (max-width:980px){ .form-layout { grid-template-columns:1fr; } .sticky-side { position:static; } }
+  @media (max-width:560px){ .field-row, .type-pick { grid-template-columns:1fr; } }
+</style>
+</head>
+<body data-page="seasons">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+
+<div class="wrap form-head">
+  <div class="crumb"><a href="create-matches.html">Vytvoriť zápasy</a> › Vytvoriť tím</div>
+  <h1 style="font-size:clamp(1.8rem,3vw,2.4rem)">Vytvoriť tím</h1>
+  <p class="muted" style="margin-top:6px">Pridaj vlastný tím s logom, ktorý môžeš použiť v zápasoch.</p>
+</div>
+
+<form class="wrap form-layout" onsubmit="event.preventDefault();window.location='create-matches.html'">
+  <main>
+    <div class="card form-card">
+      <h3>Údaje tímu</h3>
+      <p class="sub">Názov a skratka zobrazená na logu (3 znaky).</p>
+      <div class="field-row">
+        <div class="field"><label class="label">Názov tímu</label><input class="input" id="tname" placeholder="napr. Slovensko" value="Slovensko" oninput="pv()"></div>
+        <div class="field"><label class="label">Skratka</label><input class="input num" id="tabbr" placeholder="SVK" value="SVK" maxlength="3" style="text-transform:uppercase;letter-spacing:.1em;font-weight:700" oninput="pv()"></div>
+      </div>
+      <div class="field" style="margin-top:16px"><label class="label">Šport</label><select class="select"><option>Hokej</option><option>Futbal</option><option>Basketbal</option></select></div>
+    </div>
+
+    <div class="card form-card">
+      <h3>Logo a farby</h3>
+      <p class="sub">Nahraj vlastné logo alebo zvoľ farbu pre automatickú ikonu.</p>
+      <div class="upload-logo" style="margin-bottom:20px">
+        <div class="logo-drop"><span style="font-size:24px;color:var(--text-4)">＋</span></div>
+        <div><button type="button" class="btn btn-secondary btn-sm">Nahrať logo</button><div class="muted" style="font-size:var(--fs-xs);margin-top:8px">PNG s priehľadným pozadím, min. 200×200</div></div>
+      </div>
+      <label class="label" style="display:block;margin-bottom:10px">Alebo farba ikony</label>
+      <div class="color-swatches" id="colors">
+        <div class="color-sw sel" style="background:linear-gradient(135deg,#0b4ea2,#06306a)" data-c="#0b4ea2,#06306a"></div>
+        <div class="color-sw" style="background:linear-gradient(135deg,#d52b1e,#8a1610)" data-c="#d52b1e,#8a1610"></div>
+        <div class="color-sw" style="background:linear-gradient(135deg,#1fd497,#0c8f63)" data-c="#1fd497,#0c8f63"></div>
+        <div class="color-sw" style="background:linear-gradient(135deg,#facc15,#c9a307)" data-c="#facc15,#c9a307"></div>
+        <div class="color-sw" style="background:linear-gradient(135deg,#7c5cff,#5b3fd6)" data-c="#7c5cff,#5b3fd6"></div>
+        <div class="color-sw" style="background:linear-gradient(135deg,#d35400,#8a3700)" data-c="#d35400,#8a3700"></div>
+        <div class="color-sw" style="background:linear-gradient(135deg,#2c3e50,#1a252f)" data-c="#2c3e50,#1a252f"></div>
+      </div>
+    </div>
+
+    <div class="card form-card">
+      <h3>Typ tímu</h3>
+      <p class="sub">Oficiálne tímy sú dostupné všetkým. Community tímy vidíš len ty a tvoje ligy.</p>
+      <div class="type-pick">
+        <label class="type-opt sel" data-type><input type="radio" name="ttype" hidden checked><b>🏆 Oficiálny</b><span class="muted" style="font-size:var(--fs-sm)">Overený tím dostupný vo všetkých sezónach. Iba admin.</span></label>
+        <label class="type-opt" data-type><input type="radio" name="ttype" hidden><b>👥 Community</b><span class="muted" style="font-size:var(--fs-sm)">Vlastný tím pre tvoje zápasy a ligy.</span></label>
+      </div>
+    </div>
+  </main>
+
+  <aside class="sticky-side">
+    <div class="card card-pad center" style="flex-direction:column;gap:14px;padding:30px 24px">
+      <div class="stat-label" style="align-self:flex-start;margin-bottom:0">Náhľad</div>
+      <span class="team-logo" id="pvLogo" style="width:80px;height:80px;font-size:24px;background:linear-gradient(135deg,#0b4ea2,#06306a)">SVK</span>
+      <b class="hi" id="pvName" style="font-size:var(--fs-lg)">Slovensko</b>
+      <span class="tag tag-brand" id="pvType">Oficiálny · Hokej</span>
+    </div>
+    <div class="card card-pad" style="margin-top:18px">
+      <button type="submit" class="btn btn-primary btn-block">Vytvoriť tím</button>
+      <a href="create-matches.html" class="btn btn-ghost btn-block" style="margin-top:8px">Zrušiť</a>
+    </div>
+  </aside>
+</form>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script>
+  function pv(){
+    document.getElementById('pvName').textContent = document.getElementById('tname').value || 'Názov tímu';
+    document.getElementById('pvLogo').textContent = (document.getElementById('tabbr').value || 'TIM').toUpperCase();
+  }
+  document.querySelectorAll('#colors .color-sw').forEach(s => s.addEventListener('click', () => {
+    document.querySelectorAll('#colors .color-sw').forEach(x => x.classList.remove('sel')); s.classList.add('sel');
+    const [a,b] = s.dataset.c.split(','); document.getElementById('pvLogo').style.background = `linear-gradient(135deg,${a},${b})`;
+  }));
+  document.querySelectorAll('[data-type]').forEach(o => o.addEventListener('click', () => {
+    document.querySelectorAll('[data-type]').forEach(x => x.classList.remove('sel')); o.classList.add('sel');
+    const isOff = o.querySelector('b').textContent.includes('Oficiálny');
+    const t = document.getElementById('pvType'); t.className = 'tag ' + (isOff?'tag-brand':'tag-gold'); t.textContent = (isOff?'Oficiálny':'Community') + ' · Hokej';
+  }));
+</script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

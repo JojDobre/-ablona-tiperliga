@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Vytvoriť ligu</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .form-head { padding:28px 0 8px; }
+  .crumb { font-size:var(--fs-sm); color:var(--text-4); margin-bottom:12px; }
+  .crumb a { color:var(--text-3); } .crumb a:hover { color:var(--brand-bright); }
+  .form-layout { display:grid; grid-template-columns:1fr 340px; gap:28px; align-items:start; padding:20px 0 64px; }
+  .form-card { padding:26px; }
+  .form-card + .form-card { margin-top:18px; }
+  .form-card h3 { font-size:var(--fs-h4); margin-bottom:4px; }
+  .form-card .sub { color:var(--text-3); font-size:var(--fs-sm); margin-bottom:20px; }
+  .field-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .type-pick { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .type-opt { padding:18px; border-radius:var(--r-md); border:1.5px solid var(--line); background:var(--surface-2); cursor:pointer; transition:all .15s; }
+  .type-opt.sel { border-color:var(--brand); background:var(--brand-soft); }
+  .type-opt .t-ic { font-size:22px; margin-bottom:8px; }
+  .type-opt b { color:var(--text-1); display:block; margin-bottom:3px; }
+  .id-box { display:flex; align-items:center; gap:12px; background:var(--surface-2); border:1px solid var(--line); border-radius:var(--r-md); padding:16px 18px; }
+  .id-val { font-family:var(--num); font-weight:700; font-size:1.8rem; letter-spacing:.28em; color:var(--brand-bright); text-shadow:var(--text-glow-brand); }
+  .score-row { display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--line); }
+  .score-row:last-child { border:none; }
+  .score-row .desc { flex:1; }
+  .score-input { width:72px; }
+  .score-input input { text-align:center; font-family:var(--num); font-weight:700; }
+  .sticky-side { position:sticky; top:92px; }
+  .form-layout > main, .form-layout > .sticky-side { min-width:0; }
+  @media (max-width:980px){ .form-layout { grid-template-columns:1fr; } .sticky-side { position:static; } }
+  @media (max-width:560px){
+    .field-row, .type-pick { grid-template-columns:1fr; }
+    .form-card { padding:20px; }
+    .id-box { flex-wrap:wrap; }
+    .id-val { font-size:1.4rem; letter-spacing:.2em; word-break:break-all; }
+    .id-box .btn { width:100%; }
+  }
+</style>
+</head>
+<body data-page="seasons">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+<div data-shell-subnav="leagues" data-season-name="MS v hokeji 2026"></div>
+
+<div class="wrap form-head">
+  <div class="crumb"><a href="season.html">MS v hokeji 2026</a> › Vytvoriť ligu</div>
+  <h1 style="font-size:clamp(1.8rem,3vw,2.4rem)">Vytvoriť ligu v sezóne</h1>
+  <p class="muted" style="margin-top:6px">Liga zoskupuje hráčov a kolá. Hráči sa do nej pripoja cez automaticky generované ID.</p>
+</div>
+
+<form class="wrap form-layout" onsubmit="event.preventDefault();window.location='league.html'">
+  <main>
+    <div class="card form-card">
+      <h3>ID ligy</h3>
+      <p class="sub">Automaticky vygenerované unikátne ID. Pošli ho hráčom, aby sa pripojili.</p>
+      <div class="id-box">
+        <span class="id-val" id="leagueId">HK4F2X</span>
+        <button type="button" class="btn btn-secondary btn-sm" id="regen">↻ Generovať nové</button>
+      </div>
+    </div>
+
+    <div class="card form-card">
+      <h3>Základné údaje</h3>
+      <p class="sub">Názov a popis, ktoré uvidia hráči.</p>
+      <div class="stack g-4">
+        <div class="field"><label class="label">Názov ligy</label><input class="input" placeholder="napr. Tipovačka s kolegami" oninput="document.getElementById('pvName').textContent=this.value||'Názov ligy'"></div>
+        <div class="field"><label class="label">Popis <span class="faint">(voliteľné)</span></label><textarea class="textarea" placeholder="O čo v lige ide, prípadné pravidlá navyše…"></textarea></div>
+        <div class="field"><label class="label">Logo ligy <span class="faint">(voliteľné)</span></label><div class="row g-3"><span class="team-logo" style="width:48px;height:48px;font-size:16px;background:linear-gradient(135deg,#7c5cff,#3b1f8a)">TK</span><button type="button" class="btn btn-secondary btn-sm">Nahrať logo</button></div></div>
+      </div>
+    </div>
+
+    <div class="card form-card">
+      <h3>Prístup a typ</h3>
+      <p class="sub">Kto sa môže pripojiť a aký typ ligy zakladáš.</p>
+      <div class="type-pick" style="margin-bottom:18px">
+        <label class="type-opt sel" data-type><input type="radio" name="ltype" hidden checked><div class="t-ic">⚙️</div><b>Custom</b><span class="muted" style="font-size:var(--fs-sm)">Vlastné bodovanie a kolá, ktoré si spravuješ sám.</span></label>
+        <label class="type-opt" data-type><input type="radio" name="ltype" hidden><div class="t-ic">🏆</div><b>Oficiálna</b><span class="muted" style="font-size:var(--fs-sm)">Preberá kolá a bodovanie celej sezóny. Iba admin.</span></label>
+      </div>
+      <label class="check" style="margin-bottom:14px"><input type="checkbox" id="pwToggle"> Chrániť ligu heslom</label>
+      <div class="field" id="pwField" hidden><label class="label">Heslo ligy</label><input class="input" type="text" placeholder="napr. kava2026"><span class="hint">Hráči ho budú musieť zadať pri pripojení cez ID.</span></div>
+    </div>
+
+    <div class="card form-card">
+      <h3>Bodovanie</h3>
+      <p class="sub">Nastav, koľko bodov sa prideľuje za jednotlivé presnosti tipu.</p>
+      <div class="score-row"><div class="desc"><b class="hi">Presný výsledok</b><div class="muted" style="font-size:var(--fs-sm)">Trafený presný počet gólov oboch tímov</div></div><div class="field score-input"><input class="input" value="10"></div></div>
+      <div class="score-row"><div class="desc"><b class="hi">Víťaz / remíza</b><div class="muted" style="font-size:var(--fs-sm)">Správne určený víťaz alebo remíza</div></div><div class="field score-input"><input class="input" value="3"></div></div>
+      <div class="score-row"><div class="desc"><b class="hi">Gólový rozdiel</b><div class="muted" style="font-size:var(--fs-sm)">Trafený rozdiel skóre (napr. +2)</div></div><div class="field score-input"><input class="input" value="2"></div></div>
+      <div class="score-row"><div class="desc"><b class="hi">Presný počet gólov tímu</b><div class="muted" style="font-size:var(--fs-sm)">Za každý správne tipnutý tím</div></div><div class="field score-input"><input class="input" value="1"></div></div>
+    </div>
+  </main>
+
+  <aside class="sticky-side">
+    <div class="card card-pad">
+      <div class="stat-label" style="margin-bottom:12px">Náhľad ligy</div>
+      <div class="row g-3" style="margin-bottom:12px"><span class="team-logo" style="width:48px;height:48px;font-size:16px;background:linear-gradient(135deg,#7c5cff,#3b1f8a)">TK</span><div><b class="hi" id="pvName">Názov ligy</b><div class="muted" style="font-size:var(--fs-xs)">v sezóne MS v hokeji 2026</div></div></div>
+      <div class="row g-2 wrap-gap" style="margin-bottom:10px"><span class="tag tag-gold">Custom</span><span class="tag tag-muted" id="pvLock" hidden>🔒 Heslo</span></div>
+      <div class="between" style="font-size:var(--fs-sm);padding-top:10px;border-top:1px solid var(--line)"><span class="muted">ID na pripojenie</span><b class="num brand" id="pvId">HK4F2X</b></div>
+    </div>
+    <div class="card card-pad" style="margin-top:18px;background:var(--surface-2)">
+      <b class="hi" style="display:block;margin-bottom:6px">💡 Tip</b>
+      <p class="muted" style="font-size:var(--fs-sm)">Po vytvorení ligy pridaj kolá a do nich zápasy. Až potom budú hráči môcť tipovať.</p>
+    </div>
+    <div class="card card-pad" style="margin-top:18px">
+      <button type="submit" class="btn btn-primary btn-block">Vytvoriť ligu</button>
+      <a href="season.html" class="btn btn-ghost btn-block" style="margin-top:8px">Zrušiť</a>
+    </div>
+  </aside>
+</form>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script>
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  function genId(){ return Array.from({length:6},()=>chars[Math.floor(Math.random()*chars.length)]).join(''); }
+  document.getElementById('regen').addEventListener('click', () => {
+    const id = genId();
+    document.getElementById('leagueId').textContent = id;
+    document.getElementById('pvId').textContent = id;
+  });
+  const pwToggle = document.getElementById('pwToggle'), pwField = document.getElementById('pwField'), pvLock = document.getElementById('pvLock');
+  pwToggle.addEventListener('change', () => { pwField.toggleAttribute('hidden', !pwToggle.checked); pvLock.toggleAttribute('hidden', !pwToggle.checked); });
+  document.querySelectorAll('[data-type]').forEach(o => o.addEventListener('click', () => {
+    document.querySelectorAll('[data-type]').forEach(x => x.classList.remove('sel')); o.classList.add('sel');
+  }));
+</script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

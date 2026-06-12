@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Notifikácie</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .nt-head { padding:30px 0 18px; }
+  .nt-layout { max-width:780px; margin:0 auto; padding-bottom:64px; }
+  .nt-tabs { display:flex; gap:8px; margin:18px 0; }
+  .nt-item { display:flex; gap:15px; padding:16px 18px; border-radius:var(--r-md); border:1px solid var(--line); background:var(--surface-1); margin-bottom:10px; align-items:flex-start; transition:background .15s; position:relative; }
+  .nt-item.unread { background:color-mix(in srgb,var(--brand-soft) 50%, var(--surface-1)); border-color:var(--brand-line); }
+  .nt-item.unread::before { content:""; position:absolute; left:0; top:14px; bottom:14px; width:3px; border-radius:3px; background:var(--brand); }
+  .nt-ico { width:42px; height:42px; border-radius:var(--r-md); flex:none; display:flex; align-items:center; justify-content:center; font-size:19px; }
+  .nt-body { flex:1; min-width:0; }
+  .nt-title { font-weight:700; color:var(--text-1); margin-bottom:2px; }
+  .nt-msg { color:var(--text-3); font-size:var(--fs-sm); }
+  .nt-time { font-size:var(--fs-xs); color:var(--text-4); white-space:nowrap; flex:none; }
+  .nt-actions { display:flex; gap:8px; margin-top:10px; }
+  .day-label { font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.1em; color:var(--text-4); font-weight:700; margin:24px 0 10px; }
+  @media (max-width:560px){
+    .nt-head .between { flex-direction:column; align-items:stretch; }
+    .nt-head .between #markAll { width:100%; }
+    /* tab segment scrolls horizontally instead of spilling out of the block */
+    .nt-tabs.segment { display:flex !important; width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+    .nt-tabs.segment::-webkit-scrollbar { display:none; }
+    .nt-tabs.segment button { flex:1 0 auto; white-space:nowrap; }
+    .nt-item { flex-wrap:wrap; }
+    .nt-actions { flex-wrap:wrap; width:100%; }
+    .nt-actions .btn { flex:1; }
+  }
+</style>
+</head>
+<body data-page="">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+
+<div class="wrap nt-layout">
+  <div class="nt-head">
+    <div class="between wrap-gap" style="gap:14px">
+      <div>
+        <div class="eyebrow">Notifikácie</div>
+        <h1 style="font-size:clamp(1.8rem,3vw,2.4rem)">Centrum upozornení <span class="tag tag-danger" style="vertical-align:middle;font-size:var(--fs-sm)" id="cnt">3 nové</span></h1>
+      </div>
+      <button class="btn btn-secondary btn-sm" id="markAll">Označiť všetky ako prečítané</button>
+    </div>
+    <div class="nt-tabs segment" style="display:inline-flex">
+      <button class="active" data-nf>Všetky</button><button data-nf>Neprečítané</button><button data-nf>Kolá</button><button data-nf>Výsledky</button>
+    </div>
+  </div>
+
+  <div class="day-label">Dnes</div>
+  <div class="nt-item unread">
+    <span class="nt-ico" style="background:var(--live-soft);color:var(--live)">🏒</span>
+    <div class="nt-body">
+      <div class="between" style="gap:10px"><div class="nt-title">Nové kolo otvorené na tipovanie</div><span class="nt-time">pred 12 min</span></div>
+      <div class="nt-msg">Kolo 14 — Osemfinále v lige <b class="hi">Tipovačka s kolegami</b> je otvorené. Uzávierka je 14. feb o 20:45.</div>
+      <div class="nt-actions"><a href="round.html" class="btn btn-primary btn-sm">Tipovať teraz</a><button class="btn btn-ghost btn-sm" data-read>Označiť prečítané</button></div>
+    </div>
+  </div>
+  <div class="nt-item unread">
+    <span class="nt-ico" style="background:var(--warning-soft);color:var(--warning)">⏰</span>
+    <div class="nt-body">
+      <div class="between" style="gap:10px"><div class="nt-title">Blížiaca sa uzávierka</div><span class="nt-time">pred 1 hod</span></div>
+      <div class="nt-msg">Máš nevyplnené tipy v kole 14! Zostávajú <b class="hi">2 hodiny 14 minút</b> do uzávierky. Vyplnené 2 zo 6 zápasov.</div>
+      <div class="nt-actions"><a href="round.html" class="btn btn-primary btn-sm">Dokončiť tipy</a><button class="btn btn-ghost btn-sm" data-read>Označiť prečítané</button></div>
+    </div>
+  </div>
+  <div class="nt-item unread">
+    <span class="nt-ico" style="background:var(--success-soft);color:var(--success)">🎯</span>
+    <div class="nt-body">
+      <div class="between" style="gap:10px"><div class="nt-title">Výsledky kola 13 vyhodnotené</div><span class="nt-time">pred 3 hod</span></div>
+      <div class="nt-msg">Získal si <b class="ok">+24 bodov</b> v kole 13! Z toho 1× presný výsledok. Posunul si sa na 5. miesto.</div>
+      <div class="nt-actions"><a href="round.html" class="btn btn-secondary btn-sm">Zobraziť výsledky</a><button class="btn btn-ghost btn-sm" data-read>Označiť prečítané</button></div>
+    </div>
+  </div>
+
+  <div class="day-label">Tento týždeň</div>
+  <div class="nt-item">
+    <span class="nt-ico" style="background:var(--gold-soft);color:var(--gold)">🏆</span>
+    <div class="nt-body">
+      <div class="between" style="gap:10px"><div class="nt-title">Nový odznak: Stúpajúca hviezda</div><span class="nt-time">včera</span></div>
+      <div class="nt-msg">Posunul si sa o 10+ miest v rebríčku za jedno kolo. Odomkol si <b class="hi">Rare</b> odznak!</div>
+      <div class="nt-actions"><a href="achievements.html" class="btn btn-secondary btn-sm">Zobraziť odznaky</a></div>
+    </div>
+  </div>
+  <div class="nt-item">
+    <span class="nt-ico" style="background:var(--brand-soft);color:var(--brand-bright)">📈</span>
+    <div class="nt-body">
+      <div class="between" style="gap:10px"><div class="nt-title">Posun v rebríčku</div><span class="nt-time">včera</span></div>
+      <div class="nt-msg">V lige <b class="hi">Tipovačka s kolegami</b> si sa posunul na 2. miesto. Lídra delíš len o 12 bodov!</div>
+    </div>
+  </div>
+  <div class="nt-item">
+    <span class="nt-ico" style="background:var(--info-soft);color:var(--info)">👥</span>
+    <div class="nt-body">
+      <div class="between" style="gap:10px"><div class="nt-title">Nový hráč v tvojej lige</div><span class="nt-time">3. feb</span></div>
+      <div class="nt-msg">Tomáš Baláž sa pripojil do ligy <b class="hi">Tipovačka s kolegami</b> cez ID. Liga má teraz 18 hráčov.</div>
+    </div>
+  </div>
+  <div class="nt-item">
+    <span class="nt-ico" style="background:var(--surface-3);color:var(--text-3)">🚫</span>
+    <div class="nt-body">
+      <div class="between" style="gap:10px"><div class="nt-title">Zápas zrušený</div><span class="nt-time">2. feb</span></div>
+      <div class="nt-msg">Zápas Inter — Juventus v kole 11 bol zrušený. Body sa zaň neprideľujú nikomu.</div>
+    </div>
+  </div>
+</div>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script>
+  function updateCount(){
+    const n = document.querySelectorAll('.nt-item.unread').length;
+    const c = document.getElementById('cnt');
+    if (n === 0) { c.textContent = 'všetko prečítané'; c.className = 'tag tag-muted'; c.style.verticalAlign='middle'; c.style.fontSize='var(--fs-sm)'; }
+    else { c.textContent = n + ' nové'; }
+  }
+  document.querySelectorAll('[data-read]').forEach(b => b.addEventListener('click', () => { b.closest('.nt-item').classList.remove('unread'); b.remove(); updateCount(); }));
+  document.getElementById('markAll').addEventListener('click', () => {
+    document.querySelectorAll('.nt-item.unread').forEach(i => { i.classList.remove('unread'); const r = i.querySelector('[data-read]'); if(r) r.remove(); });
+    updateCount();
+  });
+  document.querySelectorAll('[data-nf]').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('[data-nf]').forEach(x => x.classList.toggle('active', x === b));
+  }));
+</script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Dizajnový systém</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .ds-nav { position:sticky; top:0; z-index:50; background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(16px); border-bottom:1px solid var(--line); }
+  .ds-nav-inner { height:64px; display:flex; align-items:center; gap:20px; }
+  .ds-toc { display:flex; gap:4px; margin-left:auto; flex-wrap:wrap; }
+  .ds-toc a { font-size: var(--fs-sm); font-weight:600; color: var(--text-3); padding:7px 11px; border-radius: var(--r-xs); }
+  .ds-toc a:hover { color: var(--text-1); background: var(--surface-2); }
+  section.ds { padding: 64px 0; border-bottom:1px solid var(--line); }
+  .sec-label { font-family: var(--font-display); font-size: var(--fs-xs); font-weight:600; letter-spacing:.24em; text-transform:uppercase; color: var(--brand-bright); margin-bottom:10px; }
+  .sec-title { font-size: var(--fs-h1); margin-bottom: 10px; }
+  .sec-desc { color: var(--text-3); max-width: 620px; margin-bottom: 34px; }
+  .demo-grid { display:grid; gap:18px; }
+  .panel { background: var(--surface-1); border:1px solid var(--line); border-radius: var(--r-lg); padding: 24px; }
+  .panel-label { font-size: var(--fs-xs); text-transform:uppercase; letter-spacing:.12em; color: var(--text-4); font-weight:700; margin-bottom:16px; }
+
+  /* color swatches */
+  .swatches { display:grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap:14px; }
+  .sw { border-radius: var(--r-md); overflow:hidden; border:1px solid var(--line); background: var(--surface-1); }
+  .sw-chip { height:78px; }
+  .sw-info { padding:11px 13px; }
+  .sw-name { font-weight:700; color: var(--text-1); font-size: var(--fs-sm); }
+  .sw-hex { font-family: var(--num); font-size: var(--fs-xs); color: var(--text-4); }
+  .sw-tok { font-family: var(--num); font-size: 10px; color: var(--brand-bright); margin-top:2px; }
+
+  .type-row { display:flex; align-items:baseline; gap:20px; padding:14px 0; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .type-row:last-child { border:none; }
+  .type-meta { font-family: var(--num); font-size: var(--fs-xs); color: var(--text-4); width:120px; flex:none; }
+
+  .token-list { display:grid; grid-template-columns: repeat(auto-fill,minmax(170px,1fr)); gap:14px; }
+  .token-box { background: var(--surface-2); border:1px solid var(--line); border-radius: var(--r-md); padding:16px; }
+  .token-vis { height:56px; display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
+
+  .comp-block { display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
+  .logo-mark { width: 44px; height: 44px; }
+  .wordmark { font-family: var(--font-display); font-weight:700; letter-spacing:-0.02em; color: var(--text-1); }
+  .wordmark b { color: var(--gold); font-weight:700; }
+
+  @media (max-width: 720px){ .ds-toc { display:none; } section.ds { padding:44px 0; } }
+</style>
+</head>
+<body>
+<div class="bg-field"></div>
+
+<!-- ============ TOP NAV ============ -->
+<div class="ds-nav">
+  <div class="wrap ds-nav-inner">
+    <a class="comp-block" href="index.html" style="gap:11px">
+      <svg class="logo-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <defs><linearGradient id="tlg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9d83ff"/><stop offset="1" stop-color="#5b3fd6"/></linearGradient></defs>
+        <path d="M24 4 L40 9 V23 C40 33 33 40 24 44 C15 40 8 33 8 23 V9 Z" fill="url(#tlg)" stroke="#9d83ff" stroke-width="1.2"/>
+        <path d="M15 28 L24 17 L33 28" fill="none" stroke="#0d1124" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M19 33 L24 27 L29 33" fill="none" stroke="#facc15" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="wordmark" style="font-size:21px">Tiper<b>liga</b></span>
+    </a>
+    <span class="tag tag-brand" style="margin-left:6px">Design System v1.0</span>
+    <nav class="ds-toc">
+      <a href="#brand">Brand</a>
+      <a href="#color">Farby</a>
+      <a href="#type">Typografia</a>
+      <a href="#tokens">Tokeny</a>
+      <a href="#buttons">Tlačidlá</a>
+      <a href="#forms">Formuláre</a>
+      <a href="#status">Stavy</a>
+      <a href="#components">Komponenty</a>
+    </nav>
+    <button class="btn btn-secondary btn-sm" id="themeBtn" aria-label="Prepnúť tému">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19" stroke-linecap="round"/></svg>
+      <span id="themeLbl">Light</span>
+    </button>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<header class="wrap" style="padding-top:72px; padding-bottom:20px;">
+  <div class="sec-label">Tiperliga · Dizajnový systém</div>
+  <h1 style="font-size: var(--fs-display); max-width: 14ch; line-height:1.02;">Tipuj. Boduj.<br><span class="brand" style="text-shadow:var(--text-glow-brand)">Vyhrávaj.</span></h1>
+  <p class="sec-desc" style="font-size: var(--fs-lg); margin-top:18px;">Kompletný vizuálny jazyk pre platformu na tipovanie športových zápasov — branding, farby, typografia, tokeny a knižnica komponentov. Dark-first, energický, prehľadný.</p>
+  <div class="comp-block" style="margin-top:24px">
+    <a href="index.html" class="btn btn-primary">Pozri obrazovky</a>
+    <a href="#components" class="btn btn-secondary">Knižnica komponentov</a>
+  </div>
+</header>
+
+<!-- ============ BRAND ============ -->
+<section class="ds" id="brand">
+  <div class="wrap">
+    <div class="sec-label">01 · Branding</div>
+    <h2 class="sec-title">Logo &amp; značka</h2>
+    <p class="sec-desc">Štít (liga / crest) s dvojitým šípom nahor — symbol stúpajúcich, víťazných tipov. Violetová pre značku, zlatý šíp ako akcent úspechu.</p>
+
+    <div class="demo-grid" style="grid-template-columns: 1.3fr 1fr;">
+      <div class="panel center" style="min-height:240px; background: radial-gradient(420px 240px at 50% 40%, rgba(124,92,255,.18), transparent 70%), var(--surface-1);">
+        <div class="comp-block" style="gap:18px">
+          <svg style="width:84px;height:84px" viewBox="0 0 48 48" fill="none">
+            <defs><linearGradient id="tlg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9d83ff"/><stop offset="1" stop-color="#5b3fd6"/></linearGradient></defs>
+            <path d="M24 4 L40 9 V23 C40 33 33 40 24 44 C15 40 8 33 8 23 V9 Z" fill="url(#tlg2)" stroke="#9d83ff" stroke-width="1.2"/>
+            <path d="M15 28 L24 17 L33 28" fill="none" stroke="#0d1124" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M19 33 L24 27 L29 33" fill="none" stroke="#facc15" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="wordmark" style="font-size:44px">Tiper<b>liga</b></span>
+        </div>
+      </div>
+      <div class="panel center" style="background:#fff;">
+        <div class="comp-block" style="gap:14px">
+          <svg style="width:60px;height:60px" viewBox="0 0 48 48" fill="none">
+            <path d="M24 4 L40 9 V23 C40 33 33 40 24 44 C15 40 8 33 8 23 V9 Z" fill="url(#tlg2)" stroke="#5b3fd6" stroke-width="1.2"/>
+            <path d="M15 28 L24 17 L33 28" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M19 33 L24 27 L29 33" fill="none" stroke="#d4a90a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="wordmark" style="font-size:30px; color:#111729">Tiper<b style="color:#d4a90a">liga</b></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-grid" style="grid-template-columns: repeat(4,1fr); margin-top:18px;">
+      <div class="panel center" style="flex-direction:column; gap:10px;">
+        <svg style="width:64px;height:64px" viewBox="0 0 48 48" fill="none"><use href="#icon-full"/>
+          <path d="M24 4 L40 9 V23 C40 33 33 40 24 44 C15 40 8 33 8 23 V9 Z" fill="url(#tlg2)" stroke="#9d83ff" stroke-width="1.2"/>
+          <path d="M15 28 L24 17 L33 28" fill="none" stroke="#0d1124" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M19 33 L24 27 L29 33" fill="none" stroke="#facc15" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="panel-label" style="margin:0">App ikona</span>
+      </div>
+      <div class="panel center" style="flex-direction:column; gap:10px; background: var(--brand);">
+        <svg style="width:56px;height:56px" viewBox="0 0 48 48" fill="none">
+          <path d="M24 4 L40 9 V23 C40 33 33 40 24 44 C15 40 8 33 8 23 V9 Z" fill="#fff" opacity=".14"/>
+          <path d="M15 28 L24 17 L33 28" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M19 33 L24 27 L29 33" fill="none" stroke="#facc15" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="panel-label" style="margin:0; color:#fff;">Mono / reverse</span>
+      </div>
+      <div class="panel center" style="flex-direction:column; gap:10px;">
+        <svg style="width:40px;height:40px" viewBox="0 0 48 48" fill="none">
+          <path d="M24 4 L40 9 V23 C40 33 33 40 24 44 C15 40 8 33 8 23 V9 Z" fill="url(#tlg2)" stroke="#9d83ff" stroke-width="1.2"/>
+          <path d="M15 28 L24 17 L33 28" fill="none" stroke="#0d1124" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M19 33 L24 27 L29 33" fill="none" stroke="#facc15" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="panel-label" style="margin:0">Favicon 40px</span>
+      </div>
+      <div class="panel center" style="flex-direction:column; gap:10px;">
+        <svg style="width:24px;height:24px" viewBox="0 0 48 48" fill="none">
+          <path d="M24 4 L40 9 V23 C40 33 33 40 24 44 C15 40 8 33 8 23 V9 Z" fill="url(#tlg2)" stroke="#9d83ff" stroke-width="1.2"/>
+          <path d="M15 28 L24 17 L33 28" fill="none" stroke="#0d1124" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M19 33 L24 27 L29 33" fill="none" stroke="#facc15" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="panel-label" style="margin:0">Min 24px</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COLOR ============ -->
+<section class="ds" id="color">
+  <div class="wrap">
+    <div class="sec-label">02 · Farby</div>
+    <h2 class="sec-title">Farebná paleta</h2>
+    <p class="sec-desc">Hlboké grafitové pozadie ako základ. Violetová značka a zlaté akcie nesú energiu; semantické farby dávajú tipom jednoznačné „správne / zle".</p>
+
+    <div class="panel" style="margin-bottom:18px">
+      <div class="panel-label">Značka &amp; akcie</div>
+      <div class="swatches">
+        <div class="sw"><div class="sw-chip" style="background:linear-gradient(180deg,#9d83ff,#5b3fd6); box-shadow:var(--glow-brand) inset"></div><div class="sw-info"><div class="sw-name">Brand / Violet</div><div class="sw-hex">#7C5CFF</div><div class="sw-tok">--brand</div></div></div>
+        <div class="sw"><div class="sw-chip" style="background:linear-gradient(180deg,#fde047,#facc15)"></div><div class="sw-info"><div class="sw-name">Action / Gold</div><div class="sw-hex">#FACC15</div><div class="sw-tok">--gold</div></div></div>
+        <div class="sw"><div class="sw-chip" style="background:#9d83ff"></div><div class="sw-info"><div class="sw-name">Brand Bright</div><div class="sw-hex">#9D83FF</div><div class="sw-tok">--brand-bright</div></div></div>
+        <div class="sw"><div class="sw-chip" style="background:#5b3fd6"></div><div class="sw-info"><div class="sw-name">Brand Dim</div><div class="sw-hex">#5B3FD6</div><div class="sw-tok">--brand-dim</div></div></div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:18px">
+      <div class="panel-label">Semantické</div>
+      <div class="swatches">
+        <div class="sw"><div class="sw-chip" style="background:#1fd497"></div><div class="sw-info"><div class="sw-name">Success · správne</div><div class="sw-hex">#1FD497</div><div class="sw-tok">--success</div></div></div>
+        <div class="sw"><div class="sw-chip" style="background:#f5a524"></div><div class="sw-info"><div class="sw-name">Warning</div><div class="sw-hex">#F5A524</div><div class="sw-tok">--warning</div></div></div>
+        <div class="sw"><div class="sw-chip" style="background:#f0476a"></div><div class="sw-info"><div class="sw-name">Danger · zle</div><div class="sw-hex">#F0476A</div><div class="sw-tok">--danger</div></div></div>
+        <div class="sw"><div class="sw-chip" style="background:#3da5f4"></div><div class="sw-info"><div class="sw-name">Info · plánované</div><div class="sw-hex">#3DA5F4</div><div class="sw-tok">--info</div></div></div>
+        <div class="sw"><div class="sw-chip" style="background:#ff4d6d"></div><div class="sw-info"><div class="sw-name">Live · prebieha</div><div class="sw-hex">#FF4D6D</div><div class="sw-tok">--live</div></div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">Povrchy &amp; text (dark)</div>
+      <div class="swatches">
+        <div class="sw"><div class="sw-chip" style="background:#090c16"></div><div class="sw-info"><div class="sw-name">Background</div><div class="sw-hex">#090C16</div><div class="sw-tok">--bg</div></div></div>
+        <div class="sw"><div class="sw-chip" style="background:#111728"></div><div class="sw-info"><div class="sw-name">Surface 1</div><div class="sw-hex">#111728</div><div class="sw-tok">--surface-1</div></div></div>
+        <div class="sw"><div class="sw-chip" style="background:#192135"></div><div class="sw-info"><div class="sw-name">Surface 2</div><div class="sw-hex">#192135</div><div class="sw-tok">--surface-2</div></div></div>
+        <div class="sw"><div class="sw-chip" style="background:#232d47"></div><div class="sw-info"><div class="sw-name">Surface 3</div><div class="sw-hex">#232D47</div><div class="sw-tok">--surface-3</div></div></div>
+        <div class="sw"><div class="sw-chip" style="background:#eef1f9"></div><div class="sw-info"><div class="sw-name">Text High</div><div class="sw-hex">#EEF1F9</div><div class="sw-tok">--text-1</div></div></div>
+        <div class="sw"><div class="sw-chip" style="background:#828caa"></div><div class="sw-info"><div class="sw-name">Text Muted</div><div class="sw-hex">#828CAA</div><div class="sw-tok">--text-3</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TYPOGRAPHY ============ -->
+<section class="ds" id="type">
+  <div class="wrap">
+    <div class="sec-label">03 · Typografia</div>
+    <h2 class="sec-title">Typografický systém</h2>
+    <p class="sec-desc">Space Grotesk pre nadpisy a čísla (skóre &amp; body sú hrdinom), Manrope pre text a UI. Tabuľkové číslice držia skóre zarovnané.</p>
+
+    <div class="demo-grid" style="grid-template-columns:1fr 1fr; margin-bottom:18px;">
+      <div class="panel">
+        <div class="panel-label">Space Grotesk — Display</div>
+        <div style="font-family:var(--font-display); font-weight:700; font-size:54px; letter-spacing:-.02em; color:var(--text-1)">Aa Bb Cc</div>
+        <div style="font-family:var(--font-display); color:var(--text-3); margin-top:8px">Nadpisy · skóre · body · čísla</div>
+      </div>
+      <div class="panel">
+        <div class="panel-label">Manrope — Text / UI</div>
+        <div style="font-family:var(--font-body); font-weight:700; font-size:54px; color:var(--text-1)">Aa Bb Cc</div>
+        <div style="font-family:var(--font-body); color:var(--text-3); margin-top:8px">Odstavce · UI · popisy · menu</div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:18px">
+      <div class="type-row"><span class="type-meta">Display · 67px</span><span style="font-family:var(--font-display); font-weight:700; font-size:var(--fs-display); letter-spacing:-.02em; color:var(--text-1)">Vyhrávaj tipmi</span></div>
+      <div class="type-row"><span class="type-meta">H1 · 48px</span><h1 style="font-size:var(--fs-h1)">Aktuálne kolo</h1></div>
+      <div class="type-row"><span class="type-meta">H2 · 34px</span><h2 style="font-size:var(--fs-h2)">Rebríček sezóny</h2></div>
+      <div class="type-row"><span class="type-meta">H3 · 24px</span><h3 style="font-size:var(--fs-h3)">Detail ligy</h3></div>
+      <div class="type-row"><span class="type-meta">Body · 15px</span><span style="color:var(--text-2)">Tipni výsledok zápasu pred uzávierkou a získaj body podľa presnosti.</span></div>
+      <div class="type-row"><span class="type-meta">Small · 13px</span><span style="font-size:var(--fs-sm); color:var(--text-3)">Uzávierka tipovania o 2 hodiny 14 minút</span></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">Čísla ako hrdina — tabuľkové číslice</div>
+      <div class="comp-block" style="gap:40px">
+        <div style="text-align:center"><div class="num" style="font-weight:700; font-size:56px; color:var(--text-1)">3 : 1</div><div class="sw-hex">Skóre</div></div>
+        <div style="text-align:center"><div class="num" style="font-weight:700; font-size:56px; color:var(--brand-bright); text-shadow:var(--text-glow-brand)">1 248</div><div class="sw-hex">Body</div></div>
+        <div style="text-align:center"><div class="num" style="font-weight:700; font-size:56px; color:var(--gold); text-shadow:var(--text-glow-gold)">#2</div><div class="sw-hex">Pozícia</div></div>
+        <div style="text-align:center"><div class="num" style="font-weight:700; font-size:56px; color:var(--success)">73%</div><div class="sw-hex">Úspešnosť</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOKENS ============ -->
+<section class="ds" id="tokens">
+  <div class="wrap">
+    <div class="sec-label">04 · Tokeny</div>
+    <h2 class="sec-title">Radius · Tiene · Glow · Spacing</h2>
+    <p class="sec-desc">Mäkké zaoblené povrchy s hranatými akcentmi. Glow efekty zvýrazňujú dôležité prvky — body, výhry, akcie.</p>
+
+    <div class="panel" style="margin-bottom:18px">
+      <div class="panel-label">Radius</div>
+      <div class="token-list">
+        <div class="token-box"><div class="token-vis"><div style="width:80px;height:46px;background:var(--brand-soft);border:1px solid var(--brand-line);border-radius:var(--r-xs)"></div></div><div class="sw-name">XS · 6px</div><div class="sw-tok">--r-xs</div></div>
+        <div class="token-box"><div class="token-vis"><div style="width:80px;height:46px;background:var(--brand-soft);border:1px solid var(--brand-line);border-radius:var(--r-sm)"></div></div><div class="sw-name">SM · 10px</div><div class="sw-tok">--r-sm</div></div>
+        <div class="token-box"><div class="token-vis"><div style="width:80px;height:46px;background:var(--brand-soft);border:1px solid var(--brand-line);border-radius:var(--r-md)"></div></div><div class="sw-name">MD · 14px</div><div class="sw-tok">--r-md</div></div>
+        <div class="token-box"><div class="token-vis"><div style="width:80px;height:46px;background:var(--brand-soft);border:1px solid var(--brand-line);border-radius:var(--r-lg)"></div></div><div class="sw-name">LG · 18px</div><div class="sw-tok">--r-lg</div></div>
+        <div class="token-box"><div class="token-vis"><div style="width:80px;height:46px;background:var(--brand-soft);border:1px solid var(--brand-line);border-radius:var(--r-xl)"></div></div><div class="sw-name">XL · 24px</div><div class="sw-tok">--r-xl</div></div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:18px">
+      <div class="panel-label">Tiene &amp; Glow</div>
+      <div class="token-list">
+        <div class="token-box"><div class="token-vis"><div style="width:70px;height:46px;background:var(--surface-3);border-radius:var(--r-md);box-shadow:var(--shadow-md)"></div></div><div class="sw-name">Shadow MD</div><div class="sw-tok">--shadow-md</div></div>
+        <div class="token-box"><div class="token-vis"><div style="width:70px;height:46px;background:var(--surface-3);border-radius:var(--r-md);box-shadow:var(--shadow-lg)"></div></div><div class="sw-name">Shadow LG</div><div class="sw-tok">--shadow-lg</div></div>
+        <div class="token-box"><div class="token-vis"><div style="width:70px;height:46px;background:var(--surface-3);border-radius:var(--r-md);box-shadow:var(--glow-brand)"></div></div><div class="sw-name">Glow Brand</div><div class="sw-tok">--glow-brand</div></div>
+        <div class="token-box"><div class="token-vis"><div style="width:70px;height:46px;background:var(--surface-3);border-radius:var(--r-md);box-shadow:var(--glow-gold)"></div></div><div class="sw-name">Glow Gold</div><div class="sw-tok">--glow-gold</div></div>
+        <div class="token-box"><div class="token-vis"><div style="width:70px;height:46px;background:var(--surface-3);border-radius:var(--r-md);box-shadow:var(--glow-success)"></div></div><div class="sw-name">Glow Success</div><div class="sw-tok">--glow-success</div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">Spacing (4px základ)</div>
+      <div class="stack g-2" style="gap:10px">
+        <div class="row g-3"><span class="type-meta" style="width:60px">4</span><div style="height:14px;width:4px;background:var(--brand)"></div></div>
+        <div class="row g-3"><span class="type-meta" style="width:60px">8</span><div style="height:14px;width:8px;background:var(--brand)"></div></div>
+        <div class="row g-3"><span class="type-meta" style="width:60px">16</span><div style="height:14px;width:16px;background:var(--brand)"></div></div>
+        <div class="row g-3"><span class="type-meta" style="width:60px">24</span><div style="height:14px;width:24px;background:var(--brand)"></div></div>
+        <div class="row g-3"><span class="type-meta" style="width:60px">40</span><div style="height:14px;width:40px;background:var(--brand)"></div></div>
+        <div class="row g-3"><span class="type-meta" style="width:60px">64</span><div style="height:14px;width:64px;background:var(--brand)"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BUTTONS ============ -->
+<section class="ds" id="buttons">
+  <div class="wrap">
+    <div class="sec-label">05 · Komponenty</div>
+    <h2 class="sec-title">Tlačidlá</h2>
+    <p class="sec-desc">Zlatá = primárna akcia. Violetová = kľúčová značková akcia (tipuj, pripoj sa). Outline a ghost pre sekundárne, červená pre nebezpečné.</p>
+
+    <div class="panel" style="margin-bottom:18px">
+      <div class="panel-label">Varianty</div>
+      <div class="comp-block">
+        <button class="btn btn-primary">Tipnúť teraz</button>
+        <button class="btn btn-brand">Pripojiť sa do ligy</button>
+        <button class="btn btn-secondary">Zobraziť detail</button>
+        <button class="btn btn-ghost">Zrušiť</button>
+        <button class="btn btn-danger">Resetovať ligu</button>
+      </div>
+    </div>
+    <div class="demo-grid" style="grid-template-columns:1fr 1fr">
+      <div class="panel">
+        <div class="panel-label">Veľkosti</div>
+        <div class="comp-block">
+          <button class="btn btn-primary btn-sm">Small</button>
+          <button class="btn btn-primary">Default</button>
+          <button class="btn btn-primary btn-lg">Large</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-label">Stavy &amp; s ikonou</div>
+        <div class="comp-block">
+          <button class="btn btn-brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Pokračovať</button>
+          <button class="btn btn-secondary" aria-disabled="true">Disabled</button>
+          <button class="btn btn-icon btn-secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 5v0M12 19v0"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FORMS ============ -->
+<section class="ds" id="forms">
+  <div class="wrap">
+    <h2 class="sec-title">Formuláre &amp; vstupy</h2>
+    <div class="demo-grid" style="grid-template-columns:1fr 1fr; margin-top:24px;">
+      <div class="panel">
+        <div class="panel-label">Polia</div>
+        <div class="stack g-4">
+          <div class="field"><label class="label">Názov ligy</label><input class="input" value="Tipovačka partia 2026"></div>
+          <div class="field"><label class="label">Sezóna</label>
+            <select class="select"><option>MS v hokeji 2026</option><option>Liga majstrov 26/27</option></select>
+          </div>
+          <div class="field"><label class="label">Vyhľadať</label>
+            <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4" stroke-linecap="round"/></svg><input class="input" placeholder="Hľadať komunitné sezóny…"></div>
+          </div>
+          <div class="field"><label class="label">Popis</label><textarea class="textarea" placeholder="O čom je vaša liga…"></textarea></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-label">Ovládače</div>
+        <div class="stack g-5">
+          <div class="between"><span class="label" style="margin:0">Verejná liga</span><label class="switch"><input type="checkbox" checked><span class="track"></span></label></div>
+          <div class="between"><span class="label" style="margin:0">Vyžadovať heslo</span><label class="switch"><input type="checkbox"><span class="track"></span></label></div>
+          <div><div class="label" style="margin-bottom:8px">Typ tipovania</div>
+            <div class="segment"><button class="active">Víťaz</button><button>Presný výsledok</button></div>
+          </div>
+          <label class="check"><input type="checkbox" checked> Súhlasím s pravidlami súťaže</label>
+          <label class="check"><input type="checkbox"> Posielať notifikácie e-mailom</label>
+          <div><div class="label" style="margin-bottom:8px">Progres registrácie</div><div class="progress"><i style="width:68%"></i></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATUS / TAGS ============ -->
+<section class="ds" id="status">
+  <div class="wrap">
+    <h2 class="sec-title">Štítky, stavy &amp; role</h2>
+    <div class="demo-grid" style="grid-template-columns:1fr 1fr 1fr; margin-top:24px;">
+      <div class="panel">
+        <div class="panel-label">Stav zápasu</div>
+        <div class="comp-block">
+          <span class="tag tag-info"><span class="dot"></span>Naplánovaný</span>
+          <span class="tag tag-live"><span class="dot"></span>Prebieha</span>
+          <span class="tag tag-success"><span class="dot"></span>Ukončený</span>
+          <span class="tag tag-muted"><span class="dot"></span>Zrušený</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-label">Typ sezóny / ligy</div>
+        <div class="comp-block">
+          <span class="tag tag-brand">Oficiálna</span>
+          <span class="tag tag-gold">Community</span>
+          <span class="tag tag-info">Custom</span>
+          <span class="tag tag-muted">Súkromná</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-label">Role používateľa</div>
+        <div class="comp-block">
+          <span class="chip-role role-admin">ADMIN</span>
+          <span class="chip-role role-vip">VIP</span>
+          <span class="chip-role role-player">Hráč</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-label">Body za tip</div>
+        <div class="comp-block">
+          <span class="pts-pill max">+10 pts</span>
+          <span class="pts-pill">+3 pts</span>
+          <span class="pts-pill">+2 pts</span>
+          <span class="pts-pill zero">0 pts</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-label">Avatary &amp; trend</div>
+        <div class="comp-block">
+          <span class="avatar avatar-md avatar-ring">MK</span>
+          <span class="avatar avatar-md" style="background:linear-gradient(135deg,#f0476a,#7c5cff);color:#fff">JN</span>
+          <span class="lb-trend trend-up">▲ 3</span>
+          <span class="lb-trend trend-down">▼ 1</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-label">Odznak / achievement</div>
+        <div class="comp-block">
+          <div style="text-align:center"><div class="avatar avatar-lg" style="background:linear-gradient(135deg,var(--gold-bright),var(--gold-dim));color:var(--gold-ink);box-shadow:var(--glow-gold)">🎯</div></div>
+          <div style="text-align:center"><div class="avatar avatar-lg" style="background:var(--surface-3);color:var(--text-4);filter:grayscale(1);opacity:.6">🔒</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPONENTS ============ -->
+<section class="ds" id="components">
+  <div class="wrap">
+    <div class="sec-label">06 · Komponenty</div>
+    <h2 class="sec-title">Knižnica komponentov</h2>
+    <p class="sec-desc">Stavebné bloky platformy — karta zápasu, karta ligy, riadok rebríčka, štatistiky, toasty, prázdne a načítavacie stavy.</p>
+
+    <div class="demo-grid" style="grid-template-columns:1.1fr 1fr; align-items:start;">
+      <!-- match card (pre + post) -->
+      <div class="stack g-4">
+        <div class="panel-label" style="margin:0">Karta zápasu — pred uzávierkou</div>
+        <div class="match">
+          <div class="match-head">
+            <span class="match-meta">NHL · 14. feb · 19:00</span>
+            <span class="tag tag-info"><span class="dot"></span>Naplánovaný</span>
+          </div>
+          <div class="match-teams">
+            <div class="team"><span class="team-logo" style="background:linear-gradient(135deg,#c8102e,#7a0a1d)">TBL</span><span class="team-name">Tampa Bay</span></div>
+            <div class="tip-inputs"><input class="tip-num" value="3"><span class="tip-sep">:</span><input class="tip-num" value="2"></div>
+            <div class="team away"><span class="team-logo" style="background:linear-gradient(135deg,#0033a0,#001e5e)">NYR</span><span class="team-name">NY Rangers</span></div>
+          </div>
+        </div>
+
+        <div class="panel-label" style="margin:8px 0 0">Karta zápasu — po vyhodnotení</div>
+        <div class="match" style="border-color:var(--brand-line)">
+          <div class="match-head">
+            <span class="match-meta">La Liga · 12. feb</span>
+            <span class="tag tag-success"><span class="dot"></span>Ukončený</span>
+          </div>
+          <div class="match-teams">
+            <div class="team"><span class="team-logo" style="background:linear-gradient(135deg,#a50044,#6e0030)">FCB</span><span class="team-name">Barcelona</span></div>
+            <div class="match-score">2 : 1</div>
+            <div class="team away"><span class="team-logo" style="background:linear-gradient(135deg,#fff,#dcdcdc);color:#1a1a1a">RM</span><span class="team-name">Real Madrid</span></div>
+          </div>
+          <div class="between" style="margin-top:14px; padding-top:14px; border-top:1px solid var(--line)">
+            <span class="match-meta">Tvoj tip: <b class="tip-correct">2 : 1</b></span>
+            <span class="pts-pill max">+10 pts · presný výsledok</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- season card + leaderboard + stat + toast -->
+      <div class="stack g-4">
+        <div class="panel-label" style="margin:0">Karta sezóny / ligy</div>
+        <div class="card card-hover" style="overflow:hidden">
+          <div style="height:96px; background:linear-gradient(135deg,#7c5cff,#5b3fd6); position:relative;">
+            <span class="tag tag-gold" style="position:absolute;top:12px;left:12px;background:rgba(0,0,0,.3);color:var(--gold);border-color:rgba(250,204,21,.4)">Community</span>
+          </div>
+          <div class="card-pad">
+            <h4 style="font-size:var(--fs-h4); margin-bottom:6px">Tipovačka s kolegami</h4>
+            <p class="muted" style="font-size:var(--fs-sm); margin-bottom:14px">Liga majstrov 26/27 · 12 kôl</p>
+            <div class="between">
+              <div class="comp-block" style="gap:-8px">
+                <span class="avatar avatar-sm" style="margin-right:-8px;border:2px solid var(--surface-1)">A</span>
+                <span class="avatar avatar-sm" style="margin-right:-8px;border:2px solid var(--surface-1);background:var(--brand-dim);color:#fff">B</span>
+                <span class="avatar avatar-sm" style="border:2px solid var(--surface-1);background:var(--gold-dim);color:#fff">C</span>
+                <span class="muted" style="font-size:var(--fs-sm); margin-left:10px">+ 25 hráčov</span>
+              </div>
+              <button class="btn btn-brand btn-sm">Otvoriť</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-label" style="margin:8px 0 0">Rebríček — riadky</div>
+        <div class="card card-pad" style="padding:10px">
+          <div class="lb">
+            <div class="lb-row"><span class="lb-rank top1">1</span><div class="lb-user"><span class="avatar avatar-sm" style="background:linear-gradient(135deg,var(--gold-bright),var(--gold-dim));color:var(--gold-ink)">PK</span><div><div class="lb-name">Peter K.</div><div class="lb-sub">12 kôl · 89% účasť</div></div></div><span class="lb-trend trend-up">▲2</span><span class="lb-pts">1 248</span></div>
+            <div class="lb-row me"><span class="lb-rank">2</span><div class="lb-user"><span class="avatar avatar-sm avatar-ring">TY</span><div><div class="lb-name">Ty (Martin)</div><div class="lb-sub">Tvoja pozícia</div></div></div><span class="lb-trend trend-up">▲1</span><span class="lb-pts">1 187</span></div>
+            <div class="lb-row"><span class="lb-rank top3">3</span><div class="lb-user"><span class="avatar avatar-sm" style="background:var(--surface-3)">JS</span><div><div class="lb-name">Jana S.</div><div class="lb-sub">12 kôl · 92% účasť</div></div></div><span class="lb-trend trend-down">▼2</span><span class="lb-pts">1 154</span></div>
+          </div>
+        </div>
+
+        <div class="comp-block" style="gap:14px; flex-wrap:nowrap">
+          <div class="card stat grow"><div class="stat-label">Úspešnosť</div><div class="stat-value brand">73%</div><div class="stat-delta ok">▲ 4% za mesiac</div></div>
+          <div class="card stat grow"><div class="stat-label">Body / kolo</div><div class="stat-value gold">28.4</div><div class="stat-delta muted">priemer</div></div>
+        </div>
+
+        <div class="toast success" style="margin-top:6px">
+          <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div><div class="toast-title">Tip uložený</div><div class="toast-msg">Barcelona 2 : 1 Real Madrid — uložené pred uzávierkou.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- skeleton + empty -->
+    <div class="demo-grid" style="grid-template-columns:1fr 1fr; margin-top:18px;">
+      <div class="panel">
+        <div class="panel-label">Loading / skeleton</div>
+        <div class="stack g-3">
+          <div class="row g-3"><div class="skel" style="width:40px;height:40px;border-radius:10px"></div><div class="stack g-2 grow"><div class="skel" style="height:12px;width:60%"></div><div class="skel" style="height:10px;width:40%"></div></div><div class="skel" style="width:54px;height:24px;border-radius:99px"></div></div>
+          <div class="row g-3"><div class="skel" style="width:40px;height:40px;border-radius:10px"></div><div class="stack g-2 grow"><div class="skel" style="height:12px;width:70%"></div><div class="skel" style="height:10px;width:35%"></div></div><div class="skel" style="width:54px;height:24px;border-radius:99px"></div></div>
+        </div>
+      </div>
+      <div class="panel center">
+        <div class="empty" style="padding:20px">
+          <div class="empty-icon"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v6l9 4 9-4V7"/></svg></div>
+          <h4>Zatiaľ žiadne tipy</h4>
+          <p>Pripoj sa do ligy alebo vytvor vlastnú a začni tipovať zápasy.</p>
+          <button class="btn btn-brand btn-sm">Vytvoriť ligu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap" style="padding-block:48px; text-align:center;">
+  <p class="muted" style="font-size:var(--fs-sm)">Tiperliga Design System · v1.0 · 2026 — branding, tokeny a komponenty pre platformu tipovania.</p>
+</footer>
+
+<script>
+  const root = document.documentElement;
+  const btn = document.getElementById('themeBtn');
+  const lbl = document.getElementById('themeLbl');
+  const saved = localStorage.getItem('tl-theme');
+  if (saved) root.setAttribute('data-theme', saved);
+  const sync = () => { lbl.textContent = root.getAttribute('data-theme') === 'light' ? 'Dark' : 'Light'; };
+  sync();
+  btn.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('tl-theme', next);
+    sync();
+  });
+</script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

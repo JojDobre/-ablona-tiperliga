@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — MS v hokeji 2026</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .season-hero { position:relative; overflow:hidden; border-bottom:1px solid var(--line); }
+  .season-hero-bg { position:absolute; inset:0; background:linear-gradient(120deg,#0b4ea2,#1a1340 70%); opacity:.55; }
+  .season-hero-bg::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, transparent, var(--bg)); }
+  .season-hero-inner { position:relative; padding:40px 0 30px; }
+  .sh-meta { display:flex; gap:26px; flex-wrap:wrap; margin-top:18px; }
+  .sh-meta .n { font-family:var(--num); font-weight:700; font-size:1.6rem; color:var(--text-1); white-space:nowrap; }
+  .sh-meta .l { font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.08em; color:var(--text-4); font-weight:700; }
+
+  .sec-layout { display:grid; grid-template-columns: 1fr 330px; gap:28px; align-items:start; padding:32px 0 64px; }
+  .blk { margin-bottom:34px; }
+  .blk-head { display:flex; align-items:flex-end; justify-content:space-between; gap:14px; margin-bottom:16px; flex-wrap:wrap; }
+  .blk-head h2 { font-size:var(--fs-h3); }
+
+  .league-card { display:grid; grid-template-columns: auto 1fr auto; gap:16px; align-items:center; padding:16px 18px; }
+  .league-cover { position:relative; }
+  .league-cover { width:54px; height:54px; border-radius:var(--r-md); display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:700; color:#fff; font-size:16px; flex:none; }
+  .league-meta { display:flex; gap:14px; font-size:var(--fs-sm); color:var(--text-3); flex-wrap:wrap; margin-top:4px; }
+  .league-meta b { color:var(--text-1); font-family:var(--num); }
+
+  .rules-list { counter-reset:r; }
+  .rule { display:flex; gap:14px; padding:13px 0; border-bottom:1px solid var(--line); }
+  .rule:last-child { border:none; }
+  .rule-n { counter-increment:r; font-family:var(--num); font-weight:700; color:var(--brand-bright); flex:none; width:26px; }
+  .rule-n::before { content:counter(r,decimal-leading-zero); }
+
+  .news-item { display:flex; gap:14px; padding:14px 0; border-bottom:1px solid var(--line); }
+  .news-item:last-child { border:none; }
+  .news-date { font-family:var(--num); font-size:var(--fs-xs); color:var(--text-4); width:60px; flex:none; font-weight:700; }
+
+  .sticky-side { position:sticky; top:128px; }
+  .sticky-side > * + * { margin-top:18px; }
+  @media (max-width: 980px){ .sec-layout { grid-template-columns:1fr; } .sticky-side { position:static; } }
+
+  /* mobile-only full-width “Vytvoriť ligu” shown after the league cards */
+  .create-league-m { display:none; }
+  @media (max-width: 600px){
+    /* hero CTAs: equal-size, full width, stacked */
+    .season-hero-inner .row.g-3.wrap-gap { width:100%; flex-direction:column; align-items:stretch; gap:10px; }
+    .season-hero-inner .row.g-3.wrap-gap .btn { width:100%; padding:14px 20px; font-size:var(--fs-base); }
+    .sh-meta { gap:18px; }
+    .sh-meta .n { font-size:1.4rem; }
+
+    /* league cards → banner-on-top layout like the home “official seasons” cards */
+    .league-card { display:flex; flex-direction:column; align-items:stretch; gap:0; padding:0; overflow:hidden; }
+    .lc-init { display:none; }
+    .league-cover { width:100%; height:58px; border-radius:0; justify-content:flex-start; padding-left:18px; font-size:17px; }
+    .league-card > div { padding:14px 16px 0; }
+    .league-card > .btn { display:block; text-align:center; margin:14px 16px 16px; }
+    .league-meta { margin-top:8px; }
+
+    /* move the section “+ Vytvoriť ligu” below the cards, full width */
+    #leagues .blk-head .btn-brand { display:none; }
+    .create-league-m { display:flex; margin-top:14px; }
+  }
+</style>
+</head>
+<body data-page="seasons">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+<div data-shell-subnav="overview" data-season-name="MS v hokeji 2026"></div>
+
+<!-- ===== HERO ===== -->
+<header class="season-hero">
+  <div class="season-hero-bg"></div>
+  <div class="wrap season-hero-inner">
+    <div class="row g-2 wrap-gap" style="margin-bottom:14px">
+      <span class="tag tag-brand">Oficiálna sezóna</span>
+      <span class="tag tag-live"><span class="dot"></span>Prebieha · Kolo 14</span>
+    </div>
+    <div class="between wrap-gap" style="gap:20px;align-items:flex-end">
+      <div>
+        <h1 style="font-size:clamp(2.2rem,4vw,3.2rem)">MS v hokeji 2026</h1>
+        <p class="muted" style="margin-top:8px;max-width:54ch">Majstrovstvá sveta IIHF · Švédsko / Fínsko. Tipuj všetky zápasy od skupín až po finále a súťaž v oficiálnom rebríčku aj vlastných ligách s kamošmi.</p>
+        <div class="sh-meta">
+          <div><div class="n">8 420</div><div class="l">hráčov</div></div>
+          <div><div class="n">14</div><div class="l">kôl</div></div>
+          <div><div class="n">64</div><div class="l">zápasov</div></div>
+          <div><div class="n">26</div><div class="l">líg</div></div>
+        </div>
+      </div>
+      <div class="row g-3 wrap-gap">
+        <button class="btn btn-secondary" data-open-join>Pripojiť sa cez ID</button>
+        <a href="round.html" class="btn btn-primary btn-lg">Tipovať kolo 14 →</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap sec-layout">
+  <main>
+    <!-- LEAGUES -->
+    <section class="blk" id="leagues">
+      <div class="blk-head">
+        <div><div class="eyebrow">Ligy v sezóne</div><h2>26 líg · vyber si kde súťažiť</h2></div>
+        <a href="create-league.html" class="btn btn-brand btn-sm">+ Vytvoriť ligu</a>
+      </div>
+      <div class="stack g-3">
+        <a href="league.html" class="card card-hover league-card">
+          <span class="league-cover" style="background:linear-gradient(135deg,#0b4ea2,#06306a)"><span class="lc-init">OFF</span><span class="cover-tags"><span class="tag tag-brand">Oficiálna</span></span></span>
+          <div style="min-width:0">
+            <div class="row g-2 wrap-gap"><span style="font-weight:800;color:var(--text-1);font-size:var(--fs-lg)">Oficiálny rebríček MS</span><span class="row-tags-hide-m" style="display:contents"><span class="tag tag-brand">Oficiálna</span></span></div>
+            <div class="league-meta"><span><b>8 420</b> hráčov</span><span><b>14</b> kôl</span><span>Presný výsledok</span><span>Bez hesla</span></div>
+          </div>
+          <span class="btn btn-secondary btn-sm">Otvoriť</span>
+        </a>
+        <a href="league.html" class="card card-hover league-card">
+          <span class="league-cover" style="background:linear-gradient(135deg,#7c5cff,#3b1f8a)"><span class="lc-init">TK</span><span class="cover-tags"><span class="tag tag-gold">Custom</span><span class="tag tag-muted">🔒 Heslo</span></span></span>
+          <div style="min-width:0">
+            <div class="row g-2 wrap-gap"><span style="font-weight:800;color:var(--text-1);font-size:var(--fs-lg)">Tipovačka s kolegami</span><span class="row-tags-hide-m" style="display:contents"><span class="tag tag-gold">Custom</span><span class="tag tag-muted">🔒 Heslo</span></span></div>
+            <div class="league-meta"><span><b>18</b> hráčov</span><span><b>14</b> kôl</span><span>Presný výsledok</span><span>ID: <b>HK4F2X</b></span></div>
+          </div>
+          <span class="btn btn-secondary btn-sm">Otvoriť</span>
+        </a>
+        <a href="league.html" class="card card-hover league-card">
+          <span class="league-cover" style="background:linear-gradient(135deg,#16a085,#0c5f4d)"><span class="lc-init">FA</span><span class="cover-tags"><span class="tag tag-gold">Custom</span></span></span>
+          <div style="min-width:0">
+            <div class="row g-2 wrap-gap"><span style="font-weight:800;color:var(--text-1);font-size:var(--fs-lg)">Fanúšikovia SVK</span><span class="row-tags-hide-m" style="display:contents"><span class="tag tag-gold">Custom</span></span></div>
+            <div class="league-meta"><span><b>342</b> hráčov</span><span><b>14</b> kôl</span><span>Iba víťaz</span><span>Verejná</span></div>
+          </div>
+          <span class="btn btn-secondary btn-sm">Otvoriť</span>
+        </a>
+        <a href="league.html" class="card card-hover league-card">
+          <span class="league-cover" style="background:linear-gradient(135deg,#d35400,#8a3700)"><span class="lc-init">RD</span><span class="cover-tags"><span class="tag tag-gold">Custom</span></span></span>
+          <div style="min-width:0">
+            <div class="row g-2 wrap-gap"><span style="font-weight:800;color:var(--text-1);font-size:var(--fs-lg)">Redakcia ŠPORT.sk</span><span class="row-tags-hide-m" style="display:contents"><span class="tag tag-gold">Custom</span></span></div>
+            <div class="league-meta"><span><b>56</b> hráčov</span><span><b>14</b> kôl</span><span>Presný výsledok</span><span>Verejná</span></div>
+          </div>
+          <span class="btn btn-secondary btn-sm">Otvoriť</span>
+        </a>
+      </div>
+      <a href="create-league.html" class="btn btn-brand btn-block create-league-m">+ Vytvoriť ligu</a>
+    </section>
+
+    <!-- RULES -->
+    <section class="blk" id="rules">
+      <div class="blk-head"><div><div class="eyebrow">Pravidlá</div><h2>Ako sa hrá a boduje</h2></div></div>
+      <div class="card card-pad">
+        <div class="rules-list">
+          <div class="rule"><span class="rule-n"></span><p>Tipuješ <b class="hi">presný výsledok</b> každého zápasu pred uzávierkou kola. Po uzávierke už tip nezmeníš.</p></div>
+          <div class="rule"><span class="rule-n"></span><p>Body sa prideľujú automaticky po zadaní výsledku administrátorom súťaže.</p></div>
+          <div class="rule"><span class="rule-n"></span><p>Zrušený zápas neprideľuje žiadne body — nikomu (ani za správny tip víťaza).</p></div>
+          <div class="rule"><span class="rule-n"></span><p>Pri rovnosti bodov rozhoduje vyšší počet presných výsledkov, potom skorší dátum registrácie.</p></div>
+        </div>
+        <div class="hr" style="margin:18px 0"></div>
+        <div class="score-grid">
+          <div class="card stat" style="background:var(--surface-2);padding:12px 16px"><div class="stat-value max" style="font-size:1.5rem;color:var(--success)">+10</div><div class="stat-label">presný výsledok</div></div>
+          <div class="card stat" style="background:var(--surface-2);padding:12px 16px"><div class="stat-value" style="font-size:1.5rem">+3</div><div class="stat-label">víťaz / remíza</div></div>
+          <div class="card stat" style="background:var(--surface-2);padding:12px 16px"><div class="stat-value" style="font-size:1.5rem">+2</div><div class="stat-label">gólový rozdiel</div></div>
+          <div class="card stat" style="background:var(--surface-2);padding:12px 16px"><div class="stat-value" style="font-size:1.5rem">+1</div><div class="stat-label">góly tímu</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWS -->
+    <section class="blk" id="news">
+      <div class="blk-head"><div><div class="eyebrow">Aktuality</div><h2>Novinky v sezóne</h2></div></div>
+      <div class="card card-pad">
+        <div class="news-item"><span class="news-date">12. feb</span><div><div class="row g-2 wrap-gap" style="margin-bottom:3px"><b class="hi">Kolo 14 — Osemfinále otvorené</b><span class="tag tag-warning">Uzávierka 14.2.</span></div><p class="muted" style="font-size:var(--fs-sm)">Žrebovanie je za nami. 6 zápasov osemfinále čaká na tvoj tip — uzávierka je hodinu pred prvým výkopom.</p></div></div>
+        <div class="news-item"><span class="news-date">9. feb</span><div><b class="hi" style="display:block;margin-bottom:3px">Výsledky kola 13 vyhodnotené</b><p class="muted" style="font-size:var(--fs-sm)">Body pridelené všetkým hráčom. Lucia Vargová si udržala prvé miesto, Martin Novák poskočil na 5. priečku.</p></div></div>
+        <div class="news-item"><span class="news-date">4. feb</span><div><b class="hi" style="display:block;margin-bottom:3px">Zápas Inter — Juventus zrušený</b><p class="muted" style="font-size:var(--fs-sm)">Z dôvodu nepriaznivého počasia bol zápas zrušený. Body sa za tento zápas neprideľujú.</p></div></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== SIDE ===== -->
+  <aside class="sticky-side">
+    <div class="card card-pad">
+      <div class="between" style="margin-bottom:12px"><div class="stat-label" style="margin:0">Súhrnný rebríček</div><a href="leaderboards.html" class="faint" style="font-size:var(--fs-xs)">Celý →</a></div>
+      <div class="lb">
+        <div class="lb-row"><span class="lb-rank top1">1</span><div class="lb-user"><span class="avatar avatar-sm" style="background:linear-gradient(135deg,var(--gold-bright),var(--gold-dim));color:var(--gold-ink)">LV</span><span class="lb-name">Lucia V.</span></div><span class="lb-pts gold">1357</span></div>
+        <div class="lb-row"><span class="lb-rank top2">2</span><div class="lb-user"><span class="avatar avatar-sm" style="background:linear-gradient(135deg,#3a7bd5,#1b3f72);color:#fff">PK</span><span class="lb-name">Peter K.</span></div><span class="lb-pts">1284</span></div>
+        <div class="lb-row"><span class="lb-rank top3">3</span><div class="lb-user"><span class="avatar avatar-sm" style="background:linear-gradient(135deg,#e0935a,#a45c28);color:#fff">JS</span><span class="lb-name">Jana S.</span></div><span class="lb-pts">1201</span></div>
+        <div class="lb-row me"><span class="lb-rank">5</span><div class="lb-user"><span class="avatar avatar-sm avatar-ring" style="background:linear-gradient(135deg,#7c5cff,#5b3fd6);color:#fff">MN</span><span class="lb-name">Ty (Martin)</span></div><span class="lb-pts">1098</span></div>
+      </div>
+    </div>
+
+    <div class="card card-pad">
+      <div class="stat-label" style="margin-bottom:12px">Tvoj progres v sezóne</div>
+      <div class="row between" style="margin-bottom:6px"><span class="muted" style="font-size:var(--fs-sm)">Odtipovaných kôl</span><b class="hi num">13 / 14</b></div>
+      <div class="progress success"><i style="width:93%"></i></div>
+      <div class="row between" style="margin:14px 0 6px"><span class="muted" style="font-size:var(--fs-sm)">Presnosť tipov</span><b class="ok num">59 %</b></div>
+      <div class="progress"><i style="width:59%"></i></div>
+    </div>
+
+    <div class="card card-pad" style="background:linear-gradient(135deg,var(--surface-1),color-mix(in srgb,var(--brand) 9%,var(--surface-1)))">
+      <b class="hi" style="display:block;margin-bottom:6px">Pozvi kamošov</b>
+      <p class="muted" style="font-size:var(--fs-sm);margin-bottom:12px">Vytvor si vlastnú ligu v tejto sezóne a súťaž v partii.</p>
+      <a href="create-league.html" class="btn btn-brand btn-block btn-sm">Vytvoriť vlastnú ligu</a>
+    </div>
+  </aside>
+</div>
+
+<!-- ===== JOIN DIALOG ===== -->
+<div class="scrim" data-join hidden>
+  <div class="dialog">
+    <div class="between" style="margin-bottom:6px"><div class="dialog-title">Pripojiť sa do ligy</div><button class="btn btn-ghost btn-icon" data-close-join>✕</button></div>
+    <p class="muted" style="font-size:var(--fs-sm);margin-bottom:20px">Zadaj 6-miestne ID ligy, ktoré ti poslal jej zakladateľ. Ak je liga chránená, budeš potrebovať aj heslo.</p>
+    <div class="field" style="margin-bottom:16px">
+      <label class="label">ID ligy</label>
+      <input class="input num" placeholder="napr. HK4F2X" style="letter-spacing:.3em;text-transform:uppercase;font-weight:700" maxlength="6">
+    </div>
+    <div class="field" style="margin-bottom:22px">
+      <label class="label">Heslo <span class="faint">(ak je vyžadované)</span></label>
+      <input class="input" type="password" placeholder="••••••">
+    </div>
+    <div class="row g-2" style="justify-content:flex-end"><button class="btn btn-secondary" data-close-join>Zrušiť</button><button class="btn btn-primary">Pripojiť sa</button></div>
+  </div>
+</div>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script>
+  const scrim = document.querySelector('[data-join]');
+  document.querySelectorAll('[data-open-join]').forEach(b=>b.addEventListener('click',()=>scrim.removeAttribute('hidden')));
+  document.querySelectorAll('[data-close-join]').forEach(b=>b.addEventListener('click',()=>scrim.setAttribute('hidden','')));
+  scrim.addEventListener('click', e=>{ if(e.target===scrim) scrim.setAttribute('hidden',''); });
+</script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Rebríčky</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .lb-head { padding:32px 0 8px; }
+  .podium { display:grid; grid-template-columns: 1fr 1.15fr 1fr; gap:16px; align-items:end; margin:24px 0 30px; }
+  .pod { text-align:center; border-radius: var(--r-xl); padding:24px 16px 22px; position:relative; overflow:hidden; }
+  .pod .avatar { margin:0 auto 12px; }
+  .pod-name { font-weight:800; color:var(--text-1); font-size:var(--fs-lg); }
+  .pod-sub { font-size:var(--fs-xs); color:var(--text-4); margin-bottom:12px; }
+  .pod-pts { font-family:var(--num); font-weight:700; font-size:2rem; line-height:1; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .pod-rank { position:absolute; top:14px; left:14px; font-family:var(--num); font-weight:800; font-size:1.4rem; opacity:.5; }
+  .pod1 { background: linear-gradient(180deg, color-mix(in srgb,var(--gold) 18%, var(--surface-1)), var(--surface-1)); border:1px solid rgba(250,204,21,.4); box-shadow: var(--glow-gold); }
+  .pod1 .pod-pts { color:var(--gold); text-shadow:var(--text-glow-gold); }
+  .pod2 { background: linear-gradient(180deg, color-mix(in srgb,#cdd6e6 14%, var(--surface-1)), var(--surface-1)); border:1px solid var(--line-strong); }
+  .pod3 { background: linear-gradient(180deg, color-mix(in srgb,#e0935a 16%, var(--surface-1)), var(--surface-1)); border:1px solid rgba(224,147,90,.35); }
+  .pod-crown { position:absolute; top:-2px; right:14px; font-size:22px; }
+
+  .lb-layout { display:grid; grid-template-columns: 1fr 320px; gap:26px; align-items:start; padding-bottom:64px; }
+  .filters { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:18px; }
+  .lb-table .lb-row { grid-template-columns: 52px 1fr auto 96px 64px; border-bottom:1px solid var(--line); border-radius:0; padding:13px 14px; cursor:pointer; transition:background .14s; }
+  .lb-table .lb-row:hover { background:var(--surface-2); }
+  .pod { cursor:pointer; }
+  .pod:hover { outline:1px solid var(--brand-line); }
+  .lb-table .lb-row:last-child { border-bottom:none; }
+  .lb-head-row { grid-template-columns: 52px 1fr auto 96px 64px; display:grid; gap:14px; padding:10px 14px; align-items:center; }
+  .lb-head-row span { font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.1em; color:var(--text-4); font-weight:700; }
+  .lb-streak { font-size:var(--fs-xs); color:var(--text-4); }
+  .ta-r { text-align:right; }
+  .sticky-side { position:sticky; top:92px; }
+  .sticky-side > * + * { margin-top:18px; }
+  .mover { display:flex; align-items:center; gap:11px; padding:10px 0; border-bottom:1px solid var(--line); }
+  .mover:last-child { border:none; }
+  .mover .nm { font-weight:600; color:var(--text-1); font-size:var(--fs-sm); flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  @media (max-width: 980px){ .lb-layout { grid-template-columns:1fr; } .sticky-side { position:static; } }
+  @media (max-width: 720px){
+    .podium { grid-template-columns:1fr; gap:12px; }
+    .pod1 { order:0; } .pod2 { order:1; } .pod3 { order:2; }
+    .pod .avatar { width:64px; height:64px; font-size:24px; }
+    /* scope toggle full width */
+    .lb-head .segment { display:flex; width:100%; }
+    .lb-head .segment button { flex:1; text-align:center; }
+    /* filters: search full width, two selects 50/50 below */
+    .filters { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .filters .search { grid-column:1 / -1; max-width:none !important; }
+    .filters .select { width:100% !important; }
+    /* table: slim rank column, smaller avatar + fonts so nick+sub fit */
+    .lb-table .lb-row, .lb-head-row { grid-template-columns: 28px 1fr auto 48px; gap:9px; padding:11px 8px; }
+    .col-hide { display:none; }
+    .lb-table .avatar.avatar-md { width:32px; height:32px; font-size:12px; }
+    .lb-user { gap:9px; }
+    .lb-name { font-size:var(--fs-sm); }
+    .lb-sub { font-size:10px; }
+    .lb-pts { font-size:1rem; }
+    .lb-rank { font-size:.95rem; }
+  }
+</style>
+</head>
+<body data-page="leaderboards">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+
+<div class="wrap lb-head">
+  <div class="between wrap-gap" style="gap:16px">
+    <div>
+      <div class="eyebrow">Rebríčky</div>
+      <h1 style="font-size:clamp(2rem,3.4vw,2.8rem)">Najlepší tipéri</h1>
+      <p class="muted" style="margin-top:6px">Globálne poradie naprieč sezónami · aktualizované po každom kole</p>
+    </div>
+    <div class="segment">
+      <button class="active" data-scope>Sezóna</button>
+      <button data-scope>Všetky časy</button>
+      <button data-scope>Tento mesiac</button>
+    </div>
+  </div>
+
+  <!-- ===== PODIUM ===== -->
+  <div class="podium">
+    <div class="pod pod2">
+      <span class="pod-rank top2">2</span>
+      <span class="avatar avatar-xl" style="background:linear-gradient(135deg,#3a7bd5,#1b3f72);color:#fff">PK</span>
+      <div class="pod-name">Peter Kováč</div>
+      <div class="pod-sub">@peterk · 14 kôl</div>
+      <div class="pod-pts" style="color:#cdd6e6">1 284</div>
+      <div class="lb-trend trend-up" style="justify-content:center;width:auto;margin-top:6px">▲ 2</div>
+    </div>
+    <div class="pod pod1">
+      <span class="pod-crown">👑</span>
+      <span class="pod-rank top1">1</span>
+      <span class="avatar avatar-xl avatar-ring" style="background:linear-gradient(135deg,var(--gold-bright),var(--gold-dim));color:var(--gold-ink)">LV</span>
+      <div class="pod-name">Lucia Vargová</div>
+      <div class="pod-sub">@luciav · 14 kôl</div>
+      <div class="pod-pts">1 357</div>
+      <div class="lb-trend trend-flat" style="justify-content:center;width:auto;margin-top:6px">— drží sa</div>
+    </div>
+    <div class="pod pod3">
+      <span class="pod-rank top3">3</span>
+      <span class="avatar avatar-xl" style="background:linear-gradient(135deg,#e0935a,#a45c28);color:#fff">JS</span>
+      <div class="pod-name">Jana Slávik</div>
+      <div class="pod-sub">@janas · 14 kôl</div>
+      <div class="pod-pts" style="color:#e0935a">1 201</div>
+      <div class="lb-trend trend-down" style="justify-content:center;width:auto;margin-top:6px">▼ 1</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap lb-layout">
+  <!-- ===== TABLE ===== -->
+  <main>
+    <div class="filters">
+      <div class="input-icon search" style="max-width:280px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4" stroke-linecap="round"/></svg>
+        <input class="input" placeholder="Hľadať hráča…">
+      </div>
+      <select class="select" style="width:auto">
+        <option>Všetky sezóny</option>
+        <option>MS v hokeji 2026</option>
+        <option>Liga majstrov 26/27</option>
+        <option>Fortuna Liga Tipovačka</option>
+      </select>
+      <select class="select" style="width:auto">
+        <option>Zoradiť: Body</option>
+        <option>Zoradiť: Presnosť %</option>
+        <option>Zoradiť: Najväčší progres</option>
+      </select>
+    </div>
+
+    <div class="card" style="padding:8px">
+      <div class="lb-head-row">
+        <span>#</span><span>Hráč</span><span class="col-hide">Presnosť</span><span class="ta-r">Body</span><span class="ta-r">Trend</span>
+      </div>
+      <div class="hr"></div>
+      <div class="lb-table">
+        <div class="lb-row"><span class="lb-rank top1">1</span><div class="lb-user"><span class="avatar avatar-md" style="background:linear-gradient(135deg,var(--gold-bright),var(--gold-dim));color:var(--gold-ink)">LV</span><div style="min-width:0"><div class="lb-name">Lucia Vargová <span class="chip-role role-vip" style="vertical-align:middle">VIP</span></div><div class="lb-sub">@luciav · 8 výhier v rade</div></div></div><span class="col-hide num" style="color:var(--success);font-weight:700">71 %</span><span class="lb-pts ta-r gold">1 357</span><span class="lb-trend trend-flat">—</span></div>
+        <div class="lb-row"><span class="lb-rank top2">2</span><div class="lb-user"><span class="avatar avatar-md" style="background:linear-gradient(135deg,#3a7bd5,#1b3f72);color:#fff">PK</span><div style="min-width:0"><div class="lb-name">Peter Kováč</div><div class="lb-sub">@peterk · 14 kôl</div></div></div><span class="col-hide num" style="color:var(--success);font-weight:700">68 %</span><span class="lb-pts ta-r">1 284</span><span class="lb-trend trend-up">▲2</span></div>
+        <div class="lb-row"><span class="lb-rank top3">3</span><div class="lb-user"><span class="avatar avatar-md" style="background:linear-gradient(135deg,#e0935a,#a45c28);color:#fff">JS</span><div style="min-width:0"><div class="lb-name">Jana Slávik</div><div class="lb-sub">@janas · 14 kôl</div></div></div><span class="col-hide num" style="color:var(--text-2);font-weight:700">64 %</span><span class="lb-pts ta-r">1 201</span><span class="lb-trend trend-down">▼1</span></div>
+        <div class="lb-row"><span class="lb-rank">4</span><div class="lb-user"><span class="avatar avatar-md" style="background:linear-gradient(135deg,#16a085,#0c5f4d);color:#fff">MH</span><div style="min-width:0"><div class="lb-name">Michal Horváth</div><div class="lb-sub">@michalh · 14 kôl</div></div></div><span class="col-hide num" style="color:var(--text-2);font-weight:700">61 %</span><span class="lb-pts ta-r">1 142</span><span class="lb-trend trend-up">▲1</span></div>
+        <div class="lb-row me"><span class="lb-rank">5</span><div class="lb-user"><span class="avatar avatar-md avatar-ring" style="background:linear-gradient(135deg,#7c5cff,#5b3fd6);color:#fff">MN</span><div style="min-width:0"><div class="lb-name">Martin Novák <span class="tag tag-brand" style="vertical-align:middle;padding:1px 6px">Ty</span></div><div class="lb-sub">@martinn · 5 výhier v rade</div></div></div><span class="col-hide num" style="color:var(--success);font-weight:700">59 %</span><span class="lb-pts ta-r">1 098</span><span class="lb-trend trend-up">▲3</span></div>
+        <div class="lb-row"><span class="lb-rank">6</span><div class="lb-user"><span class="avatar avatar-md" style="background:linear-gradient(135deg,#c0392b,#7d2018);color:#fff">TB</span><div style="min-width:0"><div class="lb-name">Tomáš Baláž</div><div class="lb-sub">@tomasb · 14 kôl</div></div></div><span class="col-hide num" style="color:var(--text-2);font-weight:700">57 %</span><span class="lb-pts ta-r">1 064</span><span class="lb-trend trend-down">▼2</span></div>
+        <div class="lb-row"><span class="lb-rank">7</span><div class="lb-user"><span class="avatar avatar-md" style="background:linear-gradient(135deg,#8e44ad,#522963);color:#fff">ZH</span><div style="min-width:0"><div class="lb-name">Zuzana Hrušková</div><div class="lb-sub">@zuzkah · 13 kôl</div></div></div><span class="col-hide num" style="color:var(--text-2);font-weight:700">55 %</span><span class="lb-pts ta-r">1 021</span><span class="lb-trend trend-up">▲4</span></div>
+        <div class="lb-row"><span class="lb-rank">8</span><div class="lb-user"><span class="avatar avatar-md" style="background:linear-gradient(135deg,#2c3e50,#1a252f);color:#fff">RD</span><div style="min-width:0"><div class="lb-name">Roman Dudáš</div><div class="lb-sub">@romand · 14 kôl</div></div></div><span class="col-hide num" style="color:var(--text-2);font-weight:700">54 %</span><span class="lb-pts ta-r">987</span><span class="lb-trend trend-flat">—</span></div>
+        <div class="lb-row"><span class="lb-rank">9</span><div class="lb-user"><span class="avatar avatar-md" style="background:linear-gradient(135deg,#d35400,#8a3700);color:#fff">EK</span><div style="min-width:0"><div class="lb-name">Eva Kollárová</div><div class="lb-sub">@evak · 12 kôl</div></div></div><span class="col-hide num" style="color:var(--text-2);font-weight:700">52 %</span><span class="lb-pts ta-r">934</span><span class="lb-trend trend-down">▼3</span></div>
+        <div class="lb-row"><span class="lb-rank">10</span><div class="lb-user"><span class="avatar avatar-md" style="background:linear-gradient(135deg,#27ae60,#155d33);color:#fff">AB</span><div style="min-width:0"><div class="lb-name">Andrej Béreš</div><div class="lb-sub">@andrejb · 14 kôl</div></div></div><span class="col-hide num" style="color:var(--text-2);font-weight:700">51 %</span><span class="lb-pts ta-r">902</span><span class="lb-trend trend-up">▲1</span></div>
+      </div>
+    </div>
+    <div class="center" style="margin-top:18px"><button class="btn btn-secondary">Načítať ďalších 50</button></div>
+  </main>
+
+  <!-- ===== SIDE ===== -->
+  <aside class="sticky-side">
+    <div class="card card-pad card-glow">
+      <div class="stat-label">Tvoja pozícia</div>
+      <div class="row g-3" style="margin:12px 0 6px"><span class="stat-value brand" style="font-size:2.6rem">#5</span><span class="lb-trend trend-up" style="font-size:1rem;width:auto;white-space:nowrap">▲ 3 tento týždeň</span></div>
+      <p class="muted" style="font-size:var(--fs-sm)">Si len <b class="hi num">44 bodov</b> za 4. miestom. Ešte 6 zápasov v kole 14!</p>
+      <a href="round.html" class="btn btn-brand btn-block btn-sm" style="margin-top:14px">Tipovať kolo 14 →</a>
+    </div>
+
+    <div class="card card-pad">
+      <div class="stat-label" style="margin-bottom:6px">Najväčší skokani týždňa</div>
+      <div class="mover"><span class="lb-trend trend-up" style="width:auto">▲4</span><span class="avatar avatar-sm" style="background:linear-gradient(135deg,#8e44ad,#522963);color:#fff">ZH</span><span class="nm">Zuzana Hrušková</span><span class="num gold" style="font-weight:700">+96</span></div>
+      <div class="mover"><span class="lb-trend trend-up" style="width:auto">▲3</span><span class="avatar avatar-sm avatar-ring" style="background:linear-gradient(135deg,#7c5cff,#5b3fd6);color:#fff">MN</span><span class="nm">Martin Novák (Ty)</span><span class="num gold" style="font-weight:700">+88</span></div>
+      <div class="mover"><span class="lb-trend trend-up" style="width:auto">▲2</span><span class="avatar avatar-sm" style="background:linear-gradient(135deg,#3a7bd5,#1b3f72);color:#fff">PK</span><span class="nm">Peter Kováč</span><span class="num gold" style="font-weight:700">+74</span></div>
+    </div>
+
+    <div class="card card-pad">
+      <div class="stat-label" style="margin-bottom:10px">Rebríčky podľa sezóny</div>
+      <div class="stack g-2">
+        <a href="season.html" class="row between" style="padding:9px 11px;border-radius:var(--r-sm);background:var(--surface-2)"><span class="row g-2"><span class="team-logo" style="width:24px;height:24px;font-size:10px;background:linear-gradient(135deg,#0b4ea2,#06306a)">MS</span><span style="font-weight:600;color:var(--text-1);font-size:var(--fs-sm)">MS v hokeji 2026</span></span><span class="faint">›</span></a>
+        <a href="season.html" class="row between" style="padding:9px 11px;border-radius:var(--r-sm);background:var(--surface-2)"><span class="row g-2"><span class="team-logo" style="width:24px;height:24px;font-size:10px;background:linear-gradient(135deg,#5b3fd6,#2b0a4a)">LM</span><span style="font-weight:600;color:var(--text-1);font-size:var(--fs-sm)">Liga majstrov 26/27</span></span><span class="faint">›</span></a>
+        <a href="season.html" class="row between" style="padding:9px 11px;border-radius:var(--r-sm);background:var(--surface-2)"><span class="row g-2"><span class="team-logo" style="width:24px;height:24px;font-size:10px;background:linear-gradient(135deg,#7c5cff,#3b1f8a)">FL</span><span style="font-weight:600;color:var(--text-1);font-size:var(--fs-sm)">Fortuna Liga</span></span><span class="faint">›</span></a>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script>
+  document.querySelectorAll('[data-scope]').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('[data-scope]').forEach(x => x.classList.toggle('active', x === b));
+  }));
+  // clickable player rows -> public profile (own row -> own profile)
+  function goProfile(el){ location.href = el.classList.contains('me') ? 'profile.html' : 'player.html'; }
+  document.querySelectorAll('.lb-table .lb-row').forEach(r => {
+    r.setAttribute('role','link'); r.setAttribute('tabindex','0');
+    r.addEventListener('click', () => goProfile(r));
+    r.addEventListener('keydown', e => { if(e.key==='Enter') goProfile(r); });
+  });
+  document.querySelectorAll('.podium .pod').forEach(p => p.addEventListener('click', () => location.href='player.html'));
+</script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Kolo 14 · Tipovanie</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .round-layout { display:grid; grid-template-columns: 1fr 340px; gap:26px; align-items:start; padding:28px 0 60px; }
+  .round-head { padding:26px 0 18px; }
+  .crumb { font-size:var(--fs-sm); color:var(--text-4); margin-bottom:12px; }
+  .crumb a { color:var(--text-3); } .crumb a:hover { color:var(--brand-bright); }
+  .sticky-side > * + * { margin-top:18px; }
+  .sticky-side { position:sticky; top:138px; }
+
+  .match-list > * + * { margin-top:14px; }
+  .match-row { padding:18px 20px; }
+  .match-row.tipped { border-color: var(--brand-line); box-shadow: 0 0 0 1px var(--brand-line); }
+
+  .others { margin-top:14px; padding-top:14px; border-top:1px solid var(--line); display:none; }
+  .others.open { display:block; }
+  .other-tip { display:flex; align-items:center; gap:10px; padding:7px 0; }
+  .other-tip .nm { font-weight:600; color:var(--text-2); font-size:var(--fs-sm); flex:1; }
+  .toggle-others { font-size:var(--fs-sm); font-weight:600; color:var(--brand-bright); background:none; border:none; padding:0; margin-top:12px; }
+
+  .savebar { position:sticky; bottom:0; z-index:30; margin-top:16px;
+    background: color-mix(in srgb, var(--surface-1) 92%, transparent); backdrop-filter:blur(12px);
+    border:1px solid var(--line-strong); border-radius: var(--r-lg); padding:14px 18px;
+    display:flex; align-items:center; justify-content:space-between; gap:14px; box-shadow:var(--shadow-lg); }
+
+  .toast-wrap { position:fixed; bottom:24px; right:24px; z-index:200; display:flex; flex-direction:column; gap:10px; }
+
+  .mini-lb .lb-row { grid-template-columns: 30px 1fr auto; padding:9px 8px; }
+
+  @media (max-width: 980px){
+    .round-layout { grid-template-columns:1fr; }
+    .sticky-side { position:static; }
+  }
+  @media (max-width: 900px){
+    /* keep the sticky save bar above the bottom tab bar (60px) */
+    .savebar { bottom: calc(64px + env(safe-area-inset-bottom, 0px)); border-radius: var(--r-lg); flex-direction:column; align-items:stretch; gap:10px; }
+    .savebar .row.g-2 { width:100%; }
+    .savebar .row.g-2 .btn { flex:1; }
+    .toast-wrap { bottom: calc(74px + env(safe-area-inset-bottom, 0px)); right:12px; left:12px; }
+    .round-head { padding-top: 16px; }
+    /* header: countdown card spans full width below the title */
+    .round-head .between { flex-direction:column; align-items:stretch; gap:14px; }
+    .round-head .between > .card { width:100%; text-align:center; }
+    .round-head .between > .card .countdown { justify-content:center; }
+    /* tab segment full width */
+    .round-head .segment { display:flex; }
+    .round-head .segment button { flex:1; text-align:center; padding-inline:8px; }
+  }
+  @media (max-width: 480px){
+    /* tighten match cards so team names fit on one/two lines */
+    .match-row { padding:16px; }
+    .match-row .match-teams { gap:8px; }
+    .match-row .team-name { font-size:var(--fs-xs); line-height:1.15; text-align:center; white-space:normal; overflow:visible; text-overflow:clip; max-width:none; word-break:normal; }
+    .match-row .tip-inputs { gap:5px; }
+    .match-row .tip-num { width:42px; height:46px; font-size:1.2rem; }
+  }
+</style>
+</head>
+<body data-page="seasons">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+<div data-shell-subnav="leagues" data-season-name="Liga majstrov 26/27"></div>
+
+<div class="wrap round-head">
+  <div class="crumb"><a href="season.html">Liga majstrov 26/27</a> › <a href="league.html">Tipovačka s kolegami</a> › Kolo 14</div>
+  <div class="between wrap-gap" style="gap:16px">
+    <div>
+      <div class="row g-3 wrap-gap" style="margin-bottom:10px">
+        <h1 style="font-size:clamp(1.9rem,3vw,2.5rem)">Kolo 14 — Osemfinále</h1>
+        <span class="tag tag-warning"><span class="dot"></span>Otvorené na tipovanie</span>
+      </div>
+      <p class="muted" style="margin:0">6 zápasov · tipuj presný výsledok · uzávierka 14. feb 2026, 20:45</p>
+    </div>
+    <div class="card card-pad" style="padding:14px 18px;background:var(--surface-2)">
+      <div class="stat-label" style="margin-bottom:8px">Uzávierka o</div>
+      <span class="countdown cd-urgent" id="countdown">
+        <span class="cd-box"><div class="cd-num" data-h>02</div><div class="cd-lbl">hod</div></span>
+        <span class="cd-box"><div class="cd-num" data-m>14</div><div class="cd-lbl">min</div></span>
+        <span class="cd-box"><div class="cd-num" data-s>36</div><div class="cd-lbl">sek</div></span>
+      </span>
+    </div>
+  </div>
+  <div class="segment" style="margin-top:20px">
+    <button class="active" data-tab="open">Tipovať · Kolo 14</button>
+    <button data-tab="closed">Výsledky · Kolo 13</button>
+  </div>
+</div>
+
+<div class="wrap round-layout">
+  <!-- ===== MAIN COLUMN ===== -->
+  <main>
+    <!-- OPEN ROUND -->
+    <section data-panel="open">
+      <div class="between" style="margin-bottom:16px">
+        <h3 style="font-size:var(--fs-h4)">Zápasy na tip</h3>
+        <span class="muted" style="font-size:var(--fs-sm)"><b class="hi" id="tippedCount">2</b> / 6 vyplnených</span>
+      </div>
+      <div class="match-list" id="matchList">
+        <!-- match -->
+        <div class="match match-row tipped" data-match>
+          <div class="match-head">
+            <span class="match-meta">14. feb · 21:00 · Camp Nou</span>
+            <span class="tag tag-info"><span class="dot"></span>Naplánovaný</span>
+          </div>
+          <div class="match-teams">
+            <div class="team"><span class="team-logo" style="background:linear-gradient(135deg,#a50044,#6e0030)">FCB</span><span class="team-name">Barcelona</span></div>
+            <div class="tip-inputs"><input class="tip-num" inputmode="numeric" maxlength="2" value="2"><span class="tip-sep">:</span><input class="tip-num" inputmode="numeric" maxlength="2" value="1"></div>
+            <div class="team away"><span class="team-logo" style="background:linear-gradient(135deg,#6cabdd,#27568a)">MCI</span><span class="team-name">Man City</span></div>
+          </div>
+        </div>
+
+        <div class="match match-row tipped" data-match>
+          <div class="match-head">
+            <span class="match-meta">14. feb · 21:00 · Bernabéu</span>
+            <span class="tag tag-info"><span class="dot"></span>Naplánovaný</span>
+          </div>
+          <div class="match-teams">
+            <div class="team"><span class="team-logo" style="background:linear-gradient(135deg,#fff,#dcdcdc);color:#1a1a1a">RM</span><span class="team-name">Real Madrid</span></div>
+            <div class="tip-inputs"><input class="tip-num" inputmode="numeric" maxlength="2" value="3"><span class="tip-sep">:</span><input class="tip-num" inputmode="numeric" maxlength="2" value="0"></div>
+            <div class="team away"><span class="team-logo" style="background:linear-gradient(135deg,#d3010c,#7d0107)">LIV</span><span class="team-name">Liverpool</span></div>
+          </div>
+        </div>
+
+        <div class="match match-row" data-match>
+          <div class="match-head">
+            <span class="match-meta">14. feb · 21:00 · Allianz Arena</span>
+            <span class="tag tag-info"><span class="dot"></span>Naplánovaný</span>
+          </div>
+          <div class="match-teams">
+            <div class="team"><span class="team-logo" style="background:linear-gradient(135deg,#dc052d,#8a0420)">BAY</span><span class="team-name">Bayern</span></div>
+            <div class="tip-inputs"><input class="tip-num" inputmode="numeric" maxlength="2" placeholder="–"><span class="tip-sep">:</span><input class="tip-num" inputmode="numeric" maxlength="2" placeholder="–"></div>
+            <div class="team away"><span class="team-logo" style="background:linear-gradient(135deg,#004170,#002544)">PSG</span><span class="team-name">PSG</span></div>
+          </div>
+        </div>
+
+        <div class="match match-row" data-match>
+          <div class="match-head">
+            <span class="match-meta">14. feb · 18:45 · San Siro</span>
+            <span class="tag tag-info"><span class="dot"></span>Naplánovaný</span>
+          </div>
+          <div class="match-teams">
+            <div class="team"><span class="team-logo" style="background:linear-gradient(135deg,#0068a8,#003a5e)">INT</span><span class="team-name">Inter</span></div>
+            <div class="tip-inputs"><input class="tip-num" inputmode="numeric" maxlength="2" placeholder="–"><span class="tip-sep">:</span><input class="tip-num" inputmode="numeric" maxlength="2" placeholder="–"></div>
+            <div class="team away"><span class="team-logo" style="background:linear-gradient(135deg,#d3010c,#7d0107)">ARS</span><span class="team-name">Arsenal</span></div>
+          </div>
+        </div>
+
+        <div class="match match-row" data-match>
+          <div class="match-head">
+            <span class="match-meta">15. feb · 21:00 · Signal Iduna</span>
+            <span class="tag tag-info"><span class="dot"></span>Naplánovaný</span>
+          </div>
+          <div class="match-teams">
+            <div class="team"><span class="team-logo" style="background:linear-gradient(135deg,#fde100,#c9b400);color:#111">BVB</span><span class="team-name">Dortmund</span></div>
+            <div class="tip-inputs"><input class="tip-num" inputmode="numeric" maxlength="2" placeholder="–"><span class="tip-sep">:</span><input class="tip-num" inputmode="numeric" maxlength="2" placeholder="–"></div>
+            <div class="team away"><span class="team-logo" style="background:linear-gradient(135deg,#cd1041,#8a0a2c)">ATM</span><span class="team-name">Atlético</span></div>
+          </div>
+        </div>
+
+        <div class="match match-row" data-match>
+          <div class="match-head">
+            <span class="match-meta">15. feb · 21:00 · Parc des Princes</span>
+            <span class="tag tag-info"><span class="dot"></span>Naplánovaný</span>
+          </div>
+          <div class="match-teams">
+            <div class="team"><span class="team-logo" style="background:linear-gradient(135deg,#6cabdd,#27568a)">NAP</span><span class="team-name">Napoli</span></div>
+            <div class="tip-inputs"><input class="tip-num" inputmode="numeric" maxlength="2" placeholder="–"><span class="tip-sep">:</span><input class="tip-num" inputmode="numeric" maxlength="2" placeholder="–"></div>
+            <div class="team away"><span class="team-logo" style="background:linear-gradient(135deg,#003090,#001a52)">CHE</span><span class="team-name">Chelsea</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="savebar">
+        <span class="muted" style="font-size:var(--fs-sm)">Tipy môžeš meniť až do uzávierky. <b class="hi">2/6</b> vyplnených</span>
+        <div class="row g-2"><button class="btn btn-ghost btn-sm">Vyčistiť</button><button class="btn btn-primary" id="saveTips">Uložiť tipy</button></div>
+      </div>
+    </section>
+
+    <!-- CLOSED ROUND (results) -->
+    <section data-panel="closed" hidden>
+      <div class="between" style="margin-bottom:16px">
+        <h3 style="font-size:var(--fs-h4)">Kolo 13 — výsledky &amp; body</h3>
+        <span class="pts-pill max">Tvoje kolo: +24 pts</span>
+      </div>
+      <div class="match-list">
+        <!-- revealed match w/ exact -->
+        <div class="match" style="border-color:var(--brand-line)">
+          <div class="match-head"><span class="match-meta">7. feb · La Liga</span><span class="tag tag-success"><span class="dot"></span>Ukončený</span></div>
+          <div class="match-teams">
+            <div class="team"><span class="team-logo" style="background:linear-gradient(135deg,#a50044,#6e0030)">FCB</span><span class="team-name">Barcelona</span></div>
+            <div class="match-score">2 : 1</div>
+            <div class="team away"><span class="team-logo" style="background:linear-gradient(135deg,#cd1041,#8a0a2c)">SEV</span><span class="team-name">Sevilla</span></div>
+          </div>
+          <div class="between" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
+            <span class="muted" style="font-size:var(--fs-sm)">Tvoj tip: <b class="tip-correct">2 : 1</b></span>
+            <span class="pts-pill max">+10 · presný výsledok</span>
+          </div>
+          <button class="toggle-others" data-others>Zobraziť tipy ostatných (4) ▾</button>
+          <div class="others">
+            <div class="other-tip"><span class="avatar avatar-sm" style="background:var(--surface-3)">PK</span><span class="nm">Peter K.</span><b class="tip-correct">2 : 1</b><span class="pts-pill max">+10</span></div>
+            <div class="other-tip"><span class="avatar avatar-sm" style="background:var(--surface-3)">JS</span><span class="nm">Jana S.</span><b class="hi">2 : 0</b><span class="pts-pill">+3</span></div>
+            <div class="other-tip"><span class="avatar avatar-sm" style="background:var(--surface-3)">MH</span><span class="nm">Michal H.</span><b class="hi">1 : 1</b><span class="pts-pill zero">0</span></div>
+            <div class="other-tip"><span class="avatar avatar-sm" style="background:var(--surface-3)">LV</span><span class="nm">Lucia V.</span><b class="hi">3 : 1</b><span class="pts-pill">+5</span></div>
+          </div>
+        </div>
+
+        <!-- partial points -->
+        <div class="match">
+          <div class="match-head"><span class="match-meta">7. feb · Premier League</span><span class="tag tag-success"><span class="dot"></span>Ukončený</span></div>
+          <div class="match-teams">
+            <div class="team"><span class="team-logo" style="background:linear-gradient(135deg,#6cabdd,#27568a)">MCI</span><span class="team-name">Man City</span></div>
+            <div class="match-score">3 : 1</div>
+            <div class="team away"><span class="team-logo" style="background:linear-gradient(135deg,#d3010c,#7d0107)">MUN</span><span class="team-name">Man Utd</span></div>
+          </div>
+          <div class="between" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
+            <span class="muted" style="font-size:var(--fs-sm)">Tvoj tip: <b class="hi">2 : 0</b></span>
+            <span class="pts-pill">+5 · víťaz + góly</span>
+          </div>
+          <button class="toggle-others" data-others>Zobraziť tipy ostatných (4) ▾</button>
+          <div class="others">
+            <div class="other-tip"><span class="avatar avatar-sm" style="background:var(--surface-3)">PK</span><span class="nm">Peter K.</span><b class="tip-correct">3 : 1</b><span class="pts-pill max">+10</span></div>
+            <div class="other-tip"><span class="avatar avatar-sm" style="background:var(--surface-3)">JS</span><span class="nm">Jana S.</span><b class="hi">2 : 1</b><span class="pts-pill">+6</span></div>
+            <div class="other-tip"><span class="avatar avatar-sm" style="background:var(--surface-3)">MH</span><span class="nm">Michal H.</span><b class="tip-wrong">1 : 2</b><span class="pts-pill zero">0</span></div>
+            <div class="other-tip"><span class="avatar avatar-sm" style="background:var(--surface-3)">LV</span><span class="nm">Lucia V.</span><b class="hi">3 : 0</b><span class="pts-pill">+5</span></div>
+          </div>
+        </div>
+
+        <!-- canceled -->
+        <div class="match" style="opacity:.78">
+          <div class="match-head"><span class="match-meta">8. feb · Serie A</span><span class="tag tag-muted"><span class="dot"></span>Zrušený</span></div>
+          <div class="match-teams">
+            <div class="team"><span class="team-logo" style="background:linear-gradient(135deg,#0068a8,#003a5e)">INT</span><span class="team-name">Inter</span></div>
+            <div class="match-score" style="color:var(--text-4)">— : —</div>
+            <div class="team away"><span class="team-logo" style="background:linear-gradient(135deg,#000,#1a1a1a)">JUV</span><span class="team-name">Juventus</span></div>
+          </div>
+          <div class="between" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
+            <span class="muted" style="font-size:var(--fs-sm)">Zápas zrušený — body sa neprideľujú</span>
+            <span class="pts-pill zero">0 pts</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sticky-side">
+    <div class="card card-pad">
+      <div class="stat-label">Tvoj progres v kole</div>
+      <div class="row g-3" style="margin:12px 0 4px"><span class="stat-value brand" style="font-size:2.2rem">2</span><span class="muted" style="font-size:var(--fs-sm)">zo 6 zápasov<br>vyplnených</span></div>
+      <div class="progress" style="margin-top:10px"><i style="width:33%"></i></div>
+      <a href="#" class="btn btn-brand btn-block btn-sm" style="margin-top:16px">Dokončiť tipy</a>
+    </div>
+
+    <div class="card card-pad" id="rules">
+      <div class="between" style="margin-bottom:12px"><div class="stat-label" style="margin:0">Bodovanie</div><a href="league.html#rules" class="faint" style="font-size:var(--fs-xs)">Pravidlá →</a></div>
+      <div class="stack g-2" style="font-size:var(--fs-sm)">
+        <div class="between"><span class="muted">Presný výsledok</span><span class="pts-pill max">+10</span></div>
+        <div class="between"><span class="muted">Víťaz / remíza</span><span class="pts-pill">+3</span></div>
+        <div class="between"><span class="muted">Gólový rozdiel</span><span class="pts-pill">+2</span></div>
+        <div class="between"><span class="muted">Presný počet gólov tímu</span><span class="pts-pill">+1</span></div>
+      </div>
+    </div>
+
+    <div class="card card-pad mini-lb">
+      <div class="between" style="margin-bottom:8px"><div class="stat-label" style="margin:0">Rebríček kola 13</div><a href="leaderboards.html" class="faint" style="font-size:var(--fs-xs)">Celý →</a></div>
+      <div class="lb">
+        <div class="lb-row"><span class="lb-rank top1">1</span><div class="lb-user"><span class="avatar avatar-sm" style="background:linear-gradient(135deg,var(--gold-bright),var(--gold-dim));color:var(--gold-ink)">PK</span><span class="lb-name">Peter K.</span></div><span class="lb-pts">38</span></div>
+        <div class="lb-row me"><span class="lb-rank">2</span><div class="lb-user"><span class="avatar avatar-sm avatar-ring">TY</span><span class="lb-name">Ty (Martin)</span></div><span class="lb-pts">24</span></div>
+        <div class="lb-row"><span class="lb-rank top3">3</span><div class="lb-user"><span class="avatar avatar-sm" style="background:var(--surface-3)">JS</span><span class="lb-name">Jana S.</span></div><span class="lb-pts">21</span></div>
+        <div class="lb-row"><span class="lb-rank">4</span><div class="lb-user"><span class="avatar avatar-sm" style="background:var(--surface-3)">LV</span><span class="lb-name">Lucia V.</span></div><span class="lb-pts">19</span></div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script>
+  // ---- countdown ----
+  let total = 2*3600 + 14*60 + 36;
+  const h = document.querySelector('[data-h]'), m = document.querySelector('[data-m]'), s = document.querySelector('[data-s]');
+  const pad = n => String(n).padStart(2,'0');
+  setInterval(() => {
+    if (total <= 0) return;
+    total--;
+    h.textContent = pad(Math.floor(total/3600));
+    m.textContent = pad(Math.floor((total%3600)/60));
+    s.textContent = pad(total%60);
+  }, 1000);
+
+  // ---- tabs ----
+  document.querySelectorAll('[data-tab]').forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-tab]').forEach(b => b.classList.toggle('active', b === btn));
+    document.querySelectorAll('[data-panel]').forEach(p => p.toggleAttribute('hidden', p.getAttribute('data-panel') !== btn.getAttribute('data-tab')));
+  }));
+
+  // ---- others toggle ----
+  document.querySelectorAll('[data-others]').forEach(btn => btn.addEventListener('click', () => {
+    const o = btn.nextElementSibling; o.classList.toggle('open');
+    btn.textContent = btn.textContent.replace(o.classList.contains('open') ? '▾' : '▴', o.classList.contains('open') ? '▴' : '▾');
+  }));
+
+  // ---- tip counting + tipped highlight ----
+  function refresh() {
+    let filled = 0;
+    document.querySelectorAll('#matchList [data-match]').forEach(row => {
+      const ins = row.querySelectorAll('.tip-num');
+      const ok = ins[0].value !== '' && ins[1].value !== '';
+      row.classList.toggle('tipped', ok);
+      if (ok) filled++;
+    });
+    document.getElementById('tippedCount').textContent = filled;
+    document.querySelector('.progress > i').style.width = (filled/6*100)+'%';
+    document.querySelector('[data-panel="open"] .stat-value').textContent = filled;
+  }
+  document.querySelectorAll('#matchList .tip-num').forEach(i => {
+    i.addEventListener('input', () => { i.value = i.value.replace(/[^0-9]/g,'').slice(0,2); refresh(); });
+  });
+
+  // ---- toast ----
+  function toast(title, msg, type='success') {
+    const el = document.createElement('div');
+    el.className = 'toast ' + type;
+    el.innerHTML = `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="var(--${type==='success'?'success':type})" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><div><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div>`;
+    document.getElementById('toastWrap').appendChild(el);
+    setTimeout(() => { el.style.transition='opacity .3s, transform .3s'; el.style.opacity='0'; el.style.transform='translateX(20px)'; setTimeout(()=>el.remove(),300); }, 3200);
+  }
+  document.getElementById('saveTips').addEventListener('click', () => {
+    refresh();
+    const filled = document.getElementById('tippedCount').textContent;
+    toast('Tipy uložené', `${filled} zo 6 zápasov uložených pred uzávierkou kola 14.`);
+  });
+</script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

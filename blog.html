@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Blog</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .bl-head { padding:34px 0 24px; }
+  .bl-cats { display:flex; gap:8px; flex-wrap:wrap; margin-top:18px; }
+  .cat { font-size:var(--fs-sm); font-weight:600; padding:7px 14px; border-radius:var(--r-pill); background:var(--surface-2); border:1px solid var(--line); color:var(--text-3); cursor:pointer; transition:all .15s; }
+  .cat.active, .cat:hover { color:var(--text-1); border-color:var(--brand-line); background:var(--brand-soft); }
+
+  .featured { display:grid; grid-template-columns:1.3fr 1fr; gap:0; border-radius:var(--r-xl); overflow:hidden; margin-bottom:34px; }
+  .featured-img { min-height:300px; background:linear-gradient(135deg,#2b0a4a,#5b3fd6 60%,#0b4ea2); position:relative; }
+  .featured-img::after { content:"🏒"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:90px; opacity:.25; }
+  .featured-body { padding:34px; display:flex; flex-direction:column; justify-content:center; background:var(--surface-1); }
+
+  .post-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .post-img { height:170px; position:relative; display:flex; align-items:center; justify-content:center; font-size:48px; }
+  .post-body { padding:18px 20px 22px; }
+  .post-meta { display:flex; gap:10px; align-items:center; font-size:var(--fs-xs); color:var(--text-4); margin-top:12px; }
+  @media (max-width:860px){ .featured { grid-template-columns:1fr; } .post-grid { grid-template-columns:1fr 1fr; } }
+  @media (max-width:560px){ .post-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body data-page="blog">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+
+<div class="wrap bl-head">
+  <div class="eyebrow">Blog</div>
+  <h1 style="font-size:clamp(2rem,3.4vw,2.8rem)">Tipy, stratégie a novinky</h1>
+  <p class="muted" style="margin-top:6px">Ako tipovať lepšie, rozhovory s top hráčmi a všetko zo sveta Tiperligy.</p>
+  <div class="bl-cats">
+    <span class="cat active">Všetko</span><span class="cat">Stratégia</span><span class="cat">Novinky</span><span class="cat">Rozhovory</span><span class="cat">Návody</span>
+  </div>
+</div>
+
+<div class="wrap" style="padding-bottom:64px">
+  <!-- FEATURED -->
+  <a href="blog-post.html" class="card card-hover featured">
+    <div class="featured-img"><span class="tag tag-gold" style="position:absolute;top:18px;left:18px">Odporúčané</span></div>
+    <div class="featured-body">
+      <span class="tag tag-brand" style="align-self:flex-start;margin-bottom:14px">Stratégia</span>
+      <h2 style="font-size:var(--fs-h2);margin-bottom:12px">5 chýb, ktoré robí 90 % tipérov pri presnom výsledku</h2>
+      <p class="muted" style="margin-bottom:18px">Tipovať presné skóre je umenie. Pozreli sme sa na dáta z 2 miliónov tipov a našli vzorce, ktoré ťa stoja body. Tu je, ako sa im vyhnúť.</p>
+      <div class="row g-3"><span class="avatar avatar-sm" style="background:linear-gradient(135deg,#7c5cff,#5b3fd6);color:#fff">PT</span><div><b class="hi" style="font-size:var(--fs-sm)">Peter Tóth</b><div class="muted" style="font-size:var(--fs-xs)">8. feb 2026 · 6 min čítania</div></div></div>
+    </div>
+  </a>
+
+  <!-- GRID -->
+  <div class="post-grid">
+    <a href="blog-post.html" class="card card-hover" style="overflow:hidden">
+      <div class="post-img" style="background:linear-gradient(135deg,#0a3d2e,#15543a)">⚽</div>
+      <div class="post-body"><span class="tag tag-info">Novinky</span><h4 style="margin:12px 0 6px">Liga majstrov 26/27 je tu — tipuj od osemfinále</h4><p class="muted" style="font-size:var(--fs-sm)">Spustili sme novú oficiálnu sezónu s 125 zápasmi a globálnym rebríčkom.</p><div class="post-meta"><span>5. feb 2026</span>·<span>3 min</span></div></div>
+    </a>
+    <a href="blog-post.html" class="card card-hover" style="overflow:hidden">
+      <div class="post-img" style="background:linear-gradient(135deg,#5b3fd6,#2b0a4a)">🏆</div>
+      <div class="post-body"><span class="tag tag-brand">Rozhovor</span><h4 style="margin:12px 0 6px">Ako Lucia vyhrala 3 sezóny po sebe</h4><p class="muted" style="font-size:var(--fs-sm)">Líderka rebríčka prezrádza svoju rutinu a prečo nikdy netipuje remízy.</p><div class="post-meta"><span>2. feb 2026</span>·<span>7 min</span></div></div>
+    </a>
+    <a href="blog-post.html" class="card card-hover" style="overflow:hidden">
+      <div class="post-img" style="background:linear-gradient(135deg,#c2410c,#7a1f06)">📊</div>
+      <div class="post-body"><span class="tag tag-gold">Návod</span><h4 style="margin:12px 0 6px">Ako si založiť ligu pre celú firmu</h4><p class="muted" style="font-size:var(--fs-sm)">Krok za krokom: od vytvorenia sezóny po pozvanie 50 kolegov cez ID.</p><div class="post-meta"><span>29. jan 2026</span>·<span>4 min</span></div></div>
+    </a>
+    <a href="blog-post.html" class="card card-hover" style="overflow:hidden">
+      <div class="post-img" style="background:linear-gradient(135deg,#0369a1,#06354f)">🧊</div>
+      <div class="post-body"><span class="tag tag-brand">Stratégia</span><h4 style="margin:12px 0 6px">Štatistika vs. srdce: ako tipovať deriby</h4><p class="muted" style="font-size:var(--fs-sm)">Veľké zápasy sú nevyspytateľné. Kedy veriť dátam a kedy intuícii.</p><div class="post-meta"><span>24. jan 2026</span>·<span>5 min</span></div></div>
+    </a>
+    <a href="blog-post.html" class="card card-hover" style="overflow:hidden">
+      <div class="post-img" style="background:linear-gradient(135deg,#16a085,#0c5f4d)">🎖️</div>
+      <div class="post-body"><span class="tag tag-info">Novinky</span><h4 style="margin:12px 0 6px">Predstavujeme nový systém odznakov</h4><p class="muted" style="font-size:var(--fs-sm)">24 achievementov, 4 úrovne vzácnosti a progres k ďalším métam.</p><div class="post-meta"><span>18. jan 2026</span>·<span>3 min</span></div></div>
+    </a>
+    <a href="blog-post.html" class="card card-hover" style="overflow:hidden">
+      <div class="post-img" style="background:linear-gradient(135deg,#8e44ad,#522963)">📱</div>
+      <div class="post-body"><span class="tag tag-gold">Návod</span><h4 style="margin:12px 0 6px">Tipovanie z mobilu: rýchle tipy za 30 sekúnd</h4><p class="muted" style="font-size:var(--fs-sm)">Stihni uzávierku aj na ceste. Sprievodca mobilným tipovaním.</p><div class="post-meta"><span>12. jan 2026</span>·<span>2 min</span></div></div>
+    </a>
+  </div>
+
+  <div class="center" style="margin-top:30px"><button class="btn btn-secondary">Načítať staršie články</button></div>
+</div>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script>
+  document.querySelectorAll('.cat').forEach(c => c.addEventListener('click', () => {
+    document.querySelectorAll('.cat').forEach(x => x.classList.toggle('active', x === c));
+  }));
+</script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Admin · Vyhodnotenie</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .ad-head { padding:24px 0 16px; }
+  .crumb { font-size:var(--fs-sm); color:var(--text-4); margin-bottom:12px; }
+  .crumb a { color:var(--text-3); } .crumb a:hover { color:var(--brand-bright); }
+  .ev-layout { display:grid; grid-template-columns:1fr 320px; gap:26px; align-items:start; padding-bottom:64px; }
+  .ev-match { padding:20px 22px; margin-bottom:14px; transition:border-color .15s; }
+  .ev-match.done { border-color:var(--success-line); }
+  .ev-match.canceled { opacity:.7; }
+  .ev-top { display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:18px; flex-wrap:wrap; }
+  .ev-teams { display:grid; grid-template-columns:1fr auto 1fr; gap:18px; align-items:center; }
+  .ev-team { display:flex; align-items:center; gap:12px; }
+  .ev-team.r { flex-direction:row-reverse; }
+  .ev-team .nm { font-family:var(--font-display); font-weight:700; font-size:var(--fs-lg); color:var(--text-1); }
+  .ev-score { display:flex; align-items:center; gap:12px; }
+  .ev-score input { width:62px; height:62px; text-align:center; font-family:var(--num); font-weight:700; font-size:1.8rem; padding:0; border-radius:var(--r-md); }
+  .ev-colon { font-family:var(--num); font-weight:700; font-size:1.6rem; color:var(--text-4); }
+  .ev-actions { display:flex; gap:10px; align-items:center; margin-top:18px; padding-top:16px; border-top:1px solid var(--line); flex-wrap:wrap; }
+  .ev-meta { font-size:var(--fs-sm); color:var(--text-4); }
+  .info-banner { display:flex; gap:12px; align-items:flex-start; padding:14px 16px; border-radius:var(--r-md); background:var(--info-soft); border:1px solid rgba(58,160,255,.25); margin-bottom:20px; }
+  @media (max-width:980px){ .ev-layout { grid-template-columns:1fr; } }
+  @media (max-width:560px){
+    .ev-match { padding:18px; }
+    /* tag + date centered, stacked (tag first, then date · place) */
+    .ev-top { flex-direction:column-reverse; align-items:center; text-align:center; gap:8px; margin-bottom:16px; }
+    /* teams: logo above name, centered, side by side with the score field between */
+    .ev-teams { grid-template-columns:1fr auto 1fr; gap:10px; align-items:start; }
+    .ev-team { flex-direction:column; align-items:center; text-align:center; gap:7px; }
+    .ev-team.r { flex-direction:column; }
+    .ev-team .nm { font-size:var(--fs-sm); line-height:1.15; }
+    .ev-score { gap:6px; align-self:center; }
+    .ev-score input { width:46px; height:46px; font-size:1.35rem; }
+    /* actions stacked: save (full), cancel below, meta text last & centered */
+    .ev-actions { flex-direction:column; align-items:stretch; gap:10px; }
+    .ev-actions .btn { width:100%; }
+    .ev-actions .tag { align-self:center; }
+    .ev-actions .grow { flex:none; }
+    .ev-actions .ev-meta { text-align:center !important; }
+  }
+</style>
+</head>
+<body data-page="admin">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+<div data-shell-adminnav="evaluate"></div>
+
+<div class="wrap ad-head">
+  <div class="crumb"><a href="admin.html">Admin</a> › Vyhodnotenie zápasov</div>
+  <div class="between wrap-gap" style="gap:16px">
+    <div><h1 style="font-size:clamp(1.8rem,3vw,2.4rem)">Vyhodnotenie zápasov</h1><p class="muted" style="margin-top:6px">Zadaj výsledné skóre. Body sa hráčom pridelia automaticky po uložení.</p></div>
+    <div class="row g-2"><select class="select" style="width:auto"><option>MS v hokeji 2026 · Kolo 13</option><option>Liga majstrov · Kolo 13</option></select></div>
+  </div>
+</div>
+
+<div class="wrap ev-layout">
+  <main>
+    <div class="info-banner">
+      <span style="font-size:17px">🔒</span>
+      <div style="font-size:var(--fs-sm);color:var(--text-2)">Výsledky zadávaš <b class="hi">oddelene od tipov hráčov</b> — ich tipy nevidíš, kým výsledok neuložíš. Tým je zaručená férovosť. Zrušený zápas neprideľuje žiadne body.</div>
+    </div>
+
+    <!-- pending match -->
+    <div class="card ev-match">
+      <div class="ev-top"><span class="ev-meta">7. feb · 21:00 · Štadión Bernabéu</span><span class="tag tag-warning"><span class="dot"></span>Čaká na výsledok</span></div>
+      <div class="ev-teams">
+        <div class="ev-team"><span class="team-logo" style="width:42px;height:42px;font-size:13px;background:linear-gradient(135deg,#fff,#dcdcdc);color:#1a1a1a">RM</span><span class="nm">Real Madrid</span></div>
+        <div class="ev-score"><input class="input" inputmode="numeric" placeholder="0"><span class="ev-colon">:</span><input class="input" inputmode="numeric" placeholder="0"></div>
+        <div class="ev-team r"><span class="team-logo" style="width:42px;height:42px;font-size:13px;background:linear-gradient(135deg,#d3010c,#7d0107)">LIV</span><span class="nm">Liverpool</span></div>
+      </div>
+      <div class="ev-actions"><button class="btn btn-primary" data-save>Uložiť výsledok</button><button class="btn btn-ghost" data-cancel>Označiť ako zrušený</button><span class="ev-meta grow" style="text-align:right">288 hráčov tipovalo tento zápas</span></div>
+    </div>
+
+    <div class="card ev-match">
+      <div class="ev-top"><span class="ev-meta">7. feb · 21:00 · Camp Nou</span><span class="tag tag-warning"><span class="dot"></span>Čaká na výsledok</span></div>
+      <div class="ev-teams">
+        <div class="ev-team"><span class="team-logo" style="width:42px;height:42px;font-size:13px;background:linear-gradient(135deg,#a50044,#6e0030)">FCB</span><span class="nm">Barcelona</span></div>
+        <div class="ev-score"><input class="input" inputmode="numeric" placeholder="0"><span class="ev-colon">:</span><input class="input" inputmode="numeric" placeholder="0"></div>
+        <div class="ev-team r"><span class="team-logo" style="width:42px;height:42px;font-size:13px;background:linear-gradient(135deg,#6cabdd,#27568a)">MCI</span><span class="nm">Man City</span></div>
+      </div>
+      <div class="ev-actions"><button class="btn btn-primary" data-save>Uložiť výsledok</button><button class="btn btn-ghost" data-cancel>Označiť ako zrušený</button><span class="ev-meta grow" style="text-align:right">312 hráčov tipovalo tento zápas</span></div>
+    </div>
+
+    <!-- already evaluated -->
+    <div class="card ev-match done">
+      <div class="ev-top"><span class="ev-meta">6. feb · 18:45 · O2 Arena</span><span class="tag tag-success"><span class="dot"></span>Vyhodnotené</span></div>
+      <div class="ev-teams">
+        <div class="ev-team"><span class="team-logo" style="width:42px;height:42px;font-size:13px;background:linear-gradient(135deg,#0b4ea2,#06306a)">SVK</span><span class="nm">Slovensko</span></div>
+        <div class="ev-score"><span class="num" style="font-size:1.9rem;font-weight:700;color:var(--success)">3</span><span class="ev-colon">:</span><span class="num" style="font-size:1.9rem;font-weight:700;color:var(--text-1)">2</span></div>
+        <div class="ev-team r"><span class="team-logo" style="width:42px;height:42px;font-size:13px;background:linear-gradient(135deg,#d3010c,#7d0107)">FIN</span><span class="nm">Fínsko</span></div>
+      </div>
+      <div class="ev-actions"><span class="tag tag-success">✓ Body pridelené 412 hráčom</span><button class="btn btn-secondary btn-sm" data-edit>Upraviť výsledok</button><span class="ev-meta grow" style="text-align:right">38 hráčov trafilo presný výsledok</span></div>
+    </div>
+
+    <!-- canceled -->
+    <div class="card ev-match canceled">
+      <div class="ev-top"><span class="ev-meta">5. feb · 21:00 · San Siro</span><span class="tag tag-muted"><span class="dot" style="background:var(--text-4)"></span>Zrušený</span></div>
+      <div class="ev-teams">
+        <div class="ev-team"><span class="team-logo" style="width:42px;height:42px;font-size:13px;background:linear-gradient(135deg,#0068a8,#003a5e)">INT</span><span class="nm">Inter</span></div>
+        <div class="ev-score"><span class="ev-colon">—</span></div>
+        <div class="ev-team r"><span class="team-logo" style="width:42px;height:42px;font-size:13px;background:linear-gradient(135deg,#000,#3a3a3a);color:#fff">JUV</span><span class="nm">Juventus</span></div>
+      </div>
+      <div class="ev-actions"><span class="tag tag-muted">Žiadne body sa neprideľujú</span><button class="btn btn-secondary btn-sm" data-restore>Obnoviť zápas</button></div>
+    </div>
+  </main>
+
+  <aside style="position:sticky;top:140px">
+    <div class="card card-pad">
+      <div class="stat-label" style="margin-bottom:12px">Stav kola 13</div>
+      <div class="row g-3" style="margin-bottom:14px"><span class="stat-value" style="font-size:2.2rem">2<span style="color:var(--text-4);font-size:1.2rem">/8</span></span><div style="align-self:center"><div class="muted" style="font-size:var(--fs-sm)">zostáva vyhodnotiť</div></div></div>
+      <div class="progress" style="margin-bottom:16px"><i style="width:75%"></i></div>
+      <div class="stack g-2" style="font-size:var(--fs-sm)">
+        <div class="between"><span class="status-dot" style="color:var(--success)"><span class="d" style="width:7px;height:7px;border-radius:50%;background:var(--success)"></span>Vyhodnotené</span><b class="hi num">5</b></div>
+        <div class="between"><span class="status-dot" style="color:var(--warning)"><span class="d" style="width:7px;height:7px;border-radius:50%;background:var(--warning)"></span>Čaká</span><b class="hi num">2</b></div>
+        <div class="between"><span class="status-dot" style="color:var(--text-4)"><span class="d" style="width:7px;height:7px;border-radius:50%;background:var(--text-4)"></span>Zrušené</span><b class="hi num">1</b></div>
+      </div>
+      <button class="btn btn-primary btn-block" style="margin-top:18px" aria-disabled="true">Uzavrieť kolo (2 zostáva)</button>
+    </div>
+    <div class="card card-pad" style="margin-top:18px;background:var(--surface-2)">
+      <b class="hi" style="display:block;margin-bottom:6px">💡 Tip</b>
+      <p class="muted" style="font-size:var(--fs-sm)">Po uložení všetkých výsledkov uzavri kolo — hráči dostanú notifikáciu o pridelených bodoch.</p>
+    </div>
+  </aside>
+</div>
+
+<div class="toast-wrap" id="toastWrap" style="position:fixed;bottom:24px;right:24px;z-index:200;display:flex;flex-direction:column;gap:10px"></div>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script>
+  function toast(title, msg, type){
+    const colors = { success:'var(--success)', danger:'var(--danger)', info:'var(--info)' };
+    const t = document.createElement('div');
+    t.className = 'toast ' + type;
+    t.innerHTML = `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="${colors[type]}" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><div><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div>`;
+    document.getElementById('toastWrap').appendChild(t);
+    setTimeout(()=>{ t.style.transition='opacity .3s,transform .3s'; t.style.opacity='0'; t.style.transform='translateX(20px)'; setTimeout(()=>t.remove(),300); }, 2800);
+  }
+  document.querySelectorAll('[data-save]').forEach(b => b.addEventListener('click', () => {
+    const m = b.closest('.ev-match');
+    const ins = m.querySelectorAll('.ev-score input');
+    if (!ins[0].value || !ins[1].value) { toast('Chýba skóre', 'Zadaj výsledok oboch tímov.', 'danger'); return; }
+    m.classList.add('done');
+    m.querySelector('.ev-top .tag').className = 'tag tag-success';
+    m.querySelector('.ev-top .tag').innerHTML = '<span class="dot"></span>Vyhodnotené';
+    toast('Výsledok uložený', 'Body boli pridelené hráčom automaticky.', 'success');
+  }));
+  document.querySelectorAll('[data-cancel]').forEach(b => b.addEventListener('click', () => {
+    const m = b.closest('.ev-match'); m.classList.add('canceled');
+    m.querySelector('.ev-top .tag').className = 'tag tag-muted';
+    m.querySelector('.ev-top .tag').innerHTML = '<span class="dot" style="background:var(--text-4)"></span>Zrušený';
+    toast('Zápas zrušený', 'Za tento zápas sa neprideľujú žiadne body.', 'info');
+  }));
+</script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

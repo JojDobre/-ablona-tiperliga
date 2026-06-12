@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Admin · Ligy & sezóny</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .ad-head { padding:26px 0 18px; }
+  .filters { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:18px; }
+  .se-block { margin-bottom:10px; }
+  .se-row { display:grid; grid-template-columns: auto 1fr 100px 90px 110px auto; gap:16px; align-items:center; padding:15px 18px; cursor:pointer; }
+  .se-cover { width:46px; height:46px; border-radius:var(--r-md); position:relative; flex:none; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:700; color:#fff; font-size:14px; }
+  .se-num { font-family:var(--num); font-weight:700; font-variant-numeric:tabular-nums; text-align:center; }
+  .se-num .lbl { font-size:var(--fs-xs); color:var(--text-4); font-weight:600; display:block; }
+  .leagues-nested { padding:0 18px 14px 80px; display:none; }
+  .leagues-nested.open { display:block; }
+  .lg-nest-row { display:grid; grid-template-columns:auto 1fr 90px 110px auto; gap:14px; align-items:center; padding:11px 14px; border-radius:var(--r-sm); background:var(--surface-2); margin-bottom:6px; }
+  .chev { transition:transform .2s; color:var(--text-4); }
+  .chev.open { transform:rotate(90deg); }
+  @media (max-width:860px){ .se-row { grid-template-columns:auto 1fr auto; } .se-col-hide { display:none; } .leagues-nested { padding-left:18px; } .lg-nest-row { grid-template-columns:auto 1fr auto; } }
+  @media (max-width:600px){
+    /* filters: search full width, two selects 50/50 below */
+    .filters { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .filters .search { grid-column:1 / -1; max-width:none !important; }
+    .filters .select { width:100% !important; }
+    .filters .grow { display:none; }
+    .filters > span { grid-column:1 / -1; }
+    /* season cards: full-width banner on top (rounded), tags on the banner */
+    .se-block.card { overflow:hidden; }
+    .se-init { display:none; }
+    .se-row { display:flex; flex-direction:column; align-items:stretch; gap:10px; padding:0 0 14px; }
+    .se-cover { width:100%; height:64px; border-radius:0; justify-content:flex-start; align-items:flex-end; padding:0 18px 9px; font-size:16px; }
+    .se-row > div { padding-inline:18px; }
+    .se-row > .row { padding-inline:18px; justify-content:space-between; }
+    .se-row > .row .btn { flex:1; }
+    .leagues-nested { padding:0 14px 14px; }
+  }
+</style>
+</head>
+<body data-page="admin">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+<div data-shell-adminnav="leagues"></div>
+
+<div class="wrap ad-head">
+  <div class="between wrap-gap" style="gap:16px">
+    <div><h1 style="font-size:clamp(1.8rem,3vw,2.4rem)">Ligy &amp; sezóny</h1><p class="muted" style="margin-top:6px">Admin vidí a spravuje všetky sezóny a ligy na platforme.</p></div>
+    <a href="create-season.html" class="btn btn-primary">+ Vytvoriť sezónu</a>
+  </div>
+</div>
+
+<div class="wrap" style="padding-bottom:64px">
+  <div class="filters">
+    <div class="input-icon search" style="max-width:300px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4" stroke-linecap="round"/></svg><input class="input" placeholder="Hľadať sezónu alebo ligu…"></div>
+    <select class="select" style="width:auto"><option>Všetky typy</option><option>Oficiálne</option><option>Community</option></select>
+    <select class="select" style="width:auto"><option>Všetky stavy</option><option>Live</option><option>Čoskoro</option><option>Ukončené</option></select>
+    <div class="grow"></div>
+    <span class="muted" style="font-size:var(--fs-sm)">12 sezón · 326 líg</span>
+  </div>
+
+  <!-- season with nested leagues -->
+  <div class="se-block card">
+    <div class="se-row" data-expand>
+      <span class="se-cover" style="background:linear-gradient(135deg,#0b4ea2,#06306a)"><span class="se-init">MS</span><span class="cover-tags"><span class="tag tag-brand">Oficiálna</span><span class="tag tag-live"><span class="dot"></span>Live</span></span></span>
+      <div><div class="row g-2 wrap-gap"><b class="hi">MS v hokeji 2026</b><span class="row-tags-hide-m" style="display:contents"><span class="tag tag-brand">Oficiálna</span><span class="tag tag-live"><span class="dot"></span>Live</span></span></div><div class="muted" style="font-size:var(--fs-sm)">Hokej · 26 líg · admin Peter T.</div></div>
+      <div class="se-num se-col-hide">8 420<span class="lbl">hráčov</span></div>
+      <div class="se-num se-col-hide">14<span class="lbl">kôl</span></div>
+      <div class="se-num se-col-hide">7<span class="lbl">na vyhodnotenie</span></div>
+      <div class="row g-2"><a href="admin-competition.html" class="btn btn-secondary btn-sm">Spravovať</a><span class="chev" data-chev>›</span></div>
+    </div>
+    <div class="leagues-nested">
+      <div class="lg-nest-row"><span class="team-logo" style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,#0b4ea2,#06306a)">OF</span><div><b class="hi" style="font-size:var(--fs-sm)">Oficiálny rebríček MS</b> <span class="tag tag-brand" style="padding:1px 6px">Oficiálna</span><div class="muted" style="font-size:var(--fs-xs)">8 420 hráčov · bez hesla</div></div><span class="muted se-col-hide" style="font-size:var(--fs-sm)">14 kôl</span><span class="status-dot" style="color:var(--success);font-size:var(--fs-sm)">Live</span><a href="admin-competition.html" class="btn btn-ghost btn-sm">Spravovať</a></div>
+      <div class="lg-nest-row"><span class="team-logo" style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,#7c5cff,#3b1f8a)">TK</span><div><b class="hi" style="font-size:var(--fs-sm)">Tipovačka s kolegami</b> <span class="tag tag-gold" style="padding:1px 6px">Custom</span><div class="muted" style="font-size:var(--fs-xs)">18 hráčov · 🔒 HK4F2X</div></div><span class="muted se-col-hide" style="font-size:var(--fs-sm)">14 kôl</span><span class="status-dot" style="color:var(--success);font-size:var(--fs-sm)">Live</span><a href="admin-competition.html" class="btn btn-ghost btn-sm">Spravovať</a></div>
+      <div class="lg-nest-row"><span class="team-logo" style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,#16a085,#0c5f4d)">FA</span><div><b class="hi" style="font-size:var(--fs-sm)">Fanúšikovia SVK</b> <span class="tag tag-gold" style="padding:1px 6px">Custom</span><div class="muted" style="font-size:var(--fs-xs)">342 hráčov · verejná</div></div><span class="muted se-col-hide" style="font-size:var(--fs-sm)">14 kôl</span><span class="status-dot" style="color:var(--success);font-size:var(--fs-sm)">Live</span><a href="admin-competition.html" class="btn btn-ghost btn-sm">Spravovať</a></div>
+    </div>
+  </div>
+
+  <div class="se-block card">
+    <div class="se-row" data-expand>
+      <span class="se-cover" style="background:linear-gradient(135deg,#5b3fd6,#2b0a4a)"><span class="se-init">LM</span><span class="cover-tags"><span class="tag tag-brand">Oficiálna</span><span class="tag tag-live"><span class="dot"></span>Live</span></span></span>
+      <div><div class="row g-2 wrap-gap"><b class="hi">Liga majstrov 26/27</b><span class="row-tags-hide-m" style="display:contents"><span class="tag tag-brand">Oficiálna</span><span class="tag tag-live"><span class="dot"></span>Live</span></span></div><div class="muted" style="font-size:var(--fs-sm)">Futbal · 41 líg · admin Peter T.</div></div>
+      <div class="se-num se-col-hide">11 200<span class="lbl">hráčov</span></div>
+      <div class="se-num se-col-hide">13<span class="lbl">kôl</span></div>
+      <div class="se-num se-col-hide">0<span class="lbl">na vyhodnotenie</span></div>
+      <div class="row g-2"><a href="admin-competition.html" class="btn btn-secondary btn-sm">Spravovať</a><span class="chev" data-chev>›</span></div>
+    </div>
+    <div class="leagues-nested">
+      <div class="lg-nest-row"><span class="team-logo" style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,#5b3fd6,#2b0a4a)">OF</span><div><b class="hi" style="font-size:var(--fs-sm)">Oficiálny rebríček LM</b> <span class="tag tag-brand" style="padding:1px 6px">Oficiálna</span></div><span class="muted se-col-hide" style="font-size:var(--fs-sm)">13 kôl</span><span class="status-dot" style="color:var(--success);font-size:var(--fs-sm)">Live</span><a href="admin-competition.html" class="btn btn-ghost btn-sm">Spravovať</a></div>
+      <div class="lg-nest-row"><span class="team-logo" style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,#c2410c,#7a1f06)">PL</span><div><b class="hi" style="font-size:var(--fs-sm)">Premier League Klub</b> <span class="tag tag-gold" style="padding:1px 6px">Custom</span><div class="muted" style="font-size:var(--fs-xs)">760 hráčov · verejná</div></div><span class="muted se-col-hide" style="font-size:var(--fs-sm)">13 kôl</span><span class="status-dot" style="color:var(--success);font-size:var(--fs-sm)">Live</span><a href="admin-competition.html" class="btn btn-ghost btn-sm">Spravovať</a></div>
+    </div>
+  </div>
+
+  <div class="se-block card">
+    <div class="se-row" data-expand>
+      <span class="se-cover" style="background:linear-gradient(135deg,#0a3d2e,#15543a)"><span class="se-init">NHL</span><span class="cover-tags"><span class="tag tag-brand">Oficiálna</span><span class="tag tag-info">Čoskoro</span></span></span>
+      <div><div class="row g-2 wrap-gap"><b class="hi">NHL Playoff 2026</b><span class="row-tags-hide-m" style="display:contents"><span class="tag tag-brand">Oficiálna</span><span class="tag tag-info">Čoskoro</span><span class="tag tag-warning">Čaká schválenie</span></span></div><div class="muted" style="font-size:var(--fs-sm)">Hokej · 8 líg · admin Mária K.</div></div>
+      <div class="se-num se-col-hide">4 110<span class="lbl">hráčov</span></div>
+      <div class="se-num se-col-hide">4<span class="lbl">kolá</span></div>
+      <div class="se-num se-col-hide">—<span class="lbl">na vyhodnotenie</span></div>
+      <div class="row g-2"><button class="btn btn-primary btn-sm">Schváliť</button><span class="chev" data-chev>›</span></div>
+    </div>
+    <div class="leagues-nested">
+      <div class="lg-nest-row"><span class="team-logo" style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,#0a3d2e,#15543a)">OF</span><div><b class="hi" style="font-size:var(--fs-sm)">Oficiálny rebríček NHL</b> <span class="tag tag-brand" style="padding:1px 6px">Oficiálna</span></div><span class="muted se-col-hide" style="font-size:var(--fs-sm)">4 kolá</span><span class="status-dot" style="color:var(--info);font-size:var(--fs-sm)">Čoskoro</span><a href="admin-competition.html" class="btn btn-ghost btn-sm">Spravovať</a></div>
+    </div>
+  </div>
+
+  <div class="se-block card">
+    <div class="se-row" data-expand>
+      <span class="se-cover" style="background:linear-gradient(135deg,#7c5cff,#3b1f8a)"><span class="se-init">FL</span><span class="cover-tags"><span class="tag tag-gold">Community</span><span class="tag tag-live"><span class="dot"></span>Live</span></span></span>
+      <div><div class="row g-2 wrap-gap"><b class="hi">Fortuna Liga Tipovačka</b><span class="row-tags-hide-m" style="display:contents"><span class="tag tag-gold">Community</span><span class="tag tag-live"><span class="dot"></span>Live</span></span></div><div class="muted" style="font-size:var(--fs-sm)">Futbal · 1 liga · vlastník @jansk</div></div>
+      <div class="se-num se-col-hide">1 240<span class="lbl">hráčov</span></div>
+      <div class="se-num se-col-hide">22<span class="lbl">kôl</span></div>
+      <div class="se-num se-col-hide">0<span class="lbl">na vyhodnotenie</span></div>
+      <div class="row g-2"><a href="admin-competition.html" class="btn btn-secondary btn-sm">Spravovať</a><span class="chev" data-chev>›</span></div>
+    </div>
+    <div class="leagues-nested">
+      <div class="lg-nest-row"><span class="team-logo" style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,#7c5cff,#3b1f8a)">FL</span><div><b class="hi" style="font-size:var(--fs-sm)">Fortuna Liga Tipovačka</b> <span class="tag tag-gold" style="padding:1px 6px">Custom</span><div class="muted" style="font-size:var(--fs-xs)">1 240 hráčov · verejná</div></div><span class="muted se-col-hide" style="font-size:var(--fs-sm)">22 kôl</span><span class="status-dot" style="color:var(--success);font-size:var(--fs-sm)">Live</span><a href="admin-competition.html" class="btn btn-ghost btn-sm">Spravovať</a></div>
+    </div>
+  </div>
+</div>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script>
+  document.querySelectorAll('[data-expand]').forEach(row => row.addEventListener('click', e => {
+    if (e.target.closest('.btn')) return;
+    const nested = row.parentElement.querySelector('.leagues-nested');
+    const chev = row.querySelector('[data-chev]');
+    nested.classList.toggle('open'); chev.classList.toggle('open');
+  }));
+</script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

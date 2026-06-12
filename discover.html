@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Objaviť súťaže</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .dc-head { padding:32px 0 18px; }
+  .dc-bar { display:grid; grid-template-columns:1fr auto auto auto; gap:12px; margin-bottom:16px; }
+  .dc-bar .input-icon { max-width:none; }
+  .chips { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:8px; }
+  .chip { font-size:var(--fs-sm); font-weight:600; color:var(--text-3); background:var(--surface-2); border:1px solid var(--line); padding:7px 13px; border-radius:var(--r-pill); cursor:pointer; transition:all .15s; }
+  .chip:hover { color:var(--text-1); border-color:var(--brand-line); }
+  .chip.active { color:var(--brand-bright); background:var(--brand-soft); border-color:var(--brand-line); }
+  .dc-layout { display:grid; grid-template-columns:260px 1fr; gap:26px; align-items:start; padding-bottom:72px; }
+  .filter-card { position:sticky; top:92px; }
+  .fc-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px; }
+  .fc-chevron { display:none; color:var(--text-3); transition:transform .2s; font-size:13px; }
+  .fc-body { display:block; }
+  .fc-group { padding:14px 0; border-bottom:1px solid var(--line); }
+  .fc-group:last-child { border-bottom:none; }
+  .fc-title { font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.1em; color:var(--text-4); font-weight:700; margin-bottom:10px; }
+  .results-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .dc-cover { height:92px; position:relative; display:flex; align-items:flex-start; justify-content:space-between; padding:12px 14px; }
+  .dc-cover .tag { position:relative; z-index:1; }
+  .dc-body { padding:16px 18px 18px; }
+  .dc-meta { display:flex; gap:14px; font-size:var(--fs-xs); color:var(--text-3); flex-wrap:wrap; margin-bottom:14px; }
+  .dc-meta b { color:var(--text-1); font-family:var(--num); }
+  .activity { display:inline-flex; align-items:center; gap:5px; font-size:var(--fs-xs); font-weight:700; }
+  .act-dot { width:7px; height:7px; border-radius:50%; }
+  @media (max-width:1040px){ .results-grid { grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:900px){
+    .dc-layout { grid-template-columns:1fr; }
+    .filter-card { position:static; }
+    .dc-bar { grid-template-columns:1fr 1fr; }
+    .dc-bar .input-icon { grid-column:1 / -1; }
+    .dc-bar #kindSeg { grid-column:1 / -1; justify-self:center; }
+    .dc-bar .select { width:100% !important; }
+    .fc-head { cursor:pointer; margin-bottom:0; user-select:none; }
+    .fc-chevron { display:inline-block; }
+    .filter-card.open .fc-chevron { transform:rotate(180deg); }
+    .fc-body { display:none; }
+    .filter-card.open .fc-body { display:block; margin-top:6px; }
+  }
+  @media (max-width:560px){ .results-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body data-page="seasons">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+
+<div class="wrap dc-head">
+  <div class="between wrap-gap" style="gap:16px">
+    <div>
+      <div class="eyebrow">Objaviť</div>
+      <h1 style="font-size:clamp(2rem,3.4vw,2.8rem)">Nájdi verejnú súťaž alebo ligu</h1>
+      <p class="muted" style="margin-top:6px">Prehľadaj komunitné sezóny a ligy podľa športu, veľkosti a aktivity — alebo sa pripoj cez ID.</p>
+    </div>
+    <a href="join.html" class="btn btn-secondary">Mám ID →</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="dc-bar">
+    <div class="input-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4" stroke-linecap="round"/></svg>
+      <input class="input" placeholder="Hľadať podľa názvu, organizátora alebo ID…" value="liga">
+    </div>
+    <div class="segment" id="kindSeg">
+      <button class="active" data-kind="all">Všetko</button>
+      <button data-kind="seasons">Sezóny</button>
+      <button data-kind="leagues">Ligy</button>
+    </div>
+    <select class="select" style="width:auto"><option>Všetky športy</option><option>Futbal</option><option>Hokej</option><option>Basketbal</option></select>
+    <select class="select" style="width:auto"><option>Najaktívnejšie</option><option>Najviac hráčov</option><option>Najnovšie</option></select>
+  </div>
+</div>
+
+<div class="wrap dc-layout">
+  <!-- FILTERS -->
+  <aside class="card card-pad filter-card" data-filters>
+    <div class="fc-head" data-filter-toggle>
+      <b class="hi">Filtre</b>
+      <span class="fc-chevron">▾</span>
+    </div>
+    <div class="fc-body">
+    <div class="fc-group">
+      <div class="fc-title">Šport</div>
+      <div class="stack g-2">
+        <label class="check" style="font-size:var(--fs-sm)"><input type="checkbox" checked> Futbal</label>
+        <label class="check" style="font-size:var(--fs-sm)"><input type="checkbox" checked> Hokej</label>
+        <label class="check" style="font-size:var(--fs-sm)"><input type="checkbox"> Basketbal</label>
+        <label class="check" style="font-size:var(--fs-sm)"><input type="checkbox"> Mix športov</label>
+      </div>
+    </div>
+    <div class="fc-group">
+      <div class="fc-title">Počet hráčov</div>
+      <div class="stack g-2">
+        <label class="check" style="font-size:var(--fs-sm)"><input type="radio" name="size" style="appearance:auto;width:auto;height:auto"> Malá (do 50)</label>
+        <label class="check" style="font-size:var(--fs-sm)"><input type="radio" name="size" checked style="appearance:auto;width:auto;height:auto"> Stredná (50–1000)</label>
+        <label class="check" style="font-size:var(--fs-sm)"><input type="radio" name="size" style="appearance:auto;width:auto;height:auto"> Veľká (1000+)</label>
+      </div>
+    </div>
+    <div class="fc-group">
+      <div class="fc-title">Aktivita</div>
+      <div class="stack g-2">
+        <label class="check" style="font-size:var(--fs-sm)"><input type="checkbox" checked> Práve prebieha</label>
+        <label class="check" style="font-size:var(--fs-sm)"><input type="checkbox"> Čoskoro štartuje</label>
+      </div>
+    </div>
+    <div class="fc-group">
+      <div class="fc-title">Prístup</div>
+      <div class="stack g-2">
+        <label class="check" style="font-size:var(--fs-sm)"><input type="checkbox" checked> Verejné (pripojiť hneď)</label>
+        <label class="check" style="font-size:var(--fs-sm)"><input type="checkbox"> Chránené heslom</label>
+      </div>
+    </div>
+    <a href="#" class="faint" style="font-size:var(--fs-xs);display:inline-block;margin-top:12px">Vymazať filtre</a>
+    </div>
+  </aside>
+
+  <!-- RESULTS -->
+  <main>
+    <div class="chips">
+      <span class="muted" style="font-size:var(--fs-sm);margin-right:4px">Aktívne filtre:</span>
+      <span class="chip active">Futbal ✕</span>
+      <span class="chip active">Hokej ✕</span>
+      <span class="chip active">Stredná veľkosť ✕</span>
+      <span class="chip active">Verejné ✕</span>
+    </div>
+    <div class="between wrap-gap" style="margin:8px 0 18px"><span class="muted" style="font-size:var(--fs-sm)"><b class="hi num">128</b> výsledkov</span></div>
+
+    <div class="results-grid">
+
+      <a href="season.html" class="card card-hover" style="overflow:hidden">
+        <div class="dc-cover" style="background:linear-gradient(135deg,#16a085,#0c5f4d)"><span class="tag tag-gold">Community</span><span class="tag tag-live"><span class="dot"></span>Live</span></div>
+        <div class="dc-body"><h4 style="font-size:var(--fs-h4);margin-bottom:3px">Fortuna Liga Tipovačka</h4><p class="muted" style="font-size:var(--fs-xs);margin-bottom:12px">Slovenská liga · futbal · @fortuna_sk</p><div class="dc-meta"><span><b>1 240</b> hráčov</span><span><b>32</b> kôl</span></div><div class="between"><span class="activity" style="color:var(--success)"><span class="act-dot" style="background:var(--success)"></span>Veľmi aktívna</span><span class="btn btn-secondary btn-sm">Pripojiť</span></div></div>
+      </a>
+
+      <a href="season.html" class="card card-hover" style="overflow:hidden">
+        <div class="dc-cover" style="background:linear-gradient(135deg,#0e7a5f,#06402f)"><span class="tag tag-gold">Community</span><span class="tag tag-live"><span class="dot"></span>Live</span></div>
+        <div class="dc-body"><h4 style="font-size:var(--fs-h4);margin-bottom:3px">NHL Fantasy CZ/SK</h4><p class="muted" style="font-size:var(--fs-xs);margin-bottom:12px">NHL sezóna · hokej · @nhl_cz</p><div class="dc-meta"><span><b>980</b> hráčov</span><span><b>26</b> kôl</span></div><div class="between"><span class="activity" style="color:var(--success)"><span class="act-dot" style="background:var(--success)"></span>Veľmi aktívna</span><span class="btn btn-secondary btn-sm">Pripojiť</span></div></div>
+      </a>
+
+      <a href="season.html" class="card card-hover" style="overflow:hidden">
+        <div class="dc-cover" style="background:linear-gradient(135deg,#c2410c,#7a1f06)"><span class="tag tag-gold">Community</span><span class="tag tag-muted">🔒</span></div>
+        <div class="dc-body"><h4 style="font-size:var(--fs-h4);margin-bottom:3px">Premier League Klub</h4><p class="muted" style="font-size:var(--fs-xs);margin-bottom:12px">Anglická liga · futbal · @plk</p><div class="dc-meta"><span><b>760</b> hráčov</span><span><b>20</b> kôl</span></div><div class="between"><span class="activity" style="color:var(--success)"><span class="act-dot" style="background:var(--success)"></span>Aktívna</span><span class="btn btn-secondary btn-sm">Detail</span></div></div>
+      </a>
+
+      <a href="season.html" class="card card-hover" style="overflow:hidden">
+        <div class="dc-cover" style="background:linear-gradient(135deg,#0369a1,#06354f)"><span class="tag tag-gold">Community</span><span class="tag tag-live"><span class="dot"></span>Live</span></div>
+        <div class="dc-body"><h4 style="font-size:var(--fs-h4);margin-bottom:3px">Office Tipovačka 2026</h4><p class="muted" style="font-size:var(--fs-xs);margin-bottom:12px">Mix športov · firemná · @office</p><div class="dc-meta"><span><b>540</b> hráčov</span><span><b>18</b> kôl</span></div><div class="between"><span class="activity" style="color:var(--warning)"><span class="act-dot" style="background:var(--warning)"></span>Stredne aktívna</span><span class="btn btn-secondary btn-sm">Pripojiť</span></div></div>
+      </a>
+
+      <a href="season.html" class="card card-hover" style="overflow:hidden">
+        <div class="dc-cover" style="background:linear-gradient(135deg,#8e44ad,#522963)"><span class="tag tag-gold">Community</span><span class="tag tag-live"><span class="dot"></span>Live</span></div>
+        <div class="dc-body"><h4 style="font-size:var(--fs-h4);margin-bottom:3px">La Liga Amigos</h4><p class="muted" style="font-size:var(--fs-xs);margin-bottom:12px">Španielska liga · futbal · @amigos</p><div class="dc-meta"><span><b>410</b> hráčov</span><span><b>30</b> kôl</span></div><div class="between"><span class="activity" style="color:var(--success)"><span class="act-dot" style="background:var(--success)"></span>Aktívna</span><span class="btn btn-secondary btn-sm">Pripojiť</span></div></div>
+      </a>
+
+      <a href="season.html" class="card card-hover" style="overflow:hidden">
+        <div class="dc-cover" style="background:linear-gradient(135deg,#16a085,#0c5f4d)"><span class="tag tag-gold">Community</span><span class="tag tag-live"><span class="dot"></span>Live</span></div>
+        <div class="dc-body"><h4 style="font-size:var(--fs-h4);margin-bottom:3px">Extraliga Tipéri</h4><p class="muted" style="font-size:var(--fs-xs);margin-bottom:12px">SK extraliga · hokej · @extraliga</p><div class="dc-meta"><span><b>380</b> hráčov</span><span><b>22</b> kôl</span></div><div class="between"><span class="activity" style="color:var(--success)"><span class="act-dot" style="background:var(--success)"></span>Aktívna</span><span class="btn btn-secondary btn-sm">Pripojiť</span></div></div>
+      </a>
+
+      <a href="season.html" class="card card-hover" style="overflow:hidden">
+        <div class="dc-cover" style="background:linear-gradient(135deg,#3a7bd5,#1b3f72)"><span class="tag tag-gold">Community</span><span class="tag tag-info">Čoskoro</span></div>
+        <div class="dc-body"><h4 style="font-size:var(--fs-h4);margin-bottom:3px">Bundesliga Fans</h4><p class="muted" style="font-size:var(--fs-xs);margin-bottom:12px">Nemecká liga · futbal · @bundes</p><div class="dc-meta"><span><b>295</b> hráčov</span><span><b>17</b> kôl</span></div><div class="between"><span class="activity" style="color:var(--info)"><span class="act-dot" style="background:var(--info)"></span>Štartuje o 3 dni</span><span class="btn btn-secondary btn-sm">Detail</span></div></div>
+      </a>
+
+      <a href="season.html" class="card card-hover" style="overflow:hidden">
+        <div class="dc-cover" style="background:linear-gradient(135deg,#d35400,#8a3700)"><span class="tag tag-gold">Community</span><span class="tag tag-live"><span class="dot"></span>Live</span></div>
+        <div class="dc-body"><h4 style="font-size:var(--fs-h4);margin-bottom:3px">Univerzita tipuje</h4><p class="muted" style="font-size:var(--fs-xs);margin-bottom:12px">Mix športov · študentská · @uni</p><div class="dc-meta"><span><b>210</b> hráčov</span><span><b>15</b> kôl</span></div><div class="between"><span class="activity" style="color:var(--warning)"><span class="act-dot" style="background:var(--warning)"></span>Stredne aktívna</span><span class="btn btn-secondary btn-sm">Pripojiť</span></div></div>
+      </a>
+
+      <a href="season.html" class="card card-hover" style="overflow:hidden">
+        <div class="dc-cover" style="background:linear-gradient(135deg,#7c5cff,#3b1f8a)"><span class="tag tag-gold">Community</span><span class="tag tag-muted">🔒</span></div>
+        <div class="dc-body"><h4 style="font-size:var(--fs-h4);margin-bottom:3px">Tipovačka s kolegami</h4><p class="muted" style="font-size:var(--fs-xs);margin-bottom:12px">Firemná · MS hokej · @kolegovia</p><div class="dc-meta"><span><b>18</b> hráčov</span><span><b>14</b> kôl</span></div><div class="between"><span class="activity" style="color:var(--success)"><span class="act-dot" style="background:var(--success)"></span>Aktívna</span><span class="btn btn-secondary btn-sm">Detail</span></div></div>
+      </a>
+
+    </div>
+
+    <div class="center" style="margin-top:24px"><button class="btn btn-secondary">Načítať ďalších 24</button></div>
+  </main>
+</div>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script>
+  document.querySelectorAll('#kindSeg button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('#kindSeg button').forEach(x => x.classList.toggle('active', x === b));
+  }));
+  document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => c.classList.toggle('active')));
+  const fc = document.querySelector('[data-filters]');
+  document.querySelector('[data-filter-toggle]').addEventListener('click', () => fc.classList.toggle('open'));
+</script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

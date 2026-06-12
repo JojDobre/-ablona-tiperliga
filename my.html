@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Moje súťaže a ligy</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .my-head { padding:32px 0 6px; }
+  .my-greet { font-family:var(--font-display); font-weight:700; font-size:clamp(1.9rem,3.2vw,2.6rem); letter-spacing:-.02em; }
+
+  /* alert banner — nearest deadline + unfilled tips */
+  .alert-banner {
+    margin:22px 0 8px; display:grid; grid-template-columns:auto 1fr auto; gap:18px 22px; align-items:center;
+    padding:20px 24px; border-radius:var(--r-xl); position:relative; overflow:hidden;
+    background:linear-gradient(120deg, color-mix(in srgb,var(--warning) 16%,var(--surface-1)), var(--surface-1) 70%);
+    border:1px solid rgba(245,165,36,.32);
+  }
+  .alert-banner::after { content:""; position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(420px 160px at 92% -20%, rgba(245,165,36,.22), transparent 70%); }
+  .alert-ic { width:54px; height:54px; border-radius:var(--r-md); flex:none; display:flex; align-items:center; justify-content:center;
+    background:var(--warning-soft); color:var(--warning); font-size:26px; position:relative; z-index:1; }
+  .alert-tx { position:relative; z-index:1; min-width:0; }
+  .alert-tx h3 { font-size:var(--fs-h4); }
+  .alert-act { position:relative; z-index:1; display:flex; flex-direction:column; align-items:flex-end; gap:10px; }
+
+  .my-layout { display:grid; grid-template-columns:1fr 340px; gap:26px; align-items:start; padding:18px 0 64px; }
+  .blk-head { display:flex; align-items:flex-end; justify-content:space-between; gap:14px; margin:30px 0 16px; flex-wrap:wrap; }
+  .blk-head:first-child { margin-top:6px; }
+  .blk-head h2 { font-size:var(--fs-h3); }
+
+  /* my-season cards */
+  .ms-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+  .ms-card { overflow:hidden; display:flex; flex-direction:column; }
+  .ms-cover { height:74px; position:relative; display:flex; align-items:flex-start; justify-content:space-between; padding:12px 14px; }
+  .ms-cover .tag { position:relative; z-index:1; }
+  .ms-body { padding:16px 18px 18px; display:flex; flex-direction:column; flex:1; }
+  .ms-title { font-size:var(--fs-h4); margin-bottom:2px; }
+  .ms-sub { font-size:var(--fs-xs); color:var(--text-3); margin-bottom:14px; }
+  .ms-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px; }
+  .ms-stat { background:var(--surface-2); border:1px solid var(--line); border-radius:var(--r-sm); padding:9px 10px; text-align:center; }
+  .ms-stat .v { font-family:var(--num); font-weight:700; font-size:1.15rem; color:var(--text-1); line-height:1.1; font-variant-numeric:tabular-nums; }
+  .ms-stat .l { font-size:9px; text-transform:uppercase; letter-spacing:.08em; color:var(--text-4); font-weight:700; margin-top:3px; }
+  .ms-prog-row { display:flex; align-items:center; justify-content:space-between; font-size:var(--fs-xs); color:var(--text-3); margin-bottom:6px; }
+  .ms-foot { margin-top:auto; padding-top:14px; display:flex; gap:8px; }
+  .ms-foot .btn { flex:1; }
+
+  /* my-league rows */
+  .ml-list { display:flex; flex-direction:column; gap:10px; }
+  .ml-row { display:grid; grid-template-columns:auto 1fr auto auto; gap:14px; align-items:center; padding:13px 16px; }
+  .ml-logo { width:44px; height:44px; border-radius:var(--r-md); flex:none; display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:700; font-size:14px; color:#fff; }
+  .ml-pos { font-family:var(--num); font-weight:700; font-size:1.3rem; line-height:1; font-variant-numeric:tabular-nums; }
+  .ml-pos .l { font-size:9px; text-transform:uppercase; letter-spacing:.08em; color:var(--text-4); font-weight:700; }
+
+  /* aside */
+  .my-aside { position:sticky; top:92px; display:flex; flex-direction:column; gap:18px; }
+  .nm { display:grid; grid-template-columns:1fr auto auto; gap:8px 12px; align-items:center; padding:11px 0; border-bottom:1px solid var(--line); }
+  .nm:last-of-type { border-bottom:none; }
+  .nm-team { display:flex; align-items:center; gap:8px; min-width:0; }
+  .nm-team .team-logo { width:26px; height:26px; font-size:10px; border-radius:8px; }
+  .nm-vs { font-size:var(--fs-xs); color:var(--text-4); white-space:nowrap; }
+  .nm-when { font-size:var(--fs-xs); color:var(--text-3); white-space:nowrap; font-family:var(--num); }
+  .quick-link { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 13px; border-radius:var(--r-sm); background:var(--surface-2); transition:background .15s; }
+  .quick-link:hover { background:var(--surface-3); }
+  .quick-link b { color:var(--text-1); font-size:var(--fs-sm); }
+  .quick-link .ar { color:var(--text-4); }
+
+  .stateseg { display:flex; }
+  @media (max-width:980px){ .my-layout { grid-template-columns:1fr; } .my-aside { position:static; } }
+  @media (max-width:680px){
+    .alert-banner { grid-template-columns:auto 1fr; }
+    .my-cta { flex-wrap:nowrap; width:100%; }
+    .my-cta .btn { flex:1 1 50%; }
+    .alert-act { grid-column:1 / -1; flex-direction:row; align-items:center; justify-content:space-between; }
+    .ms-grid { grid-template-columns:1fr; }
+    .ml-row { grid-template-columns:auto 1fr auto; }
+    .ml-row .ml-status { display:none; }
+  }
+</style>
+</head>
+<body data-page="moje">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+
+<div class="wrap my-head">
+  <div class="between wrap-gap" style="gap:16px">
+    <div>
+      <div class="eyebrow">Môj prehľad</div>
+      <div class="my-greet">Vitaj späť, Martin 👋</div>
+      <p class="muted" style="margin-top:6px">Všetky sezóny a ligy, do ktorých si prihlásený, na jednom mieste.</p>
+    </div>
+    <div class="row g-2 wrap-gap my-cta">
+      <a href="join.html" class="btn btn-secondary btn-sm">Pripojiť sa cez ID</a>
+      <a href="discover.html" class="btn btn-primary btn-sm">Objaviť súťaže</a>
+    </div>
+  </div>
+
+  <div class="row g-2 wrap-gap" style="margin-top:18px">
+    <div class="segment stateseg" role="tablist" aria-label="Náhľad dát">
+      <button class="active" data-state="full">Aktívny účet</button>
+      <button data-state="empty">Nový účet (prázdny)</button>
+    </div>
+    <span class="hint">Ukážka stavu — prepni na prázdny dashboard.</span>
+  </div>
+</div>
+
+<!-- ============ POPULATED STATE ============ -->
+<div id="stateFull">
+  <!-- ALERT: nearest deadline + unfilled tips -->
+  <div class="wrap">
+    <div class="alert-banner">
+      <span class="alert-ic">⏳</span>
+      <div class="alert-tx">
+        <div class="row g-2 wrap-gap" style="margin-bottom:5px"><h3>Máš 4 nevyplnené tipy</h3><span class="tag tag-warning"><span class="dot"></span>Uzávierka čoskoro</span></div>
+        <p class="muted" style="font-size:var(--fs-sm)">Kolo 14 · Liga majstrov 26/27 — zostáva 6 zápasov, z toho 4 ešte netipnuté.</p>
+      </div>
+      <div class="alert-act">
+        <span class="countdown cd-urgent" data-countdown="134.6">
+          <span class="cd-box"><div class="cd-num">02</div><div class="cd-lbl">hod</div></span>
+          <span class="cd-box"><div class="cd-num">14</div><div class="cd-lbl">min</div></span>
+          <span class="cd-box"><div class="cd-num">36</div><div class="cd-lbl">sek</div></span>
+        </span>
+        <a href="round.html" class="btn btn-primary btn-sm">Vyplniť tipy →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap my-layout">
+    <main>
+      <!-- MOJE SEZÓNY -->
+      <div class="blk-head" style="margin-top:8px">
+        <div><div class="eyebrow">Moje sezóny</div><h2>Sezóny, do ktorých patríš</h2></div>
+        <span class="tag tag-muted">3 sezóny</span>
+      </div>
+      <div class="ms-grid">
+
+        <div class="card card-hover ms-card">
+          <div class="ms-cover" style="background:linear-gradient(135deg,#0b4ea2,#1a1340)">
+            <span class="tag tag-brand">Oficiálna</span>
+            <span class="tag tag-live"><span class="dot"></span>Live · Kolo 14</span>
+          </div>
+          <div class="ms-body">
+            <a href="season.html" class="ms-title hi">MS v hokeji 2026</a>
+            <div class="ms-sub">IIHF · hokej · 8 420 hráčov</div>
+            <div class="ms-stats">
+              <div class="ms-stat"><div class="v brand">#312</div><div class="l">pozícia</div></div>
+              <div class="ms-stat"><div class="v gold">486</div><div class="l">body</div></div>
+              <div class="ms-stat"><div class="v">58 %</div><div class="l">presnosť</div></div>
+            </div>
+            <div class="ms-prog-row"><span>Odohraných kôl</span><b class="hi num">8 / 14</b></div>
+            <div class="progress"><i style="width:57%"></i></div>
+            <div class="ms-foot">
+              <a href="season.html" class="btn btn-secondary btn-sm">Detail</a>
+              <a href="round.html" class="btn btn-primary btn-sm">Tipovať kolo 14</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-hover ms-card">
+          <div class="ms-cover" style="background:linear-gradient(135deg,#2b0a4a,#5b3fd6)">
+            <span class="tag tag-brand">Oficiálna</span>
+            <span class="tag tag-warning"><span class="dot"></span>Uzávierka 2 h</span>
+          </div>
+          <div class="ms-body">
+            <a href="season.html" class="ms-title hi">Liga majstrov 26/27</a>
+            <div class="ms-sub">UEFA · futbal · 11 200 hráčov</div>
+            <div class="ms-stats">
+              <div class="ms-stat"><div class="v brand">#48</div><div class="l">pozícia</div></div>
+              <div class="ms-stat"><div class="v gold">612</div><div class="l">body</div></div>
+              <div class="ms-stat"><div class="v">63 %</div><div class="l">presnosť</div></div>
+            </div>
+            <div class="ms-prog-row"><span>Odohraných kôl</span><b class="hi num">13 / 13</b></div>
+            <div class="progress"><i style="width:100%"></i></div>
+            <div class="ms-foot">
+              <a href="season.html" class="btn btn-secondary btn-sm">Detail</a>
+              <a href="round.html" class="btn btn-primary btn-sm">Tipovať kolo 14</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-hover ms-card">
+          <div class="ms-cover" style="background:linear-gradient(135deg,#1b3f72,#3a7bd5)">
+            <span class="tag tag-brand">Oficiálna</span>
+            <span class="tag tag-muted">Ukončená</span>
+          </div>
+          <div class="ms-body">
+            <a href="season.html" class="ms-title hi">EURO 2024 archív</a>
+            <div class="ms-sub">UEFA · futbal · 22 100 hráčov</div>
+            <div class="ms-stats">
+              <div class="ms-stat"><div class="v gold">#7</div><div class="l">konečné</div></div>
+              <div class="ms-stat"><div class="v">734</div><div class="l">body</div></div>
+              <div class="ms-stat"><div class="v">66 %</div><div class="l">presnosť</div></div>
+            </div>
+            <div class="ms-prog-row"><span>Sezóna ukončená</span><b class="hi num">7 / 7</b></div>
+            <div class="progress success"><i style="width:100%"></i></div>
+            <div class="ms-foot">
+              <a href="season.html" class="btn btn-secondary btn-sm">Konečný rebríček</a>
+              <a href="round-results.html" class="btn btn-ghost btn-sm">Moje tipy</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MOJE LIGY -->
+      <div class="blk-head">
+        <div><div class="eyebrow">Moje ligy</div><h2>Komunitné ligy, kde súťažíš</h2></div>
+        <a href="discover.html" class="btn btn-ghost btn-sm">Nájsť ďalšie →</a>
+      </div>
+      <div class="ml-list">
+
+        <a href="league.html" class="card card-hover ml-row">
+          <span class="ml-logo" style="background:linear-gradient(135deg,#16a085,#0c5f4d)">FL</span>
+          <div style="min-width:0">
+            <div class="row g-2 wrap-gap"><b class="hi">Fortuna Liga Tipovačka</b><span class="tag tag-gold">Custom</span></div>
+            <div class="muted" style="font-size:var(--fs-sm)">Slovenská liga · futbal · 1 240 hráčov</div>
+          </div>
+          <div class="ml-status"><span class="tag tag-live"><span class="dot"></span>Prebieha</span></div>
+          <div style="text-align:right"><div class="ml-pos gold">#1</div><div class="l" style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-4);font-weight:700">512 b</div></div>
+        </a>
+
+        <a href="league.html" class="card card-hover ml-row">
+          <span class="ml-logo" style="background:linear-gradient(135deg,#7c5cff,#3b1f8a)">TK</span>
+          <div style="min-width:0">
+            <div class="row g-2 wrap-gap"><b class="hi">Tipovačka s kolegami</b><span class="tag tag-gold">Custom</span><span class="tag tag-muted">🔒 Heslo</span></div>
+            <div class="muted" style="font-size:var(--fs-sm)">Firemná · MS hokej · 18 hráčov</div>
+          </div>
+          <div class="ml-status"><span class="tag tag-live"><span class="dot"></span>Prebieha</span></div>
+          <div style="text-align:right"><div class="ml-pos brand">#2</div><div class="l" style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-4);font-weight:700">186 b</div></div>
+        </a>
+
+        <a href="league.html" class="card card-hover ml-row">
+          <span class="ml-logo" style="background:linear-gradient(135deg,#0b4ea2,#06306a)">MS</span>
+          <div style="min-width:0">
+            <div class="row g-2 wrap-gap"><b class="hi">Oficiálny MS rebríček</b><span class="tag tag-brand">Globálna</span></div>
+            <div class="muted" style="font-size:var(--fs-sm)">MS v hokeji 2026 · 8 420 hráčov</div>
+          </div>
+          <div class="ml-status"><span class="tag tag-live"><span class="dot"></span>Prebieha</span></div>
+          <div style="text-align:right"><div class="ml-pos">#312</div><div class="l" style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-4);font-weight:700">486 b</div></div>
+        </a>
+
+        <a href="league.html" class="card card-hover ml-row" style="opacity:.72">
+          <span class="ml-logo" style="background:linear-gradient(135deg,#0369a1,#06354f)">OT</span>
+          <div style="min-width:0">
+            <div class="row g-2 wrap-gap"><b class="hi">Office Tipovačka 2025</b><span class="tag tag-gold">Custom</span></div>
+            <div class="muted" style="font-size:var(--fs-sm)">Mix športov · firemná · 540 hráčov</div>
+          </div>
+          <div class="ml-status"><span class="tag tag-muted">Ukončená</span></div>
+          <div style="text-align:right"><div class="ml-pos gold">#3</div><div class="l" style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-4);font-weight:700">298 b</div></div>
+        </a>
+
+      </div>
+    </main>
+
+    <!-- ASIDE -->
+    <aside class="my-aside">
+      <div class="card card-pad card-glow">
+        <div class="between" style="margin-bottom:12px"><div class="stat-label" style="margin:0">Najbližšie na tip</div><span class="tag tag-warning" style="padding:2px 7px">Kolo 14</span></div>
+        <div class="nm">
+          <div class="nm-team"><span class="team-logo" style="background:linear-gradient(135deg,#a50044,#6e0030)">FCB</span><span class="nm-vs">Barcelona</span></div>
+          <span class="nm-vs">vs Man City</span>
+          <span class="nm-when">21:00</span>
+        </div>
+        <div class="nm">
+          <div class="nm-team"><span class="team-logo" style="background:linear-gradient(135deg,#fff,#dcdcdc);color:#1a1a1a">RM</span><span class="nm-vs">Real Madrid</span></div>
+          <span class="nm-vs">vs Liverpool</span>
+          <span class="nm-when">21:00</span>
+        </div>
+        <div class="nm">
+          <div class="nm-team"><span class="team-logo" style="background:linear-gradient(135deg,#0b4ea2,#06306a)">SVK</span><span class="nm-vs">Slovensko</span></div>
+          <span class="nm-vs">vs Fínsko</span>
+          <span class="nm-when">zaj 18:00</span>
+        </div>
+        <a href="round.html" class="btn btn-brand btn-block btn-sm" style="margin-top:14px">Tipovať teraz →</a>
+      </div>
+
+      <div class="card card-pad">
+        <div class="stat-label" style="margin-bottom:12px">Rýchle skratky</div>
+        <div class="stack g-2">
+          <a href="tip-history.html" class="quick-link"><b>História tipov</b><span class="ar">›</span></a>
+          <a href="stats.html" class="quick-link"><b>Štatistiky</b><span class="ar">›</span></a>
+          <a href="achievements.html" class="quick-link"><b>Achievementy</b><span class="ar">›</span></a>
+          <a href="settings.html" class="quick-link"><b>Nastavenia účtu</b><span class="ar">›</span></a>
+        </div>
+      </div>
+
+      <div class="card card-pad" style="background:linear-gradient(135deg,var(--surface-1),color-mix(in srgb,var(--gold) 8%,var(--surface-1)))">
+        <b class="hi" style="display:block;margin-bottom:6px">Máš pozvánku?</b>
+        <p class="muted" style="font-size:var(--fs-sm);margin-bottom:12px">Pripoj sa do ligy cez 6-miestne ID alebo objav verejné súťaže.</p>
+        <div class="stack g-2">
+          <a href="join.html" class="btn btn-primary btn-sm btn-block">Pripojiť sa cez ID</a>
+          <a href="discover.html" class="btn btn-secondary btn-sm btn-block">Objaviť verejné súťaže</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ============ EMPTY STATE ============ -->
+<div id="stateEmpty" class="wrap" hidden style="padding:8px 0 80px">
+  <div class="card" style="padding:18px">
+    <div class="empty" style="padding:64px 24px">
+      <div class="empty-icon" style="width:80px;height:80px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:38px;height:38px"><rect x="3" y="3" width="7.5" height="7.5" rx="1.8"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.8"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.8"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.8"/></svg>
+      </div>
+      <h4 style="font-size:var(--fs-h3)">Zatiaľ nie si v žiadnej súťaži</h4>
+      <p style="max-width:420px">Pridaj sa do oficiálnej sezóny, objav verejnú komunitnú ligu alebo sa pripoj k partii cez ID. Tvoje sezóny a ligy sa potom zobrazia tu.</p>
+      <div class="row g-3 center wrap-gap" style="margin-top:6px">
+        <a href="discover.html" class="btn btn-primary">Objaviť súťaže</a>
+        <a href="join.html" class="btn btn-secondary">Pripojiť sa cez ID</a>
+        <a href="create-league.html" class="btn btn-ghost">Vytvoriť vlastnú ligu</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ms-grid" style="margin-top:24px">
+    <a href="seasons.html" class="card card-hover" style="overflow:hidden">
+      <div class="ms-cover" style="background:linear-gradient(135deg,#0b4ea2,#1a1340);height:64px"><span class="tag tag-brand">Odporúčané</span></div>
+      <div class="ms-body"><div class="ms-title">MS v hokeji 2026</div><div class="ms-sub">IIHF · hokej · 8 420 hráčov</div><span class="btn btn-secondary btn-sm" style="margin-top:auto">Zobraziť sezónu →</span></div>
+    </a>
+    <a href="seasons.html" class="card card-hover" style="overflow:hidden">
+      <div class="ms-cover" style="background:linear-gradient(135deg,#7c5cff,#3b1f8a);height:64px"><span class="tag tag-gold">Populárna</span></div>
+      <div class="ms-body"><div class="ms-title">Fortuna Liga Tipovačka</div><div class="ms-sub">Slovenská liga · futbal · 1 240 hráčov</div><span class="btn btn-secondary btn-sm" style="margin-top:auto">Zobraziť ligu →</span></div>
+    </a>
+  </div>
+</div>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script>
+  document.querySelectorAll('[data-state]').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('[data-state]').forEach(x => x.classList.toggle('active', x === b));
+    const empty = b.dataset.state === 'empty';
+    document.getElementById('stateFull').hidden = empty;
+    document.getElementById('stateEmpty').hidden = !empty;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }));
+</script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

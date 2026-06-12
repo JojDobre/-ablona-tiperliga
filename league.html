@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Tipovačka s kolegami</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .lg-head { padding:26px 0 18px; }
+  .crumb { font-size:var(--fs-sm); color:var(--text-4); margin-bottom:14px; }
+  .crumb a { color:var(--text-3); } .crumb a:hover { color:var(--brand-bright); }
+  .lg-banner { display:grid; gap:8px 20px; align-items:center;
+    grid-template-columns:auto 1fr auto;
+    grid-template-areas:"cover text actions" "cover desc actions" "info info info"; }
+  .lg-cover { width:84px; height:84px; border-radius:var(--r-lg); flex:none; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:700; color:#fff; font-size:26px; grid-area:cover; align-self:start; }
+  .lg-head-text { grid-area:text; }
+  .lg-desc { grid-area:desc; margin:0; max-width:70ch; }
+  .lg-info { grid-area:info; margin-top:10px; }
+  .lg-actions { grid-area:actions; align-self:center; }
+  .lg-meta { display:flex; gap:28px; flex-wrap:wrap; align-items:center; }
+  .lg-meta > div { display:flex; align-items:baseline; gap:7px; }
+  .lg-meta > div:last-child { margin-left:auto; }
+  .lg-meta .n { font-family:var(--num); font-weight:700; font-size:1.4rem; color:var(--text-1); }
+  .lg-meta .l { font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.08em; color:var(--text-4); font-weight:700; margin-bottom:0; }
+  .id-chip { font-family:var(--num); font-weight:700; letter-spacing:.2em; background:var(--surface-3); border:1px dashed var(--line-strong); padding:6px 12px; border-radius:var(--r-sm); color:var(--text-1); cursor:pointer; }
+
+  .lg-layout { display:grid; grid-template-columns:1fr 330px; gap:26px; align-items:start; padding:26px 0 64px; }
+  .round-item { display:grid; grid-template-columns:auto 1fr auto auto; gap:16px; align-items:center; padding:15px 18px; }
+  .round-n { width:46px; height:46px; border-radius:var(--r-md); background:var(--surface-2); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-family:var(--num); font-weight:700; font-size:1.1rem; color:var(--text-1); flex:none; }
+  .round-n.active { background:var(--brand-soft); border-color:var(--brand-line); color:var(--brand-bright); }
+  /* league leaderboard rows: slimmer rank so names fit */
+  .sticky-side .lb-row { grid-template-columns:30px 1fr auto; gap:10px; }
+  .sticky-side { position:sticky; top:92px; }
+  .sticky-side > * + * { margin-top:18px; }
+  @media (max-width:980px){ .lg-layout { grid-template-columns:1fr; } .sticky-side { position:static; } }
+  @media (max-width:560px){
+    .lg-banner { grid-template-columns:auto 1fr; gap:12px 14px;
+      grid-template-areas:"cover text" "desc desc" "info info" "actions actions"; }
+    .lg-cover { width:60px; height:60px; font-size:20px; }
+    .lg-meta { display:grid; grid-template-columns:repeat(3,auto); justify-content:space-between; gap:14px 10px; }
+    .lg-meta > div { flex-direction:column; align-items:flex-start; gap:2px; }
+    .lg-meta > div:last-child { grid-column:1 / -1; flex-direction:row; align-items:center; justify-content:space-between; margin-left:0; padding-top:12px; margin-top:2px; border-top:1px solid var(--line); }
+    .lg-actions { display:flex; }
+    .lg-actions .btn-primary { flex:1; }
+    .round-item { grid-template-columns:auto 1fr; column-gap:14px; row-gap:10px; align-items:center; }
+    .round-item > div { grid-column:2; }
+    .round-item .rnd-pts { grid-column:2; justify-self:start; }
+    .round-item .rnd-btn { grid-column:1 / -1; justify-self:stretch; text-align:center; }
+  }
+</style>
+</head>
+<body data-page="seasons">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+<div data-shell-subnav="leagues" data-season-name="MS v hokeji 2026"></div>
+
+<div class="wrap lg-head">
+  <div class="crumb"><a href="seasons.html">Sezóny</a> › <a href="season.html">MS v hokeji 2026</a> › Tipovačka s kolegami</div>
+  <div class="lg-banner">
+    <span class="lg-cover" style="background:linear-gradient(135deg,#7c5cff,#3b1f8a)">TK</span>
+    <div class="lg-head-text">
+      <div class="row g-2 wrap-gap"><h1 style="font-size:clamp(1.8rem,3vw,2.4rem)">Tipovačka s kolegami</h1><span class="tag tag-gold">Custom liga</span><span class="tag tag-muted">🔒 Heslo</span></div>
+    </div>
+    <p class="lg-desc muted">Súkromná liga pre kolegov z firmy. Tipujeme presný výsledok, kto prehrá platí kávu ☕.</p>
+    <div class="lg-info card card-pad">
+      <div class="lg-meta">
+        <div><span class="n">18</span><span class="l">hráčov</span></div>
+        <div><span class="n">14</span><span class="l">kôl</span></div>
+        <div><span class="n">8</span><span class="l">odohraných</span></div>
+        <div><span class="l">ID ligy</span><span class="id-chip" data-copy>HK4F2X</span></div>
+      </div>
+    </div>
+    <div class="lg-actions row g-2 wrap-gap">
+      <a href="round.html" class="btn btn-primary btn-lg">Tipovať kolo 14 →</a>
+      <button class="btn btn-secondary btn-icon" title="Zdieľať">↗</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap lg-layout">
+  <main>
+    <div class="between" style="margin-bottom:16px"><h3 style="font-size:var(--fs-h4)">Kolá ligy</h3><a href="create-round.html" class="btn btn-brand btn-sm">+ Vytvoriť kolo</a></div>
+    <div class="stack g-3">
+      <div class="card round-item" style="border-color:var(--brand-line)">
+        <span class="round-n active">14</span>
+        <div><div class="row g-2 wrap-gap"><b class="hi">Osemfinále</b><span class="tag tag-warning"><span class="dot"></span>Otvorené</span></div><div class="muted" style="font-size:var(--fs-sm)">6 zápasov · uzávierka 14. feb 20:45</div></div>
+        <span class="rnd-pts muted" style="font-size:var(--fs-sm)">tipuješ <b class="hi">2/6</b></span>
+        <a href="round.html" class="rnd-btn btn btn-primary btn-sm">Tipovať</a>
+      </div>
+      <div class="card round-item">
+        <span class="round-n">13</span>
+        <div><div class="row g-2 wrap-gap"><b class="hi">Skupina — 6. kolo</b><span class="tag tag-success"><span class="dot"></span>Ukončené</span></div><div class="muted" style="font-size:var(--fs-sm)">8 zápasov · vyhodnotené 9. feb</div></div>
+        <span class="rnd-pts pts-pill max">+24 pts</span>
+        <a href="round.html" class="rnd-btn btn btn-secondary btn-sm">Výsledky</a>
+      </div>
+      <div class="card round-item">
+        <span class="round-n">12</span>
+        <div><div class="row g-2 wrap-gap"><b class="hi">Skupina — 5. kolo</b><span class="tag tag-success"><span class="dot"></span>Ukončené</span></div><div class="muted" style="font-size:var(--fs-sm)">8 zápasov · vyhodnotené 6. feb</div></div>
+        <span class="rnd-pts pts-pill">+18 pts</span>
+        <a href="round.html" class="rnd-btn btn btn-secondary btn-sm">Výsledky</a>
+      </div>
+      <div class="card round-item">
+        <span class="round-n">11</span>
+        <div><div class="row g-2 wrap-gap"><b class="hi">Skupina — 4. kolo</b><span class="tag tag-success"><span class="dot"></span>Ukončené</span></div><div class="muted" style="font-size:var(--fs-sm)">8 zápasov · vyhodnotené 3. feb</div></div>
+        <span class="rnd-pts pts-pill">+31 pts</span>
+        <a href="round.html" class="rnd-btn btn btn-secondary btn-sm">Výsledky</a>
+      </div>
+      <div class="card round-item" style="opacity:.6">
+        <span class="round-n">15</span>
+        <div><div class="row g-2 wrap-gap"><b class="hi">Štvrťfinále</b><span class="tag tag-info">Naplánované</span></div><div class="muted" style="font-size:var(--fs-sm)">Otvorí sa po žrebovaní · 17. feb</div></div>
+        <span class="rnd-pts muted" style="font-size:var(--fs-sm)">—</span>
+        <span class="rnd-btn btn btn-ghost btn-sm" aria-disabled="true">Čaká</span>
+      </div>
+    </div>
+  </main>
+
+  <aside class="sticky-side">
+    <div class="card card-pad">
+      <div class="between" style="margin-bottom:12px"><div class="stat-label" style="margin:0">Rebríček ligy</div><span class="tag tag-muted">18 hráčov</span></div>
+      <div class="lb">
+        <div class="lb-row"><span class="lb-rank top1">1</span><div class="lb-user"><span class="avatar avatar-sm" style="background:linear-gradient(135deg,var(--gold-bright),var(--gold-dim));color:var(--gold-ink)">PK</span><span class="lb-name">Peter K.</span></div><span class="lb-pts gold">198</span></div>
+        <div class="lb-row me"><span class="lb-rank top2">2</span><div class="lb-user"><span class="avatar avatar-sm avatar-ring" style="background:linear-gradient(135deg,#7c5cff,#5b3fd6);color:#fff">MN</span><span class="lb-name">Ty (Martin)</span></div><span class="lb-pts">186</span></div>
+        <div class="lb-row"><span class="lb-rank top3">3</span><div class="lb-user"><span class="avatar avatar-sm" style="background:var(--surface-3)">JS</span><span class="lb-name">Jana S.</span></div><span class="lb-pts">174</span></div>
+        <div class="lb-row"><span class="lb-rank">4</span><div class="lb-user"><span class="avatar avatar-sm" style="background:var(--surface-3)">LV</span><span class="lb-name">Lucia V.</span></div><span class="lb-pts">168</span></div>
+        <div class="lb-row"><span class="lb-rank">5</span><div class="lb-user"><span class="avatar avatar-sm" style="background:var(--surface-3)">MH</span><span class="lb-name">Michal H.</span></div><span class="lb-pts">155</span></div>
+      </div>
+      <a href="leaderboards.html" class="btn btn-ghost btn-block btn-sm" style="margin-top:8px">Celý rebríček →</a>
+    </div>
+
+    <div class="card card-pad">
+      <div class="stat-label" style="margin-bottom:10px">Bodovanie v lige</div>
+      <div class="stack g-2" style="font-size:var(--fs-sm)">
+        <div class="between"><span class="muted">Presný výsledok</span><span class="pts-pill max">+10</span></div>
+        <div class="between"><span class="muted">Víťaz / remíza</span><span class="pts-pill">+3</span></div>
+        <div class="between"><span class="muted">Gólový rozdiel</span><span class="pts-pill">+2</span></div>
+        <div class="between"><span class="muted">Góly tímu</span><span class="pts-pill">+1</span></div>
+      </div>
+      <a href="league.html#rules" class="faint" style="font-size:var(--fs-xs);display:block;margin-top:12px">Celé pravidlá →</a>
+    </div>
+
+    <div class="card card-pad" style="background:linear-gradient(135deg,var(--surface-1),color-mix(in srgb,var(--gold) 8%,var(--surface-1)))">
+      <b class="hi" style="display:block;margin-bottom:6px">Pozvi do ligy</b>
+      <p class="muted" style="font-size:var(--fs-sm);margin-bottom:10px">Pošli kamošom ID a heslo ligy.</p>
+      <div class="row g-2"><span class="id-chip" data-copy style="flex:1;text-align:center">HK4F2X</span><button class="btn btn-primary btn-sm" data-copy>Kopírovať</button></div>
+    </div>
+
+    <div class="card card-pad">
+      <div class="stat-label" style="margin-bottom:10px">Členstvo</div>
+      <div class="between" style="margin-bottom:12px"><span class="muted" style="font-size:var(--fs-sm)">Tvoja pozícia</span><span class="tag tag-brand" style="padding:2px 8px">#2 · 186 b</span></div>
+      <a href="leave-competition.html" class="btn btn-danger btn-block btn-sm">Opustiť súťaž</a>
+    </div>
+  </aside>
+</div>
+
+<div class="toast-wrap" id="toastWrap" style="position:fixed;bottom:24px;right:24px;z-index:200;display:flex;flex-direction:column;gap:10px"></div>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script>
+  document.querySelectorAll('[data-copy]').forEach(el => el.addEventListener('click', () => {
+    navigator.clipboard && navigator.clipboard.writeText('HK4F2X');
+    const t = document.createElement('div');
+    t.className = 'toast success';
+    t.innerHTML = '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><div><div class="toast-title">Skopírované</div><div class="toast-msg">ID ligy HK4F2X je v schránke.</div></div>';
+    document.getElementById('toastWrap').appendChild(t);
+    setTimeout(()=>{ t.style.transition='opacity .3s,transform .3s'; t.style.opacity='0'; t.style.transform='translateX(20px)'; setTimeout(()=>t.remove(),300); }, 2600);
+  }));
+</script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

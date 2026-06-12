@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Vytvoriť kolo</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .form-head { padding:28px 0 8px; }
+  .crumb { font-size:var(--fs-sm); color:var(--text-4); margin-bottom:12px; }
+  .crumb a { color:var(--text-3); } .crumb a:hover { color:var(--brand-bright); }
+  .form-layout { display:grid; grid-template-columns:1fr 340px; gap:28px; align-items:start; padding:20px 0 64px; }
+  .form-card { padding:26px; }
+  .form-card + .form-card { margin-top:18px; }
+  .form-card h3 { font-size:var(--fs-h4); margin-bottom:4px; }
+  .form-card .sub { color:var(--text-3); font-size:var(--fs-sm); margin-bottom:20px; }
+  .field-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .match-pick { display:flex; align-items:center; gap:12px; padding:11px 14px; border-radius:var(--r-sm); background:var(--surface-2); border:1px solid var(--line); margin-bottom:8px; }
+  .match-pick.sel { border-color:var(--brand-line); background:var(--brand-soft); }
+  .match-pick .teams { flex:1; font-weight:600; color:var(--text-1); font-size:var(--fs-sm); }
+  .sticky-side { position:sticky; top:92px; }
+  @media (max-width:980px){ .form-layout { grid-template-columns:1fr; } .sticky-side { position:static; } }
+  @media (max-width:560px){ .field-row { grid-template-columns:1fr; } }
+</style>
+</head>
+<body data-page="seasons">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+<div data-shell-subnav="leagues" data-season-name="MS v hokeji 2026"></div>
+
+<div class="wrap form-head">
+  <div class="crumb"><a href="season.html">MS v hokeji 2026</a> › <a href="league.html">Tipovačka s kolegami</a> › Vytvoriť kolo</div>
+  <h1 style="font-size:clamp(1.8rem,3vw,2.4rem)">Vytvoriť kolo</h1>
+  <p class="muted" style="margin-top:6px">Kolo je sada zápasov na tipovanie s jednou uzávierkou. Priraď zápasy a nastav termíny.</p>
+</div>
+
+<form class="wrap form-layout" onsubmit="event.preventDefault();window.location='round.html'">
+  <main>
+    <div class="card form-card">
+      <h3>Základné údaje</h3>
+      <p class="sub">Do ktorej ligy kolo patrí a ako sa volá.</p>
+      <div class="stack g-4">
+        <div class="field"><label class="label">Liga</label><select class="select"><option>Tipovačka s kolegami</option><option>Oficiálny rebríček MS</option><option>Fanúšikovia SVK</option></select></div>
+        <div class="field"><label class="label">Názov kola</label><input class="input" placeholder="napr. Osemfinále" value="Osemfinále" oninput="document.getElementById('pvName').textContent=this.value||'Názov kola'"></div>
+      </div>
+    </div>
+
+    <div class="card form-card">
+      <h3>Termíny tipovania</h3>
+      <p class="sub">Od kedy do kedy môžu hráči tipovať. Po uzávierke sa tipy uzamknú.</p>
+      <div class="field-row">
+        <div class="field"><label class="label">Otvorenie tipovania</label><input class="input" type="datetime-local" value="2026-02-10T18:00"></div>
+        <div class="field"><label class="label">Uzávierka</label><input class="input" type="datetime-local" value="2026-02-14T20:45"></div>
+      </div>
+      <div class="card" style="background:var(--warning-soft);border-color:rgba(245,165,36,.3);padding:12px 14px;margin-top:14px;display:flex;gap:10px;align-items:flex-start">
+        <span style="font-size:16px">⏰</span><span style="font-size:var(--fs-sm);color:var(--text-2)">Uzávierka by mala byť pred prvým zápasom v kole. Po nej už hráči tipy nezmenia.</span>
+      </div>
+    </div>
+
+    <div class="card form-card">
+      <h3>Priradenie zápasov</h3>
+      <p class="sub">Vyber zápasy z databázy alebo vytvor nové.</p>
+      <div class="match-pick sel"><input type="checkbox" class="check" checked style="appearance:none;width:20px;height:20px"><span class="teams">Barcelona — Man City</span><span class="muted" style="font-size:var(--fs-xs)">14. feb 21:00</span></div>
+      <div class="match-pick sel"><input type="checkbox" checked><span class="teams">Real Madrid — Liverpool</span><span class="muted" style="font-size:var(--fs-xs)">14. feb 21:00</span></div>
+      <div class="match-pick sel"><input type="checkbox" checked><span class="teams">Bayern — PSG</span><span class="muted" style="font-size:var(--fs-xs)">14. feb 21:00</span></div>
+      <div class="match-pick sel"><input type="checkbox" checked><span class="teams">Inter — Arsenal</span><span class="muted" style="font-size:var(--fs-xs)">14. feb 18:45</span></div>
+      <div class="match-pick"><input type="checkbox"><span class="teams">Dortmund — Atlético</span><span class="muted" style="font-size:var(--fs-xs)">15. feb 21:00</span></div>
+      <div class="match-pick"><input type="checkbox"><span class="teams">Napoli — Chelsea</span><span class="muted" style="font-size:var(--fs-xs)">15. feb 21:00</span></div>
+      <a href="create-matches.html" class="btn btn-secondary btn-block btn-sm" style="margin-top:10px">+ Vytvoriť nové zápasy</a>
+    </div>
+  </main>
+
+  <aside class="sticky-side">
+    <div class="card card-pad">
+      <div class="stat-label" style="margin-bottom:12px">Náhľad kola</div>
+      <h4 id="pvName">Osemfinále</h4>
+      <p class="muted" style="font-size:var(--fs-sm);margin:4px 0 14px">Tipovačka s kolegami</p>
+      <div class="stack g-2" style="font-size:var(--fs-sm)">
+        <div class="between"><span class="muted">Zápasov</span><b class="hi num">4 vybrané</b></div>
+        <div class="between"><span class="muted">Otvorenie</span><b class="hi num">10. feb 18:00</b></div>
+        <div class="between"><span class="muted">Uzávierka</span><b class="num" style="color:var(--warning)">14. feb 20:45</b></div>
+      </div>
+    </div>
+    <div class="card card-pad" style="margin-top:18px">
+      <button type="submit" class="btn btn-primary btn-block">Vytvoriť kolo</button>
+      <a href="league.html" class="btn btn-ghost btn-block" style="margin-top:8px">Zrušiť</a>
+    </div>
+  </aside>
+</form>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script>
+  document.querySelectorAll('.match-pick').forEach(p => p.addEventListener('click', e => {
+    if (e.target.tagName !== 'INPUT') { const c = p.querySelector('input'); c.checked = !c.checked; }
+    p.classList.toggle('sel', p.querySelector('input').checked);
+    const n = document.querySelectorAll('.match-pick input:checked').length;
+    document.querySelector('.sticky-side .num').textContent = n + (n===1?' vybraný':' vybrané');
+  }));
+</script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

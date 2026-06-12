@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — Pripojiť sa do súťaže</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .jn-head { padding:34px 0 18px; text-align:center; }
+  .jn-head h1 { font-size:clamp(2rem,3.4vw,2.8rem); }
+  .jn-layout { display:grid; grid-template-columns:1fr 320px; gap:26px; align-items:start; padding-bottom:72px; max-width:920px; margin-inline:auto; }
+  .id-field { display:grid; grid-template-columns:1fr auto; gap:10px; }
+  .id-input { font-family:var(--num); font-weight:700; letter-spacing:.28em; text-transform:uppercase; font-size:1.25rem; text-align:center; }
+  .id-input::placeholder { letter-spacing:.18em; font-weight:600; }
+  .inline-err { display:none; align-items:center; gap:8px; margin-top:12px; padding:11px 14px; border-radius:var(--r-sm);
+    background:var(--danger-soft); border:1px solid rgba(240,71,106,.32); color:var(--danger); font-size:var(--fs-sm); font-weight:600; }
+  .inline-err.show { display:flex; }
+  .inline-err svg { width:18px; height:18px; flex:none; }
+
+  .preview { display:none; margin-top:22px; animation:dd-in .2s var(--ease-out); }
+  .preview.show { display:block; }
+  .pv-cover { height:96px; border-radius:var(--r-lg) var(--r-lg) 0 0; position:relative; display:flex; align-items:flex-start; justify-content:space-between; padding:14px 16px; }
+  .pv-cover .tag { position:relative; z-index:1; }
+  .pv-body { padding:18px 20px 20px; }
+  .pv-meta { display:flex; gap:22px; flex-wrap:wrap; margin:14px 0; }
+  .pv-meta > div { display:flex; flex-direction:column; gap:2px; }
+  .pv-meta .n { font-family:var(--num); font-weight:700; font-size:1.3rem; color:var(--text-1); line-height:1; }
+  .pv-meta .l { font-size:9px; text-transform:uppercase; letter-spacing:.08em; color:var(--text-4); font-weight:700; }
+  .rule-row { display:flex; align-items:center; justify-content:space-between; padding:7px 0; font-size:var(--fs-sm); border-bottom:1px solid var(--line); }
+  .rule-row:last-child { border-bottom:none; }
+
+  .ex-chip { font-family:var(--num); font-weight:700; letter-spacing:.16em; background:var(--surface-3); border:1px dashed var(--line-strong); padding:4px 10px; border-radius:var(--r-xs); color:var(--text-2); cursor:pointer; transition:all .15s; }
+  .ex-chip:hover { border-color:var(--brand-line); color:var(--text-1); }
+  .step-dot { width:26px; height:26px; border-radius:50%; flex:none; display:flex; align-items:center; justify-content:center; font-family:var(--num); font-weight:700; font-size:13px; background:var(--brand-soft); color:var(--brand-bright); border:1px solid var(--brand-line); }
+  @media (max-width:880px){ .jn-layout { grid-template-columns:1fr; } }
+  @media (max-width:520px){ .id-field { grid-template-columns:1fr; } }
+</style>
+</head>
+<body data-page="seasons">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+
+<div class="wrap jn-head">
+  <div class="eyebrow">Pripojiť sa</div>
+  <h1>Pripoj sa do súťaže alebo ligy</h1>
+  <p class="muted" style="margin-top:6px">Zadaj 6-miestne ID, ktoré ti poslal organizátor. Súkromné ligy vyžadujú aj heslo.</p>
+</div>
+
+<div class="wrap jn-layout">
+  <main>
+    <div class="card card-pad">
+      <h3 style="font-size:var(--fs-h4);margin-bottom:4px">Zadaj ID súťaže</h3>
+      <p class="muted" style="font-size:var(--fs-sm);margin-bottom:16px">6 znakov — písmená a čísla. Napríklad <b class="hi num" style="letter-spacing:.1em">HK4F2X</b>.</p>
+      <div class="id-field">
+        <input id="idInput" class="input id-input" maxlength="6" placeholder="A1B2C3" autocomplete="off" spellcheck="false">
+        <button id="findBtn" class="btn btn-brand">Nájsť súťaž</button>
+      </div>
+      <div class="inline-err" id="idErr">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01" stroke-linecap="round"/></svg>
+        <span id="idErrMsg">Súťaž s týmto ID neexistuje. Skontroluj znaky a skús znova.</span>
+      </div>
+
+      <div class="row g-2 wrap-gap" style="margin-top:16px">
+        <span class="hint" style="margin-right:2px">Vyskúšaj:</span>
+        <span class="ex-chip" data-ex="HK4F2X">HK4F2X</span>
+        <span class="ex-chip" data-ex="FORTUNA">FORTUN</span>
+        <span class="ex-chip" data-ex="MS2026">MS2026</span>
+      </div>
+
+      <!-- PREVIEW -->
+      <div class="preview" id="preview">
+        <div class="hr" style="margin:22px 0"></div>
+        <div class="eyebrow" style="margin-bottom:10px">Náhľad pred pripojením</div>
+        <div class="card" style="overflow:hidden;border-color:var(--brand-line)">
+          <div class="pv-cover" id="pvCover">
+            <span class="tag" id="pvType">Custom liga</span>
+            <span class="tag tag-muted" id="pvLock" hidden>🔒 Chránená heslom</span>
+          </div>
+          <div class="pv-body">
+            <div class="row g-2 wrap-gap" style="margin-bottom:2px"><h3 id="pvName" style="font-size:var(--fs-h4)">—</h3></div>
+            <p class="muted" id="pvDesc" style="font-size:var(--fs-sm)">—</p>
+            <div class="pv-meta">
+              <div><span class="n" id="pvPlayers">—</span><span class="l">hráčov</span></div>
+              <div><span class="n" id="pvRounds">—</span><span class="l">kôl</span></div>
+              <div><span class="n" id="pvSport">—</span><span class="l">šport</span></div>
+            </div>
+            <div class="card card-pad" style="background:var(--surface-2);padding:12px 14px;margin-bottom:14px">
+              <div class="stat-label" style="margin-bottom:8px">Bodovanie</div>
+              <div class="rule-row"><span class="muted">Presný výsledok</span><span class="pts-pill max">+10</span></div>
+              <div class="rule-row"><span class="muted">Víťaz / remíza</span><span class="pts-pill">+3</span></div>
+              <div class="rule-row"><span class="muted">Gólový rozdiel</span><span class="pts-pill">+2</span></div>
+            </div>
+
+            <!-- password (private only) -->
+            <div class="field" id="pwField" hidden style="margin-bottom:14px">
+              <label class="label">Heslo ligy</label>
+              <input id="pwInput" class="input" type="password" placeholder="Zadaj heslo od organizátora">
+              <div class="inline-err" id="pwErr" style="margin-top:8px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01" stroke-linecap="round"/></svg>
+                <span>Nesprávne heslo. Skús to znova alebo kontaktuj organizátora.</span>
+              </div>
+              <span class="hint" id="pwHint">Pre ukážku je heslo: <b class="hi">kava</b></span>
+            </div>
+
+            <div class="row g-2 wrap-gap">
+              <button id="joinBtn" class="btn btn-primary" style="flex:1">Pripojiť sa do súťaže</button>
+              <button id="cancelBtn" class="btn btn-ghost">Zrušiť</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- success -->
+    <div class="card card-pad" id="joinSuccess" hidden style="margin-top:22px;text-align:center;border-color:var(--success-line)">
+      <div class="empty-icon" style="margin:6px auto 14px;background:var(--success-soft);border-color:rgba(31,212,151,.3);color:var(--success)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:30px;height:30px"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h3 style="font-size:var(--fs-h4)">Pripojený! 🎉</h3>
+      <p class="muted" style="font-size:var(--fs-sm);max-width:360px;margin:6px auto 16px">Si členom súťaže <b class="hi" id="successName">—</b>. Nájdeš ju v sekcii Moje súťaže a ligy.</p>
+      <div class="row g-2 center wrap-gap">
+        <a href="league.html" class="btn btn-primary btn-sm">Otvoriť súťaž →</a>
+        <a href="my.html" class="btn btn-secondary btn-sm">Moje súťaže</a>
+      </div>
+    </div>
+  </main>
+
+  <aside class="stack g-4">
+    <div class="card card-pad">
+      <div class="stat-label" style="margin-bottom:14px">Ako sa pripojiť</div>
+      <div class="stack g-3">
+        <div class="row g-3"><span class="step-dot">1</span><span style="font-size:var(--fs-sm)">Získaj ID (a heslo) od organizátora ligy.</span></div>
+        <div class="row g-3"><span class="step-dot">2</span><span style="font-size:var(--fs-sm)">Zadaj ID a pozri si náhľad súťaže.</span></div>
+        <div class="row g-3"><span class="step-dot">3</span><span style="font-size:var(--fs-sm)">Potvrď pripojenie a začni tipovať.</span></div>
+      </div>
+    </div>
+    <div class="card card-pad" style="background:linear-gradient(135deg,var(--surface-1),color-mix(in srgb,var(--gold) 8%,var(--surface-1)))">
+      <b class="hi" style="display:block;margin-bottom:6px">Nemáš ID?</b>
+      <p class="muted" style="font-size:var(--fs-sm);margin-bottom:12px">Prehľadaj verejné komunitné sezóny a ligy, ku ktorým sa môžeš pripojiť jedným klikom.</p>
+      <a href="discover.html" class="btn btn-primary btn-sm btn-block">Objaviť verejné súťaže</a>
+    </div>
+  </aside>
+</div>
+
+<div class="toast-wrap" id="toastWrap" style="position:fixed;bottom:24px;right:24px;z-index:200;display:flex;flex-direction:column;gap:10px"></div>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script>
+(function(){
+  const DB = {
+    'HK4F2X': { name:'Tipovačka s kolegami', type:'Custom liga', tagClass:'tag-gold', cover:'linear-gradient(135deg,#7c5cff,#3b1f8a)', desc:'Súkromná firemná liga — tipuje sa presný výsledok, kto prehrá platí kávu ☕.', players:'18', rounds:'14', sport:'Hokej', private:true, password:'kava' },
+    'FORTUN': { name:'Fortuna Liga Tipovačka', type:'Community', tagClass:'tag-gold', cover:'linear-gradient(135deg,#16a085,#0c5f4d)', desc:'Najväčšia slovenská komunitná liga na futbal. Verejná — pripoj sa hneď.', players:'1 240', rounds:'32', sport:'Futbal', private:false },
+    'MS2026': { name:'MS v hokeji 2026', type:'Oficiálna', tagClass:'tag-brand', cover:'linear-gradient(135deg,#0b4ea2,#1a1340)', desc:'Oficiálna sezóna majstrovstiev sveta v hokeji s globálnym rebríčkom.', players:'8 420', rounds:'14', sport:'Hokej', private:false }
+  };
+  const $ = id => document.getElementById(id);
+  const idInput=$('idInput'), idErr=$('idErr'), idErrMsg=$('idErrMsg'), preview=$('preview'), pwField=$('pwField'), pwErr=$('pwErr'), pwInput=$('pwInput'), pwHint=$('pwHint');
+  let current=null;
+
+  function toast(title,msg){
+    const t=document.createElement('div'); t.className='toast success';
+    t.innerHTML='<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><div><div class="toast-title">'+title+'</div><div class="toast-msg">'+msg+'</div></div>';
+    $('toastWrap').appendChild(t);
+    setTimeout(()=>{ t.style.transition='opacity .3s,transform .3s'; t.style.opacity='0'; t.style.transform='translateX(20px)'; setTimeout(()=>t.remove(),300); },2800);
+  }
+
+  function find(){
+    const code=(idInput.value||'').toUpperCase().trim();
+    idErr.classList.remove('show'); pwErr.classList.remove('show');
+    if(code.length<6){ idErrMsg.textContent='ID musí mať 6 znakov.'; idErr.classList.add('show'); preview.classList.remove('show'); return; }
+    const c=DB[code];
+    if(!c){ idErrMsg.textContent='Súťaž s ID „'+code+'" neexistuje. Skontroluj znaky a skús znova.'; idErr.classList.add('show'); preview.classList.remove('show'); return; }
+    current=c;
+    $('pvCover').style.background=c.cover;
+    $('pvType').className='tag '+c.tagClass; $('pvType').textContent=c.type;
+    $('pvName').textContent=c.name; $('pvDesc').textContent=c.desc;
+    $('pvPlayers').textContent=c.players; $('pvRounds').textContent=c.rounds; $('pvSport').textContent=c.sport;
+    $('pvLock').hidden=!c.private;
+    pwField.hidden=!c.private; pwInput.value=''; pwErr.classList.remove('show');
+    pwHint.style.display = c.private ? 'block' : 'none';
+    preview.classList.add('show');
+    preview.scrollIntoView ? null : null;
+  }
+
+  function join(){
+    if(!current) return;
+    if(current.private){
+      if((pwInput.value||'').trim().toLowerCase()!==current.password){ pwErr.classList.add('show'); pwInput.focus(); return; }
+    }
+    preview.classList.remove('show');
+    idErr.classList.remove('show');
+    $('successName').textContent=current.name;
+    $('joinSuccess').hidden=false;
+    document.querySelector('.card.card-pad h3').scrollIntoView===undefined?null:null;
+    toast('Pripojený','Si členom súťaže '+current.name+'.');
+  }
+
+  $('findBtn').addEventListener('click',find);
+  idInput.addEventListener('keydown',e=>{ if(e.key==='Enter') find(); });
+  idInput.addEventListener('input',()=>{ idErr.classList.remove('show'); });
+  $('joinBtn').addEventListener('click',join);
+  pwInput.addEventListener('keydown',e=>{ if(e.key==='Enter') join(); });
+  $('cancelBtn').addEventListener('click',()=>{ preview.classList.remove('show'); current=null; idInput.value=''; idInput.focus(); });
+  document.querySelectorAll('[data-ex]').forEach(c=>c.addEventListener('click',()=>{ idInput.value=c.dataset.ex; find(); }));
+})();
+</script>
+<script src="js/enhance.js"></script>
+</body>
+</html>

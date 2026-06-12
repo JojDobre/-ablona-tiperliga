@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="sk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiperliga — História tipov</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/enhance.css">
+<style>
+  .th-head { padding:30px 0 18px; }
+  .filters { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:18px; }
+  .summary { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px; }
+  .th-table { width:100%; }
+  .th-row { display:grid; grid-template-columns: 96px 1fr 86px 86px 90px; gap:14px; align-items:center; padding:14px; border-bottom:1px solid var(--line); }
+  .th-row:last-child { border:none; }
+  .th-head-row { display:grid; grid-template-columns: 96px 1fr 86px 86px 90px; gap:14px; padding:10px 14px; }
+  .th-head-row span { font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.1em; color:var(--text-4); font-weight:700; }
+  .th-date { font-size:var(--fs-xs); color:var(--text-4); font-weight:600; }
+  .th-match { display:flex; align-items:center; gap:10px; min-width:0; }
+  .th-teams { font-weight:600; color:var(--text-1); font-size:var(--fs-sm); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .th-sub { font-size:var(--fs-xs); color:var(--text-4); }
+  .th-val { font-family:var(--num); font-weight:700; text-align:center; font-variant-numeric:tabular-nums; }
+  .ta-r { text-align:right; }
+  @media (max-width:760px){
+    .summary { grid-template-columns:1fr 1fr; }
+    /* filters: 2 selects per row, count on its own line */
+    .filters { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .filters .select { width:100% !important; }
+    .filters .grow { display:none; }
+    .filters > span { grid-column:1 / -1; }
+    /* table → readable stacked rows, no logo */
+    .th-head-row { display:none; }
+    .th-row {
+      grid-template-columns:1fr 1fr auto;
+      grid-template-areas:"match match pts" "tip res pts";
+      gap:5px 12px; align-items:center; padding:14px;
+    }
+    .th-row .th-date-col { display:none; }
+    .th-match { grid-area:match; }
+    .th-match .team-logo { display:none; }
+    .th-teams { white-space:normal; }
+    .th-row > .th-val:nth-child(3) { grid-area:tip; justify-self:start; text-align:left; }
+    .th-row > .th-val:nth-child(4) { grid-area:res; justify-self:start; text-align:left; }
+    .th-row > .th-val:nth-child(3)::before { content:"Tip "; color:var(--text-4); font-weight:600; font-family:var(--font-sans); font-size:var(--fs-xs); }
+    .th-row > .th-val:nth-child(4)::before { content:"Výsl. "; color:var(--text-4); font-weight:600; font-family:var(--font-sans); font-size:var(--fs-xs); }
+    .th-row > .ta-r { grid-area:pts; align-self:center; }
+  }
+</style>
+</head>
+<body data-page="">
+<div class="bg-field"></div>
+<div data-shell-nav></div>
+
+<div class="wrap th-head">
+  <div class="between wrap-gap" style="gap:16px">
+    <div>
+      <div class="eyebrow">História tipov</div>
+      <h1 style="font-size:clamp(2rem,3.2vw,2.6rem)">Všetky tvoje tipy</h1>
+      <p class="muted" style="margin-top:6px">Kompletný prehľad tipov, výsledkov a získaných bodov naprieč ligami.</p>
+    </div>
+    <a href="stats.html" class="btn btn-secondary btn-sm">Štatistiky →</a>
+  </div>
+</div>
+
+<div class="wrap" style="padding-bottom:64px">
+  <div class="summary">
+    <div class="card stat"><div class="stat-value">142</div><div class="stat-label">tipov spolu</div></div>
+    <div class="card stat"><div class="stat-value ok">38</div><div class="stat-label">presných výsledkov</div></div>
+    <div class="card stat"><div class="stat-value gold">1098</div><div class="stat-label">získaných bodov</div></div>
+    <div class="card stat"><div class="stat-value brand">59 %</div><div class="stat-label">presnosť</div></div>
+  </div>
+
+  <div class="filters">
+    <select class="select" style="width:auto"><option>Všetky sezóny</option><option>MS v hokeji 2026</option><option>Liga majstrov 26/27</option></select>
+    <select class="select" style="width:auto"><option>Všetky ligy</option><option>Tipovačka s kolegami</option><option>Oficiálny rebríček</option></select>
+    <select class="select" style="width:auto"><option>Všetky kolá</option><option>Kolo 13</option><option>Kolo 12</option></select>
+    <select class="select" style="width:auto"><option>Všetky výsledky</option><option>Iba presné</option><option>Iba bez bodov</option></select>
+    <div class="grow"></div>
+    <span class="muted" style="font-size:var(--fs-sm)">Zobrazené 1–8 z 142</span>
+  </div>
+
+  <div class="card" style="padding:8px">
+    <div class="th-head-row"><span class="th-date-col">Dátum</span><span>Zápas</span><span style="text-align:center">Tvoj tip</span><span style="text-align:center">Výsledok</span><span class="ta-r">Body</span></div>
+    <div class="hr"></div>
+    <div class="th-table">
+      <div class="th-row"><span class="th-date th-date-col">7. feb<br>Kolo 13</span><div class="th-match"><span class="team-logo" style="width:30px;height:30px;font-size:10px;background:linear-gradient(135deg,#a50044,#6e0030)">FCB</span><div style="min-width:0"><div class="th-teams">Barcelona — Sevilla</div><div class="th-sub col-hide">Tipovačka s kolegami · futbal</div></div></div><span class="th-val tip-correct">2:1</span><span class="th-val">2:1</span><span class="ta-r"><span class="pts-pill max">+10</span></span></div>
+      <div class="th-row"><span class="th-date th-date-col">7. feb<br>Kolo 13</span><div class="th-match"><span class="team-logo" style="width:30px;height:30px;font-size:10px;background:linear-gradient(135deg,#6cabdd,#27568a)">MCI</span><div style="min-width:0"><div class="th-teams">Man City — Man Utd</div><div class="th-sub col-hide">Tipovačka s kolegami · futbal</div></div></div><span class="th-val">2:0</span><span class="th-val">3:1</span><span class="ta-r"><span class="pts-pill">+5</span></span></div>
+      <div class="th-row"><span class="th-date th-date-col">6. feb<br>Kolo 12</span><div class="th-match"><span class="team-logo" style="width:30px;height:30px;font-size:10px;background:linear-gradient(135deg,#0b4ea2,#06306a)">SVK</span><div style="min-width:0"><div class="th-teams">Slovensko — Fínsko</div><div class="th-sub col-hide">Oficiálny rebríček · hokej</div></div></div><span class="th-val tip-correct">3:2</span><span class="th-val">3:2</span><span class="ta-r"><span class="pts-pill max">+10</span></span></div>
+      <div class="th-row"><span class="th-date th-date-col">6. feb<br>Kolo 12</span><div class="th-match"><span class="team-logo" style="width:30px;height:30px;font-size:10px;background:linear-gradient(135deg,#facc15,#c9a307);color:#222">SWE</span><div style="min-width:0"><div class="th-teams">Švédsko — Kanada</div><div class="th-sub col-hide">Oficiálny rebríček · hokej</div></div></div><span class="th-val tip-wrong">2:1</span><span class="th-val">1:4</span><span class="ta-r"><span class="pts-pill zero">0</span></span></div>
+      <div class="th-row"><span class="th-date th-date-col">3. feb<br>Kolo 11</span><div class="th-match"><span class="team-logo" style="width:30px;height:30px;font-size:10px;background:linear-gradient(135deg,#dc052d,#8a0420)">BAY</span><div style="min-width:0"><div class="th-teams">Bayern — Dortmund</div><div class="th-sub col-hide">Tipovačka s kolegami · futbal</div></div></div><span class="th-val">3:1</span><span class="th-val">2:1</span><span class="ta-r"><span class="pts-pill">+6</span></span></div>
+      <div class="th-row" style="opacity:.7"><span class="th-date th-date-col">3. feb<br>Kolo 11</span><div class="th-match"><span class="team-logo" style="width:30px;height:30px;font-size:10px;background:linear-gradient(135deg,#0068a8,#003a5e)">INT</span><div style="min-width:0"><div class="th-teams">Inter — Juventus</div><div class="th-sub col-hide">Zrušený zápas · body sa neprideľujú</div></div></div><span class="th-val">1:1</span><span class="th-val muted">—</span><span class="ta-r"><span class="tag tag-muted">Zrušený</span></span></div>
+      <div class="th-row"><span class="th-date th-date-col">31. jan<br>Kolo 10</span><div class="th-match"><span class="team-logo" style="width:30px;height:30px;font-size:10px;background:linear-gradient(135deg,#fff,#dcdcdc);color:#1a1a1a">RM</span><div style="min-width:0"><div class="th-teams">Real Madrid — Atlético</div><div class="th-sub col-hide">Tipovačka s kolegami · futbal</div></div></div><span class="th-val tip-correct">2:0</span><span class="th-val">2:0</span><span class="ta-r"><span class="pts-pill max">+10</span></span></div>
+      <div class="th-row"><span class="th-date th-date-col">31. jan<br>Kolo 10</span><div class="th-match"><span class="team-logo" style="width:30px;height:30px;font-size:10px;background:linear-gradient(135deg,#d52b1e,#8a1610)">CAN</span><div style="min-width:0"><div class="th-teams">Kanada — USA</div><div class="th-sub col-hide">Oficiálny rebríček · hokej</div></div></div><span class="th-val">4:2</span><span class="th-val">3:2</span><span class="ta-r"><span class="pts-pill">+3</span></span></div>
+    </div>
+  </div>
+  <div class="center" style="margin-top:18px"><button class="btn btn-secondary">Načítať ďalšie tipy</button></div>
+</div>
+
+<footer data-shell-footer></footer>
+<script src="js/shell.js"></script>
+<script src="js/enhance.js"></script>
+</body>
+</html>
