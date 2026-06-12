@@ -3,6 +3,9 @@
    Requires tokens.css
    ===================================================================== */
 
+/* hidden attribute must always win over display utilities (.row, .card, etc.) */
+[hidden] { display: none !important; }
+
 /* ============ BUTTONS ============ */
 .btn {
   --_bg: var(--surface-3);
